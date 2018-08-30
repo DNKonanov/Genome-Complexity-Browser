@@ -1,0 +1,524 @@
+{
+    nodes: [{
+            data: {
+                id: 'main_ref'
+            }
+        },
+        {
+            data: {
+                id: 'OG0003707'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000482',
+                parent: 'main_ref'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000490',
+                parent: 'main_ref'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000051'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000486',
+                parent: 'main_ref'
+            }
+        },
+        {
+            data: {
+                id: 'OG0003365'
+            }
+        },
+        {
+            data: {
+                id: 'OG0003848'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000489',
+                parent: 'main_ref'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000488',
+                parent: 'main_ref'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000049'
+            }
+        },
+        {
+            data: {
+                id: 'OG0010563',
+                parent: 'main_ref'
+            }
+        },
+        {
+            data: {
+                id: 'OG0004903',
+                parent: 'main_ref'
+            }
+        },
+        {
+            data: {
+                id: 'OG0002867'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000096'
+            }
+        },
+        {
+            data: {
+                id: 'OG0003196'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000050'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000054'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000492',
+                parent: 'main_ref'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000487',
+                parent: 'main_ref'
+            }
+        },
+        {
+            data: {
+                id: 'OG0004902',
+                parent: 'main_ref'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000485',
+                parent: 'main_ref'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000228'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000484',
+                parent: 'main_ref'
+            }
+        },
+        {
+            data: {
+                id: 'OG0004047'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000483',
+                parent: 'main_ref'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000491',
+                parent: 'main_ref'
+            }
+        },
+        {
+            data: {
+                id: 'OG0000157'
+            }
+        },
+        {
+            data: {
+                id: 'OG0003262'
+            }
+        },
+
+    ],
+    edges: [{
+            data: {
+                source: 'OG0000482',
+                target: 'OG0010563',
+                color: '#ff0000',
+                penwidth: 1
+            }
+        },
+        {
+            data: {
+                source: 'OG0010563',
+                target: 'OG0000483',
+                color: '#ff0000',
+                penwidth: 1.0
+            }
+        },
+        {
+            data: {
+                source: 'OG0000483',
+                target: 'OG0000484',
+                color: '#ff0000',
+                penwidth: 2
+            }
+        },
+        {
+            data: {
+                source: 'OG0000484',
+                target: 'OG0000483',
+                color: '#000000',
+                penwidth: 2.0
+            }
+        },
+        {
+            data: {
+                source: 'OG0000484',
+                target: 'OG0000485',
+                color: '#ff0000',
+                penwidth: 2
+            }
+        },
+        {
+            data: {
+                source: 'OG0000484',
+                target: 'OG0003196',
+                color: '#000000',
+                penwidth: 5.830951894845301
+            }
+        },
+        {
+            data: {
+                source: 'OG0000485',
+                target: 'OG0000486',
+                color: '#ff0000',
+                penwidth: 2
+            }
+        },
+        {
+            data: {
+                source: 'OG0000485',
+                target: 'OG0002867',
+                color: '#000000',
+                penwidth: 2.0
+            }
+        },
+        {
+            data: {
+                source: 'OG0000486',
+                target: 'OG0000485',
+                color: '#000000',
+                penwidth: 2.6457513110645907
+            }
+        },
+        {
+            data: {
+                source: 'OG0000486',
+                target: 'OG0000487',
+                color: '#ff0000',
+                penwidth: 2
+            }
+        },
+        {
+            data: {
+                source: 'OG0000486',
+                target: 'OG0000488',
+                color: '#000000',
+                penwidth: 1.7320508075688772
+            }
+        },
+        {
+            data: {
+                source: 'OG0000487',
+                target: 'OG0000486',
+                color: '#000000',
+                penwidth: 2.449489742783178
+            }
+        },
+        {
+            data: {
+                source: 'OG0000487',
+                target: 'OG0000488',
+                color: '#ff0000',
+                penwidth: 2
+            }
+        },
+        {
+            data: {
+                source: 'OG0000488',
+                target: 'OG0000487',
+                color: '#000000',
+                penwidth: 2.449489742783178
+            }
+        },
+        {
+            data: {
+                source: 'OG0000488',
+                target: 'OG0000489',
+                color: '#ff0000',
+                penwidth: 2
+            }
+        },
+        {
+            data: {
+                source: 'OG0000488',
+                target: 'OG0004047',
+                color: '#000000',
+                penwidth: 2.0
+            }
+        },
+        {
+            data: {
+                source: 'OG0000489',
+                target: 'OG0000488',
+                color: '#000000',
+                penwidth: 2.23606797749979
+            }
+        },
+        {
+            data: {
+                source: 'OG0000489',
+                target: 'OG0004903',
+                color: '#ff0000',
+                penwidth: 2
+            }
+        },
+        {
+            data: {
+                source: 'OG0000489',
+                target: 'OG0003365',
+                color: '#000000',
+                penwidth: 5.916079783099616
+            }
+        },
+        {
+            data: {
+                source: 'OG0004903',
+                target: 'OG0004902',
+                color: '#ff0000',
+                penwidth: 2
+            }
+        },
+        {
+            data: {
+                source: 'OG0004902',
+                target: 'OG0000490',
+                color: '#ff0000',
+                penwidth: 2
+            }
+        },
+        {
+            data: {
+                source: 'OG0000490',
+                target: 'OG0000491',
+                color: '#ff0000',
+                penwidth: 2
+            }
+        },
+        {
+            data: {
+                source: 'OG0000490',
+                target: 'OG0003365',
+                color: '#000000',
+                penwidth: 2.23606797749979
+            }
+        },
+        {
+            data: {
+                source: 'OG0000491',
+                target: 'OG0000490',
+                color: '#000000',
+                penwidth: 2.6457513110645907
+            }
+        },
+        {
+            data: {
+                source: 'OG0000491',
+                target: 'OG0000492',
+                color: '#ff0000',
+                penwidth: 2
+            }
+        },
+        {
+            data: {
+                source: 'OG0000492',
+                target: 'OG0000491',
+                color: '#000000',
+                penwidth: 2.6457513110645907
+            }
+        },
+        {
+            data: {
+                source: 'OG0000051',
+                target: 'OG0000049',
+                color: '#000000',
+                penwidth: 3.1622776601683795
+            }
+        },
+        {
+            data: {
+                source: 'OG0000096',
+                target: 'OG0000483',
+                color: '#000000',
+                penwidth: 3.872983346207417
+            }
+        },
+        {
+            data: {
+                source: 'OG0000049',
+                target: 'OG0000054',
+                color: '#000000',
+                penwidth: 3.1622776601683795
+            }
+        },
+        {
+            data: {
+                source: 'OG0003262',
+                target: 'OG0000483',
+                color: '#000000',
+                penwidth: 2.0
+            }
+        },
+        {
+            data: {
+                source: 'OG0003848',
+                target: 'OG0000489',
+                color: '#000000',
+                penwidth: 2.0
+            }
+        },
+        {
+            data: {
+                source: 'OG0003365',
+                target: 'OG0000489',
+                color: '#000000',
+                penwidth: 2.23606797749979
+            }
+        },
+        {
+            data: {
+                source: 'OG0003365',
+                target: 'OG0000490',
+                color: '#000000',
+                penwidth: 5.916079783099616
+            }
+        },
+        {
+            data: {
+                source: 'OG0000157',
+                target: 'OG0002867',
+                color: '#000000',
+                penwidth: 4.69041575982343
+            }
+        },
+        {
+            data: {
+                source: 'OG0004047',
+                target: 'OG0003707',
+                color: '#000000',
+                penwidth: 1.7320508075688772
+            }
+        },
+        {
+            data: {
+                source: 'OG0000050',
+                target: 'OG0000051',
+                color: '#000000',
+                penwidth: 3.1622776601683795
+            }
+        },
+        {
+            data: {
+                source: 'OG0000054',
+                target: 'OG0000228',
+                color: '#000000',
+                penwidth: 2.8284271247461903
+            }
+        },
+        {
+            data: {
+                source: 'OG0002867',
+                target: 'OG0000485',
+                color: '#000000',
+                penwidth: 5.5677643628300215
+            }
+        },
+        {
+            data: {
+                source: 'OG0002867',
+                target: 'OG0000157',
+                color: '#000000',
+                penwidth: 1.7320508075688772
+            }
+        },
+        {
+            data: {
+                source: 'OG0003196',
+                target: 'OG0000484',
+                color: '#000000',
+                penwidth: 2.0
+            }
+        },
+        {
+            data: {
+                source: 'OG0003196',
+                target: 'OG0000157',
+                color: '#000000',
+                penwidth: 1.7320508075688772
+            }
+        },
+        {
+            data: {
+                source: 'OG0003196',
+                target: 'OG0000050',
+                color: '#000000',
+                penwidth: 3.1622776601683795
+            }
+        },
+        {
+            data: {
+                source: 'OG0003196',
+                target: 'OG0000228',
+                color: '#000000',
+                penwidth: 4.242640687119285
+            }
+        },
+        {
+            data: {
+                source: 'OG0000228',
+                target: 'OG0000157',
+                color: '#000000',
+                penwidth: 4.358898943540674
+            }
+        },
+        {
+            data: {
+                source: 'OG0000228',
+                target: 'OG0002867',
+                color: '#000000',
+                penwidth: 2.6457513110645907
+            }
+        },
+    ]
+}
