@@ -2,9 +2,9 @@ from app import app
 from flask import jsonify
 
 import os
-from app.gene_graph.source.compute_complexity import GenomeGraph
-from app.gene_graph.source.generate_subgraph import get_subgraph
-from app.gene_graph.recombination_draw.draw_graph import get_json_graph
+from gene_graph_lib.compute_complexity import GenomeGraph
+from gene_graph_lib.generate_subgraph import get_subgraph
+from gene_graph_lib.draw_graph import get_json_graph
 
 @app.route('/')
 @app.route('/index')
