@@ -29,12 +29,10 @@ def get_json_graph(input_subgraph, freq_min, da=True):
             if line[0] not in ref_chain:
                 ref_chain.append(line[0])
                 last = line[1]
-                print(last)
 
         bonds.append([line[0], line[1], 1])
 
     ref_chain.append(last)
-    print(ref_chain)
 
     bonds = compute_frequence(bonds)
     genes = list(genes)

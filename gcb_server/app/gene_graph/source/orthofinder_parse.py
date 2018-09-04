@@ -1,5 +1,5 @@
 import argparse
-import reverse
+import app.gene_graph.source.reverse as reverse
 from collections import OrderedDict
 
 parser = argparse.ArgumentParser()

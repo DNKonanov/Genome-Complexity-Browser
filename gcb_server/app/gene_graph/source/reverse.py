@@ -1,4 +1,4 @@
-import compute_complexity
+import app.gene_graph.source.compute_complexity as compute_complexity
 import numpy as np
 
 
