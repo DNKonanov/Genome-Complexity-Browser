@@ -2,26 +2,36 @@ from app import app
 from flask import jsonify
 
 import os
-
-from app.gene_graph.source.generate_subgraph import get_subgraph
-from app.gene_graph.recombination_draw.draw_graph import get_json_graph
+from gene_graph_lib.compute_complexity import GenomeGraph
+from gene_graph_lib.generate_subgraph import get_subgraph
+from gene_graph_lib.draw_graph import get_json_graph
 
 @app.route('/')
 @app.route('/index')
 def index():
     return "Hello, World!"
 
+<<<<<<< HEAD
 data_path = '/mnt/c/Users/fedor/Documents/dev/gcb/gcb_server/data/'
+=======
+global graph
+graph = GenomeGraph('new')
+data_path = '/home/dmitry/projects/Genome-Complexity-Browser-master/gcb_server/data/'
+>>>>>>> pr/1
 
-@app.route('/org/<organism>/strain/<ref_strain>/start/<og_start>/end/<og_end>')
-def subgraph(organism, ref_strain, og_start, og_end):
+@app.route('/org/<organism>/strain/<ref_strain>/start/<og_start>/end/<og_end>/window/<window>/tails/<tails>/')
+def subgraph(organism, ref_strain, window, og_start, og_end, tails):
     
     graph_file = data_path+organism+'/graph/paths.sif'
-    input_lines = []
-    with open(graph_file, 'r') as input:
-        input_lines = input.readlines()
-    
-    subgr, freq = get_subgraph(input_lines, ref_strain, 5, og_start, og_end)
+    try:
+        if graph.name == organism:
+            print('in memory')
+            subgr, freq = get_subgraph(graph, organism, ref_strain, window=int(window), start=og_start, end=og_end, tails=int(tails))
+        else:
+            subgr, freq = get_subgraph(graph_file, organism, ref_strain, window=int(window), start=og_start, end=og_end, tails=int(tails))
+    except:
+        print('not in memory')
+        subgr, freq = get_subgraph(graph_file, organism, ref_strain, window=int(window), start=og_start, end=og_end, tails=int(tails))
     
     # Remove last EOL and split in lines
     subgr = subgr[0:-1].split('\n')
@@ -35,4 +45,5 @@ def get_org_list():
     oranisms = next(os.walk(data_path))[1]
 
     return jsonify(oranisms)
+
 

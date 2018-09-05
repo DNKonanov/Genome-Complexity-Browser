@@ -14,17 +14,18 @@ class App extends Component {
   state = {
     org: 'coli',
     organisms: [],
-    og_start: 'OG0000052',
-    og_end: 'OG0000410',
-    reference: 'GCF_000007365.1_ASM736v1_genomic',
+    og_start: 'OG0002716',
+    og_end: 'OG0002716',
+    reference: '50',
     window: '5',
+    tails: '5',
     data: ''
   };
 
   getDataFromSelector = (data_from_selector) => {
     console.log(data_from_selector)
     let link = 'http://127.0.0.1:5000/org/' + data_from_selector.org + '/strain/' + data_from_selector.reference + '/start/';
-    link = link + data_from_selector.og_start + '/end/' + data_from_selector.og_end
+    link = link + data_from_selector.og_start + '/end/' + data_from_selector.og_end + '/window/' + data_from_selector.window + '/tails/' + data_from_selector.tails
     fetch(link)
       .then(response => response.json())
       .then(data => this.setState({ ['data']: data }))

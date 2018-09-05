@@ -8,12 +8,13 @@ class Selector extends Component {
     state = {
         org: 'coli',
         organisms: [],
-        og_start: 'OG0000052',
-        og_end: 'OG0000410',
-        reference: 'GCF_000007365.1_ASM736v1_genomic',
+        og_start: 'OG0002716',
+        og_end: 'OG0002716',
+        reference: '50',
         window: '5',
+        tails: '5',
         data: ''
-    };
+      };
 
     componentDidMount() {
         fetch('http://127.0.0.1:5000/org/')
@@ -34,7 +35,7 @@ class Selector extends Component {
 
     render() {
         return (
-            <div>
+            <div className="parameters">
                 <form onSubmit={this.handleSubmit} style={{ margin: 12 }}>
                     <label>
                         Organism:
@@ -55,11 +56,16 @@ class Selector extends Component {
             <input type="text" name='reference' value={this.state.reference} onChange={this.handleChange} />
                     </label><br />
                     <label>
+                        Tails:
+            <input type="text" name='tails' value={this.state.tails} onChange={this.handleChange} />
+                    </label><br />
+                    <label>
                         Window:
             <input type="text" name='window' value={this.state.window} onChange={this.handleChange} />
                     </label><br />
                     <input type="submit" value="Draw" />
                 </form>
+            
             </div>
         )
     }
