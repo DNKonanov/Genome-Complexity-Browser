@@ -7,12 +7,14 @@
     "cytoscape": "^3.2.14",
     "cytoscape-dagre": "^2.2.1",
     "cytoscape-klay": "^3.1.1",
+    "cytoscape-popper": "^1.0.2",
     "dagre": "^0.8.2",
     "dagre-d3": "^0.6.1",
     "igv": "^2.0.0-rc2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "tippy.js": "^2.5.4"
   },
   "scripts": {
     "start": "react-scripts start",

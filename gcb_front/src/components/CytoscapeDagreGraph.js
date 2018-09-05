@@ -1,39 +1,42 @@
 import React, {
     Component
 } from 'react';
+
+import tippy from 'tippy.js'
+
 import cytoscape from 'cytoscape';
+import popper from 'cytoscape-popper';
 import dagre from 'cytoscape-dagre';
 import '../App.css';
 
-// dagre(cytoscape);
 cytoscape.use(dagre);
+cytoscape.use(popper);
 
 let conf = {
     boxSelectionEnabled: false,
     autounselectify: true,
     zoomingEnabled: true,
     style: [{
-            selector: 'node',
-            style: {
-                'label': 'data(id)',
-                'text-opacity': 0.7,
-                'font-size': "10pt",
-                'text-valign': 'center',
-                'text-halign': 'center',
-                'background-color': 'data(color)',
-            }
-        },
-        {
-            selector: 'edge',
-            style: {
-                'width': 'data(penwidth)',
-                'weight': 'data(penwidth)',
-                "curve-style": "unbundled-bezier",
-                'target-arrow-shape': 'triangle',
-                'line-color': 'data(color)',
-                'target-arrow-color': 'data(color)'
-            }
+        selector: 'node',
+        style: {
+            'label': 'data(id)',
+            'text-opacity': 0.7,
+            'font-size': "10pt",
+            'text-valign': 'center',
+            'text-halign': 'center',
+            'background-color': 'data(color)',
         }
+    },
+    {
+        selector: 'edge',
+        style: {
+            'width': 'data(penwidth)',
+            "curve-style": "unbundled-bezier",
+            'target-arrow-shape': 'triangle',
+            'line-color': 'data(color)',
+            'target-arrow-color': 'data(color)'
+        }
+    }
     ],
     elements: {},
     layout: {
@@ -92,15 +95,62 @@ class CytoscapeDagreGraph extends Component {
         if (this.state.cy) {
             this.state.cy.destroy();
         }
+
         conf.container = this.cyRef;
 
         conf.elements = nextProps.data;
 
         const cy = cytoscape(conf);
 
+        var makeTippy = function (node, text) {
+            return tippy(node.popperRef(), {
+                html: (function () {
+                    var div = document.createElement('div');
+                    div.innerHTML = text;
+                    return div;
+                })(),
+                trigger: 'manual',
+                arrow: true,
+                placement: 'bottom',
+                hideOnClick: false,
+                multiple: true,
+                sticky: true
+            }).tooltips[0];
+        };
+
+        let tips = []
+
+        cy.nodes().forEach(function (ele) {
+            tips.push({'node':ele.id(), 'tip': makeTippy(ele, 'foo')})
+        });
+
+        console.log(tips[1])
+
+        let clicked = []
+        cy.on('click', 'node', function (evt) {
+            let node_id = evt.target.id()
+            let clickedTippy = tips.find(function(ele) {
+                return ele.node === node_id;
+            });
+
+            if(clicked.includes(node_id)){
+                clicked.splice( clicked.indexOf(node_id), 1 );
+                clickedTippy.tip.hide();
+            }
+            else{
+                clicked.push(evt.target.id());
+                clickedTippy.tip.show();
+            }
+            
+                
+            console.log(clicked);
+        });
+
         this.state = {
             cy
         };
+
+        console.log('DRAAAAAAAW')
     }
 
     componentWillUnmount() {
@@ -109,12 +159,10 @@ class CytoscapeDagreGraph extends Component {
         }
     }
 
-
-
     render() {
-        return ( 
-            <div className = "Container" >
-                <div style = { cyStyle } ref = { (cyRef) => { this.cyRef = cyRef; } } /> 
+        return (
+            <div className="Container" >
+                <div style={cyStyle} ref={(cyRef) => { this.cyRef = cyRef; }} />
             </div >
         )
     }

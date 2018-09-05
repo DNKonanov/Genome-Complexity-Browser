@@ -8,9 +8,9 @@ class Selector extends Component {
     state = {
         org: 'coli',
         organisms: [],
-        og_start: 'OG0002716',
-        og_end: 'OG0002716',
-        reference: '50',
+        og_start: 'OG0000052',
+        og_end: 'OG0000410',
+        reference: 'GCF_000007365.1_ASM736v1_genomic',
         window: '5',
         tails: '5',
         data: ''

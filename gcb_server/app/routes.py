@@ -11,13 +11,10 @@ from gene_graph_lib.draw_graph import get_json_graph
 def index():
     return "Hello, World!"
 
-<<<<<<< HEAD
-data_path = '/mnt/c/Users/fedor/Documents/dev/gcb/gcb_server/data/'
-=======
 global graph
 graph = GenomeGraph('new')
-data_path = '/home/dmitry/projects/Genome-Complexity-Browser-master/gcb_server/data/'
->>>>>>> pr/1
+
+data_path = '/mnt/c/Users/fedor/Documents/dev/gcb/gcb_server/data/'
 
 @app.route('/org/<organism>/strain/<ref_strain>/start/<og_start>/end/<og_end>/window/<window>/tails/<tails>/')
 def subgraph(organism, ref_strain, window, og_start, og_end, tails):
