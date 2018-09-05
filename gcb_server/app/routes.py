@@ -11,7 +11,7 @@ from app.gene_graph.recombination_draw.draw_graph import get_json_graph
 def index():
     return "Hello, World!"
 
-data_path = '/mnt/c/Users/fedor/Documents/dev/gcb_server/data/'
+data_path = '/mnt/c/Users/fedor/Documents/dev/gcb/gcb_server/data/'
 
 @app.route('/org/<organism>/strain/<ref_strain>/start/<og_start>/end/<og_end>')
 def subgraph(organism, ref_strain, og_start, og_end):
