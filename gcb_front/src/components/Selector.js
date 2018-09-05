@@ -35,7 +35,7 @@ class Selector extends Component {
 
     render() {
         return (
-            <div className="parameters">
+            <div className="parameters" style={{paddingTop: 150}}>
                 <form onSubmit={this.handleSubmit} style={{ margin: 12 }}>
                     <label>
                         Organism:

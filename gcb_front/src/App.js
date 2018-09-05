@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import './pure-drawer.css'
 
 import CytoscapeDagreGraph from './components/CytoscapeDagreGraph'
 import CytoscapeKlayGraph from './components/CytoscapeKlayGraph'
@@ -34,8 +35,19 @@ class App extends Component {
 
   render() {
     return (
-      < div className="App" >
-        < header className="App-header" >
+      < div className="pure-container" data-effect="pure-effect-slide" >
+
+        <input type="checkbox" id="pure-toggle-left" className="pure-toggle" data-toggle="left"></input>
+        <label className="pure-toggle-label" for="pure-toggle-left" data-toggle-label="left">
+            <span className="pure-toggle-icon"></span>
+        </label>
+
+        <div className="pure-drawer" data-position="left">
+        <Selector getDataFromSelector={this.getDataFromSelector} />
+        </div>
+        <div className="pure-pusher-container">
+            <div className="pure-pusher">
+            < header className="App-header" >
           < h1 className="App-title" > Genome Complexity Browser </h1>
         </header>
         <p className="App-intro" >
@@ -44,8 +56,10 @@ class App extends Component {
 
         <CytoscapeDagreGraph data={this.state.data} />
 
-        <Selector getDataFromSelector={this.getDataFromSelector} />
-
+        
+            </div>
+        </div>
+        <label className="pure-overlay" for="pure-toggle-left" data-overlay="left"></label>
         {/* <IGV / > */}
 
       </div>

@@ -1,5 +1,6 @@
 from app import app
 from flask import jsonify
+import pandas as pd
 
 import os
 from gene_graph_lib.compute_complexity import GenomeGraph
@@ -34,6 +35,15 @@ def subgraph(organism, ref_strain, window, og_start, og_end, tails):
     subgr = subgr[0:-1].split('\n')
     
     graph_json = get_json_graph(subgr, 1)
+
+
+    if (organism == 'Buchnera_aphidicola'):
+        nodes = graph_json['nodes'][1:]
+        og_table_loc = data_path+organism+'/og_table.csv'
+        og_table = pd.read_csv(og_table_loc)
+        print (og_table)
+        for node in nodes:
+            node['data']['description'] = list(og_table.loc[og_table['og'] == node['data']['id']]['description'])[0]
 
     return jsonify(graph_json)
 

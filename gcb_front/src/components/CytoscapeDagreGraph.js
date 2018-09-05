@@ -102,10 +102,10 @@ class CytoscapeDagreGraph extends Component {
 
         const cy = cytoscape(conf);
 
-        var makeTippy = function (node, text) {
+        let makeTippy = function (node, text) {
             return tippy(node.popperRef(), {
                 html: (function () {
-                    var div = document.createElement('div');
+                    let div = document.createElement('div');
                     div.innerHTML = text;
                     return div;
                 })(),
@@ -121,7 +121,8 @@ class CytoscapeDagreGraph extends Component {
         let tips = []
 
         cy.nodes().forEach(function (ele) {
-            tips.push({'node':ele.id(), 'tip': makeTippy(ele, 'foo')})
+            console.log(ele.data().description)
+            tips.push({'node':ele.id(), 'tip': makeTippy(ele, ele.data().description)})
         });
 
         console.log(tips[1])
@@ -129,6 +130,7 @@ class CytoscapeDagreGraph extends Component {
         let clicked = []
         cy.on('click', 'node', function (evt) {
             let node_id = evt.target.id()
+            console.log(evt.target.data().description)
             let clickedTippy = tips.find(function(ele) {
                 return ele.node === node_id;
             });
@@ -142,7 +144,7 @@ class CytoscapeDagreGraph extends Component {
                 clickedTippy.tip.show();
             }
             
-                
+
             console.log(clicked);
         });
 
