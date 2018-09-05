@@ -55,7 +55,7 @@ class App extends Component {
         </p>
 
         <CytoscapeDagreGraph data={this.state.data} />
-
+        <CytoscapeKlayGraph data={this.state.data} />
         
             </div>
         </div>

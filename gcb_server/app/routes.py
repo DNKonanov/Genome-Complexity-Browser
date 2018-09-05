@@ -43,7 +43,15 @@ def subgraph(organism, ref_strain, window, og_start, og_end, tails):
         og_table = pd.read_csv(og_table_loc)
         print (og_table)
         for node in nodes:
-            node['data']['description'] = list(og_table.loc[og_table['og'] == node['data']['id']]['description'])[0]
+            desc_list = list(og_table.loc[og_table['og'] == node['data']['id']]['description'])
+            if (len(desc_list) > 0):
+                node['data']['description'] = desc_list[0]
+            else:
+                node['data']['description'] = 'null'
+    else:
+        nodes = graph_json['nodes'][1:]
+        for node in nodes:
+            node['data']['description'] = 'null'
 
     return jsonify(graph_json)
 
