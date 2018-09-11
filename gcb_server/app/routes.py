@@ -40,6 +40,22 @@ def subgraph(organism, ref_strain, window, og_start, og_end, tails, pars):
     
     graph_json = get_json_graph(subgr, 1)
 
+    nodes = graph_json['nodes'][1:]
+
+    db = data_path + organism + '/' + organism + '.db'
+    connect = sqlite3.connect(db)
+    c = connect.cursor()
+    
+    
+    for node in nodes:
+        query = 'SELECT description FROM og_table WHERE og = "' + node['data']['id'] + '"'
+        og_list = [og[0] for og in c.execute(query)]
+        if (len(og_list) > 0):
+            node['data']['description'] = og_list[0]
+        else:
+            node['data']['description'] = 'null'
+
+
     return jsonify(graph_json)
 
 @app.route('/org/')
