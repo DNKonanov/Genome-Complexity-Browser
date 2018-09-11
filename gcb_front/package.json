@@ -11,8 +11,10 @@
     "dagre": "^0.8.2",
     "dagre-d3": "^0.6.1",
     "igv": "^2.0.0-rc2",
+    "plotly.js": "^1.40.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-plotly.js": "^2.2.0",
     "react-scripts": "1.1.4",
     "tippy.js": "^2.5.4"
   },
