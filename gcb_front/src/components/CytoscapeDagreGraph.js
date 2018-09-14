@@ -28,7 +28,7 @@ let conf = {
             style: {
                 'width': 'data(penwidth)',
                 'weight': 'data(penwidth)',
-                "curve-style": "segments",
+                "curve-style": "unbundled-bezier",
                 'target-arrow-shape': 'triangle',
                 'line-color': 'data(color)',
                 'target-arrow-color': 'data(color)'
