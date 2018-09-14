@@ -19,11 +19,11 @@ def subgraph(organism, ref_strain, window, og_start, og_end, tails, pars):
 
     print(pars)
     if int(pars) == 0:
-        paths = 'paths.sif'
+        paths = organism + '.sif'
     else:
-        paths = 'paths_pars.sif'
+        paths = organism + '_pars.sif'
     graph = GenomeGraph(name='new')
-    graph_file = data_path+organism+'/graph/' + paths
+    graph_file = data_path+organism+'/' + paths
     try:
         if graph.name == organism:
             print('in memory')
@@ -45,9 +45,9 @@ def subgraph(organism, ref_strain, window, og_start, og_end, tails, pars):
 @app.route('/org/')
 def get_org_list():
     global org
-    oranisms = next(os.walk(data_path))[1]
-    org = oranisms[0]
-    return jsonify(oranisms)
+    organisms = next(os.walk(data_path))[1]
+    org = organisms[0]
+    return jsonify(organisms)
 
 
 @app.route('/org/<org>/stamms/')

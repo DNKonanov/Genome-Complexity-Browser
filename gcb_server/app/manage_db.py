@@ -18,10 +18,11 @@ def get_complexity_from_db(data_path, organism, reference, contig, method):
 
 
     complexity_list = [float(value[0]) for value in c.execute('SELECT ' + method + ' FROM og_table WHERE contig = ' + str(contig_key))]
+    coord_list = [float(value[0]) for value in c.execute('SELECT (start_coord+end_coord)/2 FROM og_table WHERE contig = ' + str(contig_key))]
     og_list = [og[0] for og in c.execute('SELECT og FROM og_table WHERE contig = ' + str(contig_key))]
 
     connect.close()
-    return [complexity_list, og_list]
+    return [complexity_list, og_list, coord_list]
 
 
 
