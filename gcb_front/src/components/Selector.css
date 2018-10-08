@@ -2,9 +2,29 @@
     position: absolute;
     left: 150px;
     width: 200px;
+    float: left;
     
 }
 
 .heads {
     margin-right: 10px;
+}
+
+.bblock {
+    float: left;
+}
+
+.inputField {
+    position: absolute;
+    left: 400px;
+    width: 1000px;
+}
+
+.coordinatesField {
+    width: 800px;
+    height: 500px;
+}
+
+textarea {
+    resize: none;
 }

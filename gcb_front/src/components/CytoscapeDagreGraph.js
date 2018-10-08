@@ -1,39 +1,56 @@
 import React, {
     Component
 } from 'react';
+import 'JSON';
+import tippy from 'tippy.js'
+
 import cytoscape from 'cytoscape';
+import popper from 'cytoscape-popper';
 import dagre from 'cytoscape-dagre';
 import '../App.css';
 
-// dagre(cytoscape);
 cytoscape.use(dagre);
+cytoscape.use(popper);
 
 let conf = {
-    boxSelectionEnabled: false,
-    autounselectify: true,
+    boxSelectionEnabled: true,
+    autounselectify: false,
     zoomingEnabled: true,
     style: [{
-            selector: 'node',
-            style: {
-                'label': 'data(id)',
-                'text-opacity': 0.7,
-                'font-size': "10pt",
-                'text-valign': 'center',
-                'text-halign': 'center',
-                'background-color': 'data[color]',
-            }
-        },
-        {
-            selector: 'edge',
-            style: {
-                'width': 'data(penwidth)',
-                'weight': 'data(penwidth)',
-                "curve-style": "unbundled-bezier",
-                'target-arrow-shape': 'triangle',
-                'line-color': 'data(color)',
-                'target-arrow-color': 'data(color)'
-            }
+        selector: 'node',
+        style: {
+            'label': 'data(id)',
+            'font-size': "10pt",
+            'text-valign': 'center',
+            'text-halign': 'center',
+            'background-color': 'data(color)',
+            'border-width': 'data(bwidth)',
+            'border-color': 'data(bcolor)',
+            'border-radius': 10,
+            'border-opacity': 0.7
         }
+    },
+    {
+        selector: 'edge',
+        style: {
+            'width': 'data(penwidth)',
+            "curve-style": "unbundled-bezier",
+            'target-arrow-shape': 'triangle',
+            'line-color': 'data(color)',
+            'target-arrow-color': 'data(color)',
+            'opacity': 'data(opacity)'
+        }
+    },
+    {
+        selector: ':selected',
+        style: {
+            'background-color': 'green',
+            'line-color': 'green',
+            'target-arrow-color': 'green',
+            'source-arrow-color': 'green',
+            'opacity': 0.5
+        }
+    }
     ],
     elements: {},
     layout: {
@@ -43,15 +60,6 @@ let conf = {
         nodeSep: 4, // the separation between adjacent nodes in the same rank
         edgeSep: 4, // the separation between adjacent edges in the same rank
         rankSep: 60, // the separation between adjacent nodes in the same rank
-        edgeWeight: function (edge) {
-            let w = edge.data().penwidth;
-            let ww = 1;
-            if (w > 6) {
-                console.log(w);
-                // 2ww = 1000;
-            }
-            return 1;
-        }
     }
 };
 
@@ -62,12 +70,12 @@ let cyStyle = {
 };
 
 class CytoscapeDagreGraph extends Component {
-
+    
 
     constructor(props) {
         super(props);
         this.state = {
-            cy: {}
+            cy: {},
         }
     }
 
@@ -80,7 +88,6 @@ class CytoscapeDagreGraph extends Component {
         this.state = {
             cy
         };
-        // cy.json();
 
     }
 
@@ -92,30 +99,96 @@ class CytoscapeDagreGraph extends Component {
         if (this.state.cy) {
             this.state.cy.destroy();
         }
+        
+
+        
         conf.container = this.cyRef;
 
         conf.elements = nextProps.data;
 
         const cy = cytoscape(conf);
 
+        let makeTippy = function (node, text) {
+            return tippy(node.popperRef(), {
+                html: (function () {
+                    let div = document.createElement('div');
+                    div.innerHTML = text;
+                    return div;
+                })(),
+                trigger: 'manual',
+                arrow: true,
+                placement: 'bottom',
+                hideOnClick: false,
+                multiple: true,
+                sticky: true
+            }).tooltips[0];
+        };
+
+        let tips = []
+
+        cy.nodes().forEach(function (ele) {
+            tips.push({'node':ele.id(), 'tip': makeTippy(ele, ele.data().description)})
+        });
+
+        cy.edges().forEach(function (ele) {
+            tips.push({'edge':ele.id(), 'tip': makeTippy(ele, ele.data().description)})
+        });
+
+        let clicked = []
+        cy.on('click', 'node', function (evt) {
+            let node_id = evt.target.id()
+            let clickedTippy = tips.find(function(ele) {
+                return ele.node === node_id;
+            });
+
+            if(clicked.includes(node_id)){
+                clicked.splice( clicked.indexOf(node_id), 1 );
+                clickedTippy.tip.hide();
+            }
+            else{
+                clicked.push(evt.target.id());
+                clickedTippy.tip.show();
+            }
+            
+
+            console.log(clicked);
+        });
+
+        cy.on('click', 'edge', function (evt) {
+            let edge_id = evt.target.id()
+            let clickedTippy = tips.find(function(ele) {
+                return ele.edge === edge_id;
+            });
+
+            if(clicked.includes(edge_id)){
+                clicked.splice( clicked.indexOf(edge_id), 1 );
+                clickedTippy.tip.hide();
+            }
+            else{
+                clicked.push(evt.target.id());
+                clickedTippy.tip.show();
+            }
+            
+
+            console.log(clicked);
+        });
+
         this.state = {
             cy
         };
+        console.log('DRAAAAAAAW')
     }
-
-    componentWillUnmount() {
-        if (this.state.cy) {
-            this.state.cy.destroy();
-        }
-    }
-
+    
 
 
     render() {
-        return ( 
-            <div className = "Container" >
-                <div style = { cyStyle } ref = { (cyRef) => { this.cyRef = cyRef; } } /> 
+        return (
+            <div className="Container" >
+                <div style={cyStyle} ref={(cyRef) => { this.cyRef = cyRef; }} />  
             </div >
+            
+            
+
         )
     }
 }
