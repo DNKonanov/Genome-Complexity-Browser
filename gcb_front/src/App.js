@@ -28,7 +28,11 @@ class App extends Component {
     this.setState({['loading']: true})
     fetch(link)
       .then(response => response.json())
-      .then(data => {this.setState({ ['data']: data }); console.log(this.state.data); this.setState({['loading']: false}); this.setState({['success']: 'Success!'})})
+      .then(data => {this.setState({ 
+        data: data,
+        loading: false,
+        success: 'Success!'
+      })})
       .catch(error => {console.log('ERROR'); this.setState({['loading']: false}); this.setState({['success']: 'Undefined error, please choose other OG or coordinates'})});
       
   }

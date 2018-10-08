@@ -50,7 +50,10 @@ class Selector extends Component {
             let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/'
             fetch(link)
                 .then(response => response.json())
-                .then(data => { this.setState({ ['stamms']: data }); this.setState({ ['stamm']: data[0] }); });
+                .then(data => { this.setState({ 
+                    stamms: data,
+                    stamm: data[0] 
+                }); });
                 
 
                        
@@ -60,7 +63,10 @@ class Selector extends Component {
             let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/'
             fetch(link)
                 .then(response => response.json())
-                .then(data => { this.setState({ ['contigs']: data }); this.setState({ ['contig']: data[0] }); });
+                .then(data => { this.setState({ 
+                    contigs: data,
+                    contig: data[0]
+                }); });
 
                 
 
@@ -76,8 +82,13 @@ class Selector extends Component {
             let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
             fetch(link)
                 .then(response => response.json())
-                .then(data => { this.setState({ ['complexity']: data[0] }); this.setState({ ['length_list']: data[3] }); this.setState({ ['OGs']: data[1] }); this.setState({ ['coord_list']: data[2]})});
-
+                .then(data => { this.setState({ 
+                    complexity: data[0],
+                    max_complexity: math.max(this.state.complexity),
+                    length_list: data[3],
+                    OGs: data[1],
+                    coord_list: data[2]
+                }) });
                 
         }
 
@@ -90,7 +101,13 @@ class Selector extends Component {
             let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
             fetch(link)
                 .then(response => response.json())
-                .then(data => { this.setState({ ['complexity']: data[0] }); this.setState({['max_complexity']: math.max(this.state.complexity)}); this.setState({ ['length_list']: data[3] }); this.setState({ ['OGs']: data[1] }); this.setState({ ['coord_list']: data[2]})});
+                .then(data => { this.setState({ 
+                    complexity: data[0],
+                    max_complexity: math.max(this.state.complexity),
+                    length_list: data[3],
+                    OGs: data[1],
+                    coord_list: data[2]
+                }) });
 
         }
 
@@ -103,27 +120,14 @@ class Selector extends Component {
             let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
             fetch(link)
                 .then(response => response.json())
-                .then(data => { this.setState({ ['complexity']: data[0] }); this.setState({['max_complexity']: math.max(this.state.complexity)}); this.setState({ ['length_list']: data[3] }); this.setState({ ['OGs']: data[1] }); this.setState({ ['coord_list']: data[2]})});
+                .then(data => { this.setState({ 
+                    complexity: data[0],
+                    max_complexity: math.max(this.state.complexity),
+                    length_list: data[3],
+                    OGs: data[1],
+                    coord_list: data[2]
+                }) });
 
-        }
-
-
-        if (this.prev_state.coord_start != this.state.coord_start) {
-            var index = 0
-            while (this.state.coord_list[index] < this.state.coord_start) {
-                index = index + 1
-            }
-
-            this.setState({['og_start']: this.state.OGs[index]})
-        }
-
-        if (this.prev_state.coord_end != this.state.coord_end) {
-            var index = 0
-            while (this.state.coord_list[index] < this.state.coord_end) {
-                index = index + 1
-            }
-
-            this.setState({['og_end']: this.state.OGs[index]})
         }
 
         this.prev_state = this.state
@@ -136,35 +140,32 @@ class Selector extends Component {
     componentDidMount() {
         fetch('http://10.210.29.150:5000/org/')
             .then(response => response.json())
-            .then(data => { this.setState({ ['organisms']: data }); this.setState({ ['org']: data[0] }); });
+            .then(data => { this.setState({ 
+                organisms: data,
+                org: data[0]
+             }) });
         
         let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/'
         fetch(link)
             .then(response => response.json())
-            .then(data => { this.setState({ ['stamms']: data }); this.setState({ ['stamm']: data[0] }); });
+            .then(data => { this.setState({ 
+                stamms: data,
+                stamm: data[0]
+            }) });
 
         link = link + this.state.stamm + '/contigs/'
         fetch(link)
             .then(response => response.json())
-            .then(data => { this.setState({ ['contigs']: data }); this.setState({ ['contig']: data[0] }); });
+            .then(data => { this.setState({ 
+                contigs: data,
+                contig: data[0]
+             }) });
         
         link = link + this.state.contig + '/methods/' + this.state.method + '/pars/0/complexity/'
         fetch(link)
             .then(response => response.json())
             .then(data => { this.setState({ ['complexity']: data[0] }); this.setState({ ['OGs']: data[1] });});
 
-        var index = 0
-        while (this.state.coord_list[index] < this.state.coord_start) {
-            index = index + 1
-        }
-
-        this.setState({['og_start']: this.state.OGs[index]})
-        var index = 0
-        while (this.state.coord_list[index] < this.state.coord_end) {
-            index = index + 1
-        }
-
-        this.setState({['og_end']: this.state.OGs[index]})
     
     }
 
@@ -330,9 +331,7 @@ class Selector extends Component {
                     x: this.state.coord_list,
                     y: this.state.complexity,
                     text: this.state.OGs,
-                    type: 'bar',
-                    mode: 'lines',
-                    width: this.state.length_list,
+                    type: 'line',
                     name: 'complexity'
                 },
 
