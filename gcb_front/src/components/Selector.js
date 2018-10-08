@@ -83,7 +83,9 @@ class Selector extends Component {
             fetch(link)
                 .then(response => response.json())
                 .then(data => { this.setState({ 
-                    complexity: data[0],
+                    complexity: data[0]
+                });
+                this.setState({
                     max_complexity: math.max(this.state.complexity),
                     length_list: data[3],
                     OGs: data[1],
@@ -102,7 +104,9 @@ class Selector extends Component {
             fetch(link)
                 .then(response => response.json())
                 .then(data => { this.setState({ 
-                    complexity: data[0],
+                    complexity: data[0]
+                });
+                this.setState({
                     max_complexity: math.max(this.state.complexity),
                     length_list: data[3],
                     OGs: data[1],
@@ -121,7 +125,9 @@ class Selector extends Component {
             fetch(link)
                 .then(response => response.json())
                 .then(data => { this.setState({ 
-                    complexity: data[0],
+                    complexity: data[0]
+                });
+                this.setState({
                     max_complexity: math.max(this.state.complexity),
                     length_list: data[3],
                     OGs: data[1],
