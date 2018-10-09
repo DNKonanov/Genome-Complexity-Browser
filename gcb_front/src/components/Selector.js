@@ -10,8 +10,8 @@ class Selector extends Component {
 
     state = {
         org: 'Escherichia_coli',
-        stamm: '0',
-        contig: 'NC_000913.3',
+        stamm: '119',
+        contig: 'NZ_CP006834.1',
         organisms: [],
         stamms: [],
         contigs: [],
@@ -136,6 +136,33 @@ class Selector extends Component {
 
         }
 
+        if (this.prev_state.coord_start != this.state.coord_start) {
+
+            let close_st_gene = 0
+            let close_end_gene = 0
+            let close_st_len = Math.abs(this.state.coord_list[0] - this.state.coord_start)
+            let close_end_len = Math.abs(this.state.coord_list[0] - this.state.coord_start)
+
+            for (let i = 0; i < this.state.coord_list.length; i++) {
+                let len = Math.abs(this.state.coord_list[i] - this.state.coord_start);
+                if (len < close_st_len) {
+                    close_st_gene = i;
+                    close_st_len = len
+                }
+
+                if (len < close_end_len) {
+                    close_end_gene = i;
+                    close_end_len = len
+                }
+
+            }
+
+            this.setState({
+                og_end: this.state.OGs[close_end_gene],
+                og_start: this.state.OGs[close_st_gene]
+            })
+        }
+
         this.prev_state = this.state
 
 
@@ -189,7 +216,7 @@ class Selector extends Component {
 
             let lines;
             lines = string.split(',');
-            this.setState({['user_coordinates']: []})
+            this.setState({user_coordinates: []})
             let coord = []
             let values = []
             for (let i = 0; i < lines.length; i++) {
@@ -213,11 +240,11 @@ class Selector extends Component {
 
     checkPars = (event) => {
 
-        this.setState({ 'pars' : event.target.checked });
+        this.setState({ pars : event.target.checked });
     }
 
     checkOperons = (event) => {
-        this.setState({ 'operons' : event.target.checked });
+        this.setState({ operons : event.target.checked });
     }
 
     inputFileChanged = (e) => {
@@ -375,7 +402,7 @@ class Selector extends Component {
                         title: 'Genome complexity, ' + this.state.org + ', contig ' + this.state.contig + ', ' + this.state.method,
                         
                         xaxis: {
-                            title: 'Coordinate',
+                            title: 'Chromosome position, bp',
                         },
 
                         yaxis: {
@@ -387,14 +414,14 @@ class Selector extends Component {
                             title: 'user values',
                             side: 'right'
                         }
-                        
                     } 
                 }
-                onClick={(data) => {this.setState({ ['og_start']: data.points[0].text }); 
-                                    this.setState({ ['og_end']: data.points[0].text });
-                                    this.setState({ ['coord_start']: data.points[0].x }); 
-                                    this.setState({ ['coord_end']: data.points[0].x });
-                                }}
+                onClick={(data) => {this.setState({ 
+                    og_start: data.points[0].text,
+                    og_end: data.points[0].text,
+                    coord_start: data.points[0].x,
+                    coord_end: data.points[0].x });
+                }}
             />
 
             </div>
