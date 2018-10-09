@@ -92,8 +92,13 @@ class CytoscapeDagreGraph extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+
+
+
         if (this.state.cy) {
             this.state.cy.destroy();
+
+            console.log(clicked);
         }
 
         conf.container = this.cyRef;
@@ -143,9 +148,6 @@ class CytoscapeDagreGraph extends Component {
                 clicked.push(evt.target.id());
                 clickedTippy.tip.show();
             }
-            
-
-            console.log(clicked);
         });
 
         this.state = {
