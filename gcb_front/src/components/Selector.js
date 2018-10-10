@@ -2,45 +2,47 @@ import React, {
     Component
 } from 'react';
 import './Selector.css';
-import PropTypes from 'prop-types';
 import Plot from 'react-plotly.js';
 import * as math from 'mathjs'
 
 class Selector extends Component {
 
-    state = {
-        org: 'Escherichia_coli',
-        stamm: '119',
-        contig: 'NZ_CP006834.1',
-        organisms: [],
-        stamms: [],
-        contigs: [],
-        complexity: [],
-        max_complexity: 0,
-        OGs: [],
-        og_start: 'OG0002716',
-        og_end: 'OG0002716',
-        coord_start: 0,
-        coord_end: 0,
-        coord_list: [],
-        length_list: [],
-        reference: '50',
-        window: '5',
-        tails: '5',
-        depth: '30',
-        freq_min: '2',
-        pars: false,
-        operons: true,
-        methods: ['window complexity', 'probabilistic window complexity', 'IO complexity', 'probabilistic IO complexity'],
-        method: 'window complexity',
-        user_coordinates_str: '',
-        user_coordinates: [],
-        user_values: [],
-        draw_types: ['line', 'markers'],
-        draw_type: 'line plot',
-        data: '',
-        src: ''
-      };
+    constructor(props) {
+
+        super(props)
+        this.state = {
+            org: 'Escherichia_coli',
+            stamm: '119',
+            contig: 'NZ_CP006834.1',
+            organisms: [],
+            stamms: [],
+            contigs: [],
+            complexity: [],
+            max_complexity: 0,
+            OGs: [],
+            og_start: 'OG0002716',
+            og_end: 'OG0002716',
+            coord_start: 0,
+            coord_end: 0,
+            coord_list: [],
+            length_list: [],
+            window: '5',
+            tails: '5',
+            depth: '30',
+            freq_min: '2',
+            pars: false,
+            operons: true,
+            methods: ['window complexity', 'probabilistic window complexity', 'IO complexity', 'probabilistic IO complexity'],
+            method: 'window complexity',
+            user_coordinates_str: '',
+            user_coordinates: [],
+            user_values: [],
+            draw_types: ['line', 'markers'],
+            draw_type: 'line plot',
+            data: '',
+            src: ''
+        };
+    }
 
     prev_state = {}
 
@@ -59,7 +61,7 @@ class Selector extends Component {
                        
         }
 
-        if (this.prev_state.stamm != this.state.stamm) {
+        if (this.prev_state.stamm !== this.state.stamm) {
             let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/'
             fetch(link)
                 .then(response => response.json())
@@ -72,12 +74,12 @@ class Selector extends Component {
 
         }
 
-        if (this.prev_state.contig != this.state.contig){
+        if (this.prev_state.contig !== this.state.contig){
             
-            if (this.state.pars == true) {
-                var pars_int = 1
+            let pars_int = 0
+            if (this.state.pars === true) {
+                pars_int = 1
             }
-            else var pars_int = 0
 
             let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
             fetch(link)
@@ -94,11 +96,11 @@ class Selector extends Component {
                 
         }
 
-        if (this.prev_state.method != this.state.method) {
-            if (this.state.pars == true) {
-                var pars_int = 1
+        if (this.prev_state.method !== this.state.method) {
+            let pars_int = 0
+            if (this.state.pars === true) {
+                pars_int = 1
             }
-            else var pars_int = 0
 
             let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
             fetch(link)
@@ -115,11 +117,12 @@ class Selector extends Component {
 
         }
 
-        if (this.prev_state.pars != this.state.pars) {
-            if (this.state.pars == true) {
-                var pars_int = 1
+        if (this.prev_state.pars !== this.state.pars) {
+            let pars_int = 0
+            if (this.state.pars === true) {
+                pars_int = 1
             }
-            else var pars_int = 0
+            
 
             let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
             fetch(link)
@@ -136,7 +139,9 @@ class Selector extends Component {
 
         }
 
-        if (this.prev_state.coord_start != this.state.coord_start) {
+        if (this.prev_state.coord_start !== this.state.coord_start) {
+
+            
 
             let close_st_gene = 0
             let close_end_gene = 0
@@ -157,10 +162,13 @@ class Selector extends Component {
 
             }
 
-            this.setState({
-                og_end: this.state.OGs[close_end_gene],
-                og_start: this.state.OGs[close_st_gene]
-            })
+
+            if (this.state.OGs[close_st_gene] !== undefined && this.state.OGs[close_end_gene] !== undefined){
+                this.setState({
+                    og_end: this.state.OGs[close_end_gene],
+                    og_start: this.state.OGs[close_st_gene]
+                })
+            }
         }
 
         this.prev_state = this.state
@@ -197,7 +205,7 @@ class Selector extends Component {
         link = link + this.state.contig + '/methods/' + this.state.method + '/pars/0/complexity/'
         fetch(link)
             .then(response => response.json())
-            .then(data => { this.setState({ ['complexity']: data[0] }); this.setState({ ['OGs']: data[1] });});
+            .then(data => { this.setState({ complexity: data[0] }); this.setState({ OGs: data[1] });});
 
     
     }
@@ -210,7 +218,7 @@ class Selector extends Component {
     
     
     drawUserCoordinates = (e) =>{
-        if (this.state.user_coordinates_str.length != 0) {
+        if (this.state.user_coordinates_str.length !== 0) {
             
             let string = this.state.user_coordinates_str.replace(' ', '').replace('\t', '').replace('\n', '')
 
@@ -221,7 +229,7 @@ class Selector extends Component {
             let values = []
             for (let i = 0; i < lines.length; i++) {
                 let line = lines[i].split(':');
-                coord.push(parseInt(line[0]))
+                coord.push(parseInt(line[0], 10));
                 values.push(parseFloat(line[1]))
             }
             this.setState({
@@ -235,7 +243,7 @@ class Selector extends Component {
     
 
     handleChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value })
+        this.setState({ [event.target.name]: event.target.value})
     }
 
     checkPars = (event) => {
@@ -264,8 +272,6 @@ class Selector extends Component {
     }
 
     render() {
-
-
         return (
             <div>
                 <form className="bblock" onSubmit={this.handleSubmit} style={{ margin: 12 }}>
@@ -288,16 +294,17 @@ class Selector extends Component {
                         </select>
                     </label><br />
                     <label>
-                    <label>
                         method:
             <select className="input" value={this.state.method} name='method' onChange={this.handleChange}>
                             {this.state.methods.map(method => <option key={method} value={method}>{method}</option>)}
                         </select>
                     </label><br />
+
                     <label>
                         OG start:
             <input className="input" type="text" name='og_start' value={this.state.og_start} onChange={this.handleChange} />
-                    </label> <br />
+                    </label><br />
+
                     <label>
                         OG end:
             <input className="input" type="text" name='og_end' value={this.state.og_end} onChange={this.handleChange} />
@@ -311,7 +318,7 @@ class Selector extends Component {
                     Coordinate end:
             <input className="input" type="text" name='coord_end' value={this.state.coord_end} onChange={this.handleChange} />
                     </label><br />
-                    
+                    <label>
                         Tails:
             <input className="input" type="text" name='tails' value={this.state.tails} onChange={this.handleChange} />
                     </label><br />
@@ -340,7 +347,7 @@ class Selector extends Component {
 
                 <form className="inputField">
                     <p><b>Input values</b> (format is "coord1:value1,coord2:value2, ... ". Spaces, tabs and EOLs are allowed)</p>,
-                    <textarea cols="100" rows="10" name='user_coordinates' onChange={e => this.setState({ ['user_coordinates_str'] : e.target.value })} value={this.state.user_coordinates_str}/>
+                    <textarea cols="100" rows="10" name='user_coordinates' onChange={e => this.setState({ user_coordinates_str : e.target.value })} value={this.state.user_coordinates_str}/>
                     <br/>
                     <input style={{margin: 12}} type="submit" value='Show user values' onClick={(e) => {this.drawUserCoordinates(e)}}/>
                         

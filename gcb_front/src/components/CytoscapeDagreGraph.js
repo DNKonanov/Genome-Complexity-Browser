@@ -26,7 +26,6 @@ let conf = {
             'background-color': 'data(color)',
             'border-width': 'data(bwidth)',
             'border-color': 'data(bcolor)',
-            'border-radius': 10,
             'border-opacity': 0.7
         }
     },
@@ -85,9 +84,9 @@ class CytoscapeDagreGraph extends Component {
         conf.elements = this.props.data;
         const cy = cytoscape(conf);
 
-        this.state = {
-            cy
-        };
+        this.setState({
+            cy: cy
+        });
 
     }
 
