@@ -139,9 +139,7 @@ class Selector extends Component {
 
         }
 
-        if (this.prev_state.coord_start !== this.state.coord_start) {
-
-            
+        if (this.prev_state.coord_start !== this.state.coord_start || this.prev_state.coord_end !== this.state.coord_end) {
 
             let close_st_gene = 0
             let close_end_gene = 0
@@ -154,7 +152,7 @@ class Selector extends Component {
                     close_st_gene = i;
                     close_st_len = len
                 }
-
+                len = Math.abs(this.state.coord_list[i] - this.state.coord_end);
                 if (len < close_end_len) {
                     close_end_gene = i;
                     close_end_len = len
