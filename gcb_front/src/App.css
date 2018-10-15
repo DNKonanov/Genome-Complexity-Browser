@@ -28,6 +28,11 @@
   width: 100%;
 }
 
+.EdgeDescription {
+  display: flex;
+  margin: 20px;
+}
+
 .SaveButton {
   position: absolute;
   width: 100px;
