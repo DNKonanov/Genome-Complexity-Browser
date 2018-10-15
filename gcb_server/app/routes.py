@@ -27,9 +27,9 @@ methods = {'window complexity': 'win_var',
 def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars, operons, depth, freq_min):
 
     if int(pars) == 0:
-        paths = organism + '.sif'
+        paths = organism + '.dump'
     else:
-        paths = organism + '_pars.sif'
+        paths = organism + '_pars.dump'
 
     graph_file = data_path+organism+'/' + paths
     
@@ -38,7 +38,7 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
     # Remove last EOL and split in lines
     subgr = subgr[0:-1].split('\n')
 
-    graph_json = get_json_graph(subgr, int(freq_min), da=False)
+    graph_json = get_json_graph(subgr, int(freq_min))
 
     
 
@@ -60,16 +60,22 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
     added_nodes = set([])
     for edge in edges:
         edge['data']['opacity'] = '1'
+        edge['data']['eweight'] = '1'
         query = 'SELECT stamms_list, edge_freq FROM freq_table WHERE edge = "' + edge['data']['source'] + ' ' + edge['data']['target'] + '"'
         stamms = [og for og in c.execute(query)]
         if (len(stamms) > 0):
             edge['data']['description'] = stamms[0][0]
+
             edge['data']['penwidth'] = str(10*math.sqrt(stamms[0][1]/max_width))
             if ref_strain in stamms[0][0].split('\n'):
 
+                if edge['data']['color'] == '#ff0000':
+                    edge['data']['weight'] = '100'
                 if edge['data']['color'] != '#ff0000':
                     edge['data']['color'] = '#ff0000'
                     edge['data']['opacity'] = '0.5'
+                    edge['data']['eweight'] = '1'
+                
                 added_nodes.add(edge['data']['source'])
                 added_nodes.add(edge['data']['target'])
         else:
