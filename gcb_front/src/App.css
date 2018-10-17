@@ -28,6 +28,10 @@
   width: 100%;
 }
 
+.LeftFloat {
+  float: left;
+}
+
 .EdgeDescription {
   display: flex;
   margin: 20px;

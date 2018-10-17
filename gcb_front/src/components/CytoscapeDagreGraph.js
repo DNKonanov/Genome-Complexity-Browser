@@ -7,7 +7,10 @@ import tippy from 'tippy.js'
 import cytoscape from 'cytoscape';
 import popper from 'cytoscape-popper';
 import dagre from 'cytoscape-dagre';
+import EdgeDescription from '../components/EdgeDescription';
+import SelectedNodes from '../components/SelectedNodes';
 import '../App.css';
+
 
 cytoscape.use(dagre);
 cytoscape.use(popper);
@@ -75,12 +78,14 @@ class CytoscapeDagreGraph extends Component {
         super(props);
         this.state = {
             cy: {},
+            edge_description: '',
+            json_format: '',
+            selected_nodes: ''
         }
     }
 
     componentDidMount() {
         conf.container = this.cyRef;
-        console.log(this.props.data);
         conf.elements = this.props.data;
         const cy = cytoscape(conf);
 
@@ -88,10 +93,6 @@ class CytoscapeDagreGraph extends Component {
             cy: cy
         });
 
-    }
-
-    shouldComponentUpdate() {
-        return false;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -149,45 +150,74 @@ class CytoscapeDagreGraph extends Component {
                 clickedTippy.tip.show();
             }
             
-
-            console.log(clicked);
         });
 
         cy.on('click', 'edge', function (evt) {
-            let edge_id = evt.target.id()
-            let clickedTippy = tips.find(function(ele) {
-                return ele.edge === edge_id;
+
+            this.setState({
+                edge_description: evt.target.data().description
             });
-
-            if(clicked.includes(edge_id)){
-                clicked.splice( clicked.indexOf(edge_id), 1 );
-                clickedTippy.tip.hide();
-            }
-            else{
-                clicked.push(evt.target.id());
-                clickedTippy.tip.show();
-            }
             
+        }.bind(this));
 
-            console.log(clicked);
+        cy.on('position', function(evt){
+
+            this.setState ({
+                json_format: JSON.stringify(cy.json())
+            });
+        }.bind(this));
+
+        cy.on('click', function (evt) {
+            if (evt.target.length === undefined){
+                for(let i=0; i < tips.length; i++){
+                    tips[i].tip.hide()
+                }
+            }
         });
 
-        this.state = {
-            cy
-        };
-        console.log('DRAAAAAAAW')
+        cy.on('select', 'node', function() {
+
+            let nodes_list = ''
+            cy.nodes().forEach(function (ele) {
+                if (ele.selected()) {
+                    nodes_list = nodes_list + ele.data().id + '\t' + ele.data().description.split(':')[0] + '\n'
+                }
+            });
+
+            this.setState({
+                selected_nodes: nodes_list
+            });
+
+        }.bind(this));
+        
+        this.setState ({
+            cy: cy,
+            json_format: JSON.stringify(cy.json())
+        });
+        console.log('DRAW')
     }
+
+
+    downloadJson = () => {
+        var element = document.createElement("a");
+        var file = new Blob([this.state.json_format], {type: 'text/plain'});
+        element.href = URL.createObjectURL(file);
+        element.download = "subgraph.json";
+        element.click();
+      }
     
 
 
     render() {
         return (
-            <div className="Container" >
-                <div style={cyStyle} ref={(cyRef) => { this.cyRef = cyRef; }} />  
-            </div >
-            
-            
-
+            <div>
+                <div className="Container" >
+                    <div style={cyStyle} ref={(cyRef) => { this.cyRef = cyRef; }} />
+                </div >
+                <EdgeDescription edge_description={this.state.edge_description}/>
+                <SelectedNodes edge_description={this.state.selected_nodes}/>
+                <button style={{ margin: 12 }} onClick={this.downloadJson}>Download json subgraph</button>
+            </div>
         )
     }
 }

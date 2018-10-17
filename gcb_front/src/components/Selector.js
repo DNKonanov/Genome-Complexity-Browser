@@ -5,23 +5,25 @@ import './Selector.css';
 import Plot from 'react-plotly.js';
 import * as math from 'mathjs'
 
+
+
 class Selector extends Component {
 
     constructor(props) {
 
         super(props)
         this.state = {
-            org: 'Escherichia_coli',
-            stamm: '119',
-            contig: 'NZ_CP006834.1',
+            org: 'Achromobacter_xylosoxidans',
+            stamm: 'GCF_000165835.1_ASM16583v1_genomic',
+            contig: 'NC_014640.1',
             organisms: [],
             stamms: [],
             contigs: [],
             complexity: [],
             max_complexity: 0,
             OGs: [],
-            og_start: 'OG0002716',
-            og_end: 'OG0002716',
+            og_start: 'OG0001707',
+            og_end: 'OG0001707',
             coord_start: 0,
             coord_end: 0,
             coord_list: [],
@@ -88,7 +90,7 @@ class Selector extends Component {
                     complexity: data[0]
                 });
                 this.setState({
-                    max_complexity: math.max(this.state.complexity),
+                    max_complexity: 1,
                     length_list: data[3],
                     OGs: data[1],
                     coord_list: data[2]
@@ -109,7 +111,7 @@ class Selector extends Component {
                     complexity: data[0]
                 });
                 this.setState({
-                    max_complexity: math.max(this.state.complexity),
+                    max_complexity: 1,
                     length_list: data[3],
                     OGs: data[1],
                     coord_list: data[2]
@@ -131,13 +133,14 @@ class Selector extends Component {
                     complexity: data[0]
                 });
                 this.setState({
-                    max_complexity: math.max(this.state.complexity),
+                    max_complexity: 1,
                     length_list: data[3],
                     OGs: data[1],
                     coord_list: data[2]
                 }) });
 
         }
+
 
         if (this.prev_state.coord_start !== this.state.coord_start || this.prev_state.coord_end !== this.state.coord_end) {
 
@@ -168,6 +171,7 @@ class Selector extends Component {
                 })
             }
         }
+        
 
         this.prev_state = this.state
 
@@ -180,7 +184,7 @@ class Selector extends Component {
         fetch('http://10.210.29.150:5000/org/')
             .then(response => response.json())
             .then(data => { this.setState({ 
-                organisms: data,
+                organisms: data.sort(),
                 org: data[0]
              }) });
         
