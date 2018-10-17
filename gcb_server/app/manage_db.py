@@ -36,7 +36,8 @@ def get_coordinates_from_db(data_path, organism, reference, contig, pars):
 
     else:
         db = data_path + organism + '/' + organism + '_pars.db'
-        
+    
+    print(contig, organism)
     connect = sqlite3.connect(db)
     c = connect.cursor()
     stamm_key = [row for row in c.execute('SELECT id FROM stamms_table WHERE stamm = "' + reference + '"')][0][0]

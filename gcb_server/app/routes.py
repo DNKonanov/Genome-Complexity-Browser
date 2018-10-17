@@ -114,12 +114,15 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
             og_index = -1
         
         if (og_index != -1):
-            node['data']['description'] = descripton_list[og_index] + ': ' + str(length_list[og_index])
+            node['data']['description'] = descripton_list[og_index] + ': ' + str(abs(length_list[og_index]))
         else:
             node['data']['description'] = 'null'
         if node['data']['id'] in added_nodes:
-            coord_index = coordinates[0].index(node['data']['id'])
-            node['data']['description'] = coordinates[2][coord_index] + ': ' + str(length_list[og_index]) + ' (' + str(int(coordinates[1][coord_index])) + ')'
+            try:
+                coord_index = coordinates[0].index(node['data']['id'])
+                node['data']['description'] = coordinates[2][coord_index] + ': ' + str(abs(length_list[og_index])) + ' (' + str(int(coordinates[1][coord_index])) + ')'
+            except ValueError:
+                pass
             if (node ['data']['color'] != '#ff0000' and node['data']['color'] != 'pink'):
                 node['data']['color'] = 'pink'
             
