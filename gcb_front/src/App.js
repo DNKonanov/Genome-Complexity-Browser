@@ -5,14 +5,29 @@ import './App.css';
 import CytoscapeDagreGraph from './components/CytoscapeDagreGraph'
 import Selector from './components/Selector'
 import ReactLoading from 'react-loading';
+import EdgeDescription from './components/EdgeDescription';
+import SelectedNodes from './components/SelectedNodes';
 
 class App extends Component {
 
-  state = {
-    loading: false,
-    data: '',
-    success: 'Selecting'
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      data: '',
+      success: 'Selecting',
+      edge_description: '',
+      selected_nodes: '',
+    };
+  }
+
+  getData = (data) => {
+    this.setState({
+      edge_description: data.edge_description,
+      selected_nodes: data.selected_nodes,
+    })
+    console.log(data)
+  }
 
   getDataFromSelector = (data_from_selector) => {
     let pars_int = 0
@@ -43,16 +58,11 @@ class App extends Component {
       
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      crosshairValues: []
-    };
-  }
-
 
 
   render() {
+
+    console.log('render')
     let load_field;
     if (this.state.loading === true){
       load_field = <div className="LoadAnimation"><p><b>Loading...</b></p><ReactLoading type={'spin'} color={'#000000'} height={'40px'} width={'40px'}/></div>
@@ -71,9 +81,12 @@ class App extends Component {
         </p>
 
         
-        <CytoscapeDagreGraph data={this.state.data}/>
+        <CytoscapeDagreGraph data={this.state.data} getData={this.getData}/>
         {load_field}
-        <Selector getDataFromSelector={this.getDataFromSelector} />
+        <Selector getDataFromSelector={this.getDataFromSelector}/>
+        <EdgeDescription edge_description={this.state.edge_description}/>
+        <SelectedNodes  className="LeftFloat" edge_description={this.state.selected_nodes}/>
+
       </div>
       
     );

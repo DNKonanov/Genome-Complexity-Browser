@@ -13,7 +13,7 @@ class EdgeDescription extends Component {
             <div>
                 <div className="LeftFloat">
                     <b className="EdgeDescription">List of strains</b>
-                    <textarea cols="80" rows='8' className="EdgeDescription" value={this.props.edge_description} readOnly/>
+                    <textarea cols="60" rows='6' className="EdgeDescription" value={this.props.edge_description} readOnly/>
                 </div>
             </div>
         )

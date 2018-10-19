@@ -95,6 +95,17 @@ class CytoscapeDagreGraph extends Component {
 
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log(nextProps.data)
+        console.log(this.props.data)
+
+        if(JSON.stringify(nextProps.data) === JSON.stringify(this.props.data)) {
+            return false
+
+        }
+        return true
+    }
+
     componentWillReceiveProps(nextProps) {
         if (this.state.cy) {
             this.state.cy.destroy();
@@ -154,10 +165,9 @@ class CytoscapeDagreGraph extends Component {
 
         cy.on('click', 'edge', function (evt) {
 
-            this.setState({
-                edge_description: evt.target.data().description
-            });
-            
+            this.props.getData(this.state)
+
+
         }.bind(this));
 
         cy.on('position', function(evt){
@@ -180,13 +190,11 @@ class CytoscapeDagreGraph extends Component {
             let nodes_list = ''
             cy.nodes().forEach(function (ele) {
                 if (ele.selected()) {
-                    nodes_list = nodes_list + ele.data().id + '\t' + ele.data().description.split(':')[0] + '\n'
+                    if (ele.data().description !== undefined) nodes_list = nodes_list + ele.data().id + '\t' + ele.data().description.split(':')[0] + '\n'
                 }
             });
 
-            this.setState({
-                selected_nodes: nodes_list
-            });
+            this.props.getData(this.state)
 
         }.bind(this));
         
@@ -214,8 +222,7 @@ class CytoscapeDagreGraph extends Component {
                 <div className="Container" >
                     <div style={cyStyle} ref={(cyRef) => { this.cyRef = cyRef; }} />
                 </div >
-                <EdgeDescription edge_description={this.state.edge_description}/>
-                <SelectedNodes edge_description={this.state.selected_nodes}/>
+                
                 <button style={{ margin: 12 }} onClick={this.downloadJson}>Download json subgraph</button>
             </div>
         )

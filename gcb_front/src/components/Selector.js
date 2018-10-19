@@ -3,8 +3,7 @@ import React, {
 } from 'react';
 import './Selector.css';
 import Plot from 'react-plotly.js';
-import * as math from 'mathjs'
-
+import * as math from 'mathjs';
 
 
 class Selector extends Component {
@@ -34,19 +33,20 @@ class Selector extends Component {
             freq_min: '2',
             pars: false,
             operons: true,
-            methods: ['window complexity', 'probabilistic window complexity', 'IO complexity', 'probabilistic IO complexity'],
-            method: 'window complexity',
+            methods: ['window complexity (w20)', 'probabilistic window complexity (w20)', 'IO complexity', 'probabilistic IO complexity'],
+            method: 'window complexity (w20)',
             user_coordinates_str: '',
             user_coordinates: [],
             user_values: [],
             draw_types: ['line', 'markers'],
             draw_type: 'line plot',
             data: '',
-            src: ''
+            src: '',
         };
     }
 
     prev_state = {}
+
 
     componentDidUpdate(prev_state) {
 
@@ -90,7 +90,7 @@ class Selector extends Component {
                     complexity: data[0]
                 });
                 this.setState({
-                    max_complexity: 1,
+                    max_complexity: math.max(this.state.complexity),
                     length_list: data[3],
                     OGs: data[1],
                     coord_list: data[2]
@@ -111,7 +111,7 @@ class Selector extends Component {
                     complexity: data[0]
                 });
                 this.setState({
-                    max_complexity: 1,
+                    max_complexity: math.max(this.state.complexity),
                     length_list: data[3],
                     OGs: data[1],
                     coord_list: data[2]
@@ -133,7 +133,7 @@ class Selector extends Component {
                     complexity: data[0]
                 });
                 this.setState({
-                    max_complexity: 1,
+                    max_complexity: math.max(this.state.complexity),
                     length_list: data[3],
                     OGs: data[1],
                     coord_list: data[2]
@@ -349,7 +349,7 @@ class Selector extends Component {
 
                 <form className="inputField">
                     <p><b>Input values</b> (format is "coord1:value1,coord2:value2, ... ". Spaces, tabs and EOLs are allowed)</p>,
-                    <textarea cols="100" rows="10" name='user_coordinates' onChange={e => this.setState({ user_coordinates_str : e.target.value })} value={this.state.user_coordinates_str}/>
+                    <textarea cols="100" rows="2" name='user_coordinates' onChange={e => this.setState({ user_coordinates_str : e.target.value })} value={this.state.user_coordinates_str}/>
                     <br/>
                     <input style={{margin: 12}} type="submit" value='Show user values' onClick={(e) => {this.drawUserCoordinates(e)}}/>
                         

@@ -12,7 +12,7 @@ class SelectedNodes extends Component {
         return (
             <div>
                 <b className="EdgeDescription">Selected Nodes</b>
-                <textarea cols="80" rows='8' className="EdgeDescription" value={this.props.edge_description} readOnly/>
+                <textarea cols="60" rows='6' className="EdgeDescription" value={this.props.edge_description} readOnly/>
             </div>
         )
     }
