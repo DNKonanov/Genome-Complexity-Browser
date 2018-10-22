@@ -1,69 +1,152 @@
 from app import app
 from flask import jsonify, session
-from app.manage_db import get_complexity_from_db
+from app.manage_db import get_complexity_from_db, get_coordinates_from_db, get_operons
 import os
+import math
+import matplotlib.pyplot as plt
 from gene_graph_lib.compute_complexity import GenomeGraph
 from gene_graph_lib.generate_subgraph import get_subgraph
 from gene_graph_lib.draw_graph import get_json_graph
 import sqlite3
+
 
 @app.route('/')
 @app.route('/index')
 def index():
     return "Hello, World!"
 
-data_path = '/mnt/c/Users/fedor/Documents/dev/gcb/gcb_server/data/'
+data_path = './data/'
 
-@app.route('/org/<organism>/strain/<ref_strain>/start/<og_start>/end/<og_end>/window/<window>/tails/<tails>/pars/<pars>/')
-def subgraph(organism, ref_strain, window, og_start, og_end, tails, pars):
+methods = {'window complexity': 'win_var',
+            'probabilistic window complexity': 'prob_win_var',
+            'IO complexity': 'io',
+            'probabilistic IO complexity': 'prob_io'}
 
-    print(pars)
+
+@app.route('/org/<organism>/strain/<ref_strain>/contig/<contig>/start/<og_start>/end/<og_end>/window/<window>/tails/<tails>/pars/<pars>/operons/<operons>/depth/<depth>/freq_min/<freq_min>')
+def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars, operons, depth, freq_min):
+
     if int(pars) == 0:
-        paths = 'paths.sif'
+        paths = organism + '.dump'
     else:
-        paths = 'paths_pars.sif'
-    graph = GenomeGraph(name='new')
-    graph_file = data_path+organism+'/graph/' + paths
-    try:
-        if graph.name == organism:
-            print('in memory')
-            subgr, freq = get_subgraph(graph, organism, ref_strain, window=int(window), start=og_start, end=og_end, tails=int(tails))
-        else:
-            print('not in memory')
-            subgr, freq = get_subgraph(graph_file, organism, ref_strain, window=int(window), start=og_start, end=og_end, tails=int(tails))
-    except:
-        print('not in memory')
-        subgr, freq = get_subgraph(graph_file, organism, ref_strain, window=int(window), start=og_start, end=og_end, tails=int(tails))
+        paths = organism + '_pars.dump'
+
+    graph_file = data_path+organism+'/' + paths
+    
+    subgr = get_subgraph(graph_file, organism, ref_strain, window=int(window), start=og_start, end=og_end, tails=int(tails), depth=int(depth))[0]
     
     # Remove last EOL and split in lines
     subgr = subgr[0:-1].split('\n')
+
+    graph_json = get_json_graph(subgr, int(freq_min))
+
     
-    graph_json = get_json_graph(subgr, 1)
 
-    nodes = graph_json['nodes'][1:]
 
-    db = data_path + organism + '/' + organism + '.db'
+    if int(pars) == 1:
+        db = data_path + organism + '/' + organism + '_pars.db'
+    
+    elif int(pars) == 0:
+        db = data_path + organism + '/' + organism + '.db'
     connect = sqlite3.connect(db)
     c = connect.cursor()
+
+    nodes = graph_json['nodes']
+    edges = graph_json['edges']
+
+    query = 'SELECT MAX(edge_freq) FROM freq_table'
+    max_width = [og for og in c.execute(query)][0][0]
+    print('adding edges...')
+    added_nodes = set([])
+    for edge in edges:
+        edge['data']['opacity'] = '1'
+        edge['data']['eweight'] = '1'
+        query = 'SELECT stamms_list, edge_freq FROM freq_table WHERE edge = "' + edge['data']['source'] + ' ' + edge['data']['target'] + '"'
+        stamms = [og for og in c.execute(query)]
+        if (len(stamms) > 0):
+            edge['data']['description'] = stamms[0][0]
+
+            edge['data']['penwidth'] = str(10*math.sqrt(stamms[0][1]/max_width))
+            if ref_strain in stamms[0][0].split('\n'):
+
+                if edge['data']['color'] == '#ff0000':
+                    edge['data']['weight'] = '100'
+                if edge['data']['color'] != '#ff0000':
+                    edge['data']['color'] = '#ff0000'
+                    edge['data']['opacity'] = '0.5'
+                    edge['data']['eweight'] = '1'
+                
+                added_nodes.add(edge['data']['source'])
+                added_nodes.add(edge['data']['target'])
+        else:
+            edge['data']['description'] = 'null'
+
     
+    print('adding nodes...')
+    
+    
+    coordinates = get_coordinates_from_db (data_path, organism, ref_strain, contig, int(pars))
+    query = 'SELECT og, description, end_coord-start_coord FROM og_table'
+    OGs = [og for og in c.execute(query)]
+    og_list = [og[0] for og in OGs]
+    descripton_list = [og[1] for og in OGs]
+    length_list = [og[2] for og in OGs]
+
+    if operons == '1':
+        if pars == '1': operons_file = data_path + organism + '/ref_' + ref_strain + '/operons_pars.txt'
+        
+        else: operons_file = data_path + organism + '/ref_' + ref_strain + '/operons.txt'
+            
+        operons_list = get_operons(operons_file)
+
     
     for node in nodes:
-        query = 'SELECT description FROM og_table WHERE og = "' + node['data']['id'] + '"'
-        og_list = [og[0] for og in c.execute(query)]
-        if (len(og_list) > 0):
-            node['data']['description'] = og_list[0]
+        
+        node['data']['bwidth'] = '0' 
+        node['data']['bcolor'] = 'blue'
+
+        if node['data']['id'] == 'main_ref':
+            continue
+
+        try:
+            og_index = og_list.index(node['data']['id'])
+        except:
+            og_index = -1
+        
+        if (og_index != -1):
+            node['data']['description'] = descripton_list[og_index] + ': ' + str(abs(length_list[og_index]))
         else:
             node['data']['description'] = 'null'
+        if node['data']['id'] in added_nodes:
+            try:
+                coord_index = coordinates[0].index(node['data']['id'])
+                node['data']['description'] = coordinates[2][coord_index] + ': ' + str(abs(length_list[og_index])) + ' (' + str(int(coordinates[1][coord_index])) + ')'
+            except ValueError:
+                pass
+            if (node ['data']['color'] != '#ff0000' and node['data']['color'] != 'pink'):
+                node['data']['color'] = 'pink'
+            
+            if operons == '0':
+                continue
+
+            for color in operons_list:
+                if node['data']['id'] in operons_list[color]:
+                    node['data']['bwidth'] = '5'
+                    node['data']['bcolor'] = color
 
 
+    print('adding nodes complete')
+    
+
+    
     return jsonify(graph_json)
 
 @app.route('/org/')
 def get_org_list():
     global org
-    oranisms = next(os.walk(data_path))[1]
-    org = oranisms[0]
-    return jsonify(oranisms)
+    organisms = next(os.walk(data_path))[1]
+    org = organisms[0]
+    return jsonify(organisms)
 
 
 @app.route('/org/<org>/stamms/')
@@ -87,7 +170,8 @@ def get_contig_list(org, stamm):
     connect.close()
     return jsonify(contigs)
 
-@app.route('/org/<org>/stamms/<stamm>/contigs/<contig>/complexity/')
-def get_complexity(org, stamm, contig):
-    complexity = get_complexity_from_db(data_path, org, stamm, contig, 'win_var')
+@app.route('/org/<org>/stamms/<stamm>/contigs/<contig>/methods/<method>/pars/<pars>/complexity/')
+def get_complexity(org, stamm, contig, pars, method):
+    
+    complexity = get_complexity_from_db(data_path, org, stamm, contig, int(pars), methods[method])
     return jsonify(complexity)

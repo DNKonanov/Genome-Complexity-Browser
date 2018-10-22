@@ -1,69 +1,183 @@
 import React, {
   Component
 } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import CytoscapeDagreGraph from './components/CytoscapeDagreGraph'
-import CytoscapeKlayGraph from './components/CytoscapeKlayGraph'
-import IGV from './components/IGV'
 import Selector from './components/Selector'
-import './pure-drawer.css'
+import ReactLoading from 'react-loading';
+import EdgeDescription from './components/EdgeDescription';
+import SelectedNodes from './components/SelectedNodes';
+
+
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import Paper from '@material-ui/core/Paper';
+import Drawer from '@material-ui/core/Drawer';
+
+
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
+  },
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit * 3,
+  },
+});
+
 
 class App extends Component {
 
   state = {
-    org: 'coli',
-    stamm: '50',
-    contig: 'NC_011993.1',
-    organisms: [],
-    stamms: [],
-    contigs: [],
-    complexity: [],
-    OGs: [],
-    og_start: 'OG0002716',
-    og_end: 'OG0002716',
-    reference: '50',
-    window: '5',
-    tails: '5',
-    pars: '0',
-    data: ''
-  };
+    top: false,
+    loading: false,
+    data: '',
+    success: 'Selecting',
+    edge_description: '',
+    selected_nodes: '',
+  }
+
+  getData = (data) => {
+    this.setState({
+      edge_description: data.edge_description,
+      selected_nodes: data.selected_nodes,
+    })
+    console.log(data)
+  }
 
   getDataFromSelector = (data_from_selector) => {
-    console.log(data_from_selector)
-    let link = 'http://127.0.0.1:5000/org/' + data_from_selector.org + '/strain/' + data_from_selector.stamm + '/start/';
-    link = link + data_from_selector.og_start + '/end/' + data_from_selector.og_end + '/window/' + data_from_selector.window + '/tails/' + data_from_selector.tails + '/pars/' + data_from_selector.pars
+    let pars_int = 0
+    if (data_from_selector.pars === true) pars_int = 1
+
+    let operons_int = 0
+    if (data_from_selector.operons === true) operons_int = 1
+
+
+    let link = 'http://10.210.29.150:5000/org/' + data_from_selector.org + '/strain/' + data_from_selector.stamm + '/contig/' + data_from_selector.contig + '/start/';
+    link = link + data_from_selector.og_start + '/end/' + data_from_selector.og_end + '/window/' + data_from_selector.window + '/tails/' + data_from_selector.tails + '/pars/' + pars_int + '/operons/' + operons_int + '/depth/' + data_from_selector.depth + '/freq_min/' + data_from_selector.freq_min
+    this.setState({
+      loading: true
+    })
     fetch(link)
       .then(response => response.json())
-      .then(data => this.setState({ ['data']: data }))
-      .catch(error => console.log('ERROR'));
+      .then(data => {
+        this.setState({
+          data: data,
+          loading: false,
+          success: 'Success!'
+        })
+      })
+      .catch(error => {
+        console.log('ERROR');
+        this.setState({
+          success: 'Undefined error, please choose other OG or coordinates',
+          loading: false
+
+        })
+      });
+
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      crosshairValues: []
-    };
-  }
+  toggleDrawer = (side, open) => () => {
+    this.setState({
+      [side]: open,
+    });
+  };
 
 
   render() {
+
+    console.log('render')
+    let load_field;
+    if (this.state.loading === true) {
+      load_field = <div className="LoadAnimation"><p><b>Loading...</b></p><ReactLoading type={'spin'} color={'#000000'} height={'40px'} width={'40px'} /></div>
+    }
+    else {
+      load_field = <div className="LoadAnimation"><p><b>{this.state.success}</b></p></div>
+    }
+
+    const { classes } = this.props;
+
     return (
-      < div className="App" >
-        < header className="App-header" >
-          < h1 className="App-title" > Genome Complexity Browser </h1>
-        </header>
-        <p className="App-intro" >
-          <code > Complexity Graph </code>
-        </p>
+      < div className={classes.root} >
 
-        <CytoscapeDagreGraph data={this.state.data} />
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu"
+              onClick={this.toggleDrawer('top', true)}>
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" color="inherit" className={classes.grow}>
+              Genome Complexity Browser (alpha-0.1.0)
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
-        <Selector getDataFromSelector={this.getDataFromSelector} />
+        <Drawer anchor="top" open={this.state.top} onClose={this.toggleDrawer('top', false)}>
+          <div
+            tabIndex={0}
+            role="button"
+            onClick={this.toggleDrawer('top', false)}
+            onKeyDown={this.toggleDrawer('top', false)}
+          >
+            HAHAHHAHAHAH'
+
+          </div>
+        </Drawer>
+
+        <div className={classes.content}>
+          <p className="App-intro" >
+            <code > Complexity Graph </code>
+          </p>
+
+          
+
+          <Paper>
+            <CytoscapeDagreGraph data={this.state.data} getData={this.getData} />
+          </Paper>
+          {load_field}
+          <Selector getDataFromSelector={this.getDataFromSelector} />
+
+
+          <ExpansionPanel>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>Selector</Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+
+        </div>
       </div>
-      
+
     );
   }
 }
 
-export default App;
+App.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(App);

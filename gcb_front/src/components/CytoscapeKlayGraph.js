@@ -25,7 +25,7 @@ let conf = {
             style: {
                 'width': 'data(penwidth)',
                 'weight': 'data(penwidth)',
-                "curve-style": "unbundled-bezier",
+                "curve-style": "bezier",
                 'target-arrow-shape': 'triangle',
                 'line-color': 'data(color)',
                 'target-arrow-color': 'data(color)'
@@ -44,7 +44,7 @@ let conf = {
             fixedAlignment: 'BALANCED',
             nodePlacement:'BRANDES_KOEPF',
             edgeSpacingFactor: 3,
-            layoutHierarchy: true,
+            layoutHierarchy: false,
             spacing: 20,
             thoroughness: 40
         }
