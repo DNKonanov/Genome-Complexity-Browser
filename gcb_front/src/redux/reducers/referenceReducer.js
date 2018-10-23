@@ -1,6 +1,12 @@
 import {
-  FETCH_ORGANISMS, FETCH_STAMMS, FETCH_CONTIGS
+  FETCH_ORGANISMS,
+  FETCH_STAMMS,
+  FETCH_CONTIGS,
+  FETCH_COMPLEXITY
 } from "../constants/action-types";
+
+import * as math from 'mathjs';
+
 
 const initialState = {
   organisms: [],
@@ -11,6 +17,20 @@ const initialState = {
   contigs: {
     list: [],
     stamm: 'None'
+  },
+  complexity: {
+    complexity: 'None',
+    max_complexity: [],
+    length_list: [],
+    OGs: [],
+    coord_list: [],
+    request : {
+      org: '',
+      stamm: '',
+      contig: '',
+      method: '',
+      pars: ''
+    }
   }
 }
 
@@ -36,6 +56,18 @@ export default function (state = initialState, action) {
         contigs: {
           list: action.payload,
           stamm: action.stamm
+        }
+      };
+    case FETCH_COMPLEXITY:
+      return {
+        ...state,
+        complexity: {
+          complexity: action.payload[0],
+          max_complexity: math.max(action.payload[0]),
+          length_list: action.payload[3],
+          OGs: action.payload[1],
+          coord_list: action.payload[2],
+          request: action.params
         }
       };
     default:

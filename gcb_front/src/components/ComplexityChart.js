@@ -5,16 +5,20 @@ import Plot from 'react-plotly.js';
 import * as math from 'mathjs';
 
 
+import { connect } from 'react-redux';
+import { fetchComplexity } from '../redux/actions/referenceActions'
 
+import Typography from '@material-ui/core/Typography';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 
 class ComplexityChart extends Component {
 
   drawUserCoordinates = (e) => {
     if (this.state.user_coordinates_str.length !== 0) {
-  
+
       let string = this.state.user_coordinates_str.replace(' ', '').replace('\t', '').replace('\n', '')
-  
+
       let lines;
       lines = string.split(',');
       this.setState({ user_coordinates: [] })
@@ -29,7 +33,7 @@ class ComplexityChart extends Component {
         user_coordinates: coord,
         user_values: values
       })
-  
+
     }
     e.preventDefault()
   }
@@ -49,77 +53,85 @@ class ComplexityChart extends Component {
       alert('Sorry, your browser does\'nt support for preview');
     }
   }
-  
+
   render() {
+    console.log(this.props.complexity)
+
+    const data = this.props.complexity
     return (
       <div>
-        <Plot
-          data={[
-            {
-              x: this.state.coord_list,
-              y: this.state.complexity,
-              text: this.state.OGs,
-              type: 'line',
-              name: 'complexity'
-            },
-
-            {
-              x: [this.state.coord_start, this.state.coord_start],
-              y: [-this.state.max_complexity / 2, this.state.max_complexity],
-              mode: 'lines',
-              name: 'left edge'
-            },
-            {
-              x: [this.state.coord_end, this.state.coord_end],
-              y: [-this.state.max_complexity / 2, this.state.max_complexity],
-              mode: 'lines',
-              name: 'rigth edge'
-            },
-
-            {
-              x: this.state.user_coordinates,
-              y: this.state.user_values,
-              mode: this.state.draw_type,
-              name: 'user values',
-              opacity: 0.5,
-              yaxis: 'y2',
-              marker: {
-                size: 5,
-              },
-            }
-
-
-          ]}
-          layout={
-            {
-              width: 1000,
-              height: 400,
-              title: 'Genome complexity, ' + this.state.org + ', contig ' + this.state.contig + ', ' + this.state.method,
-
-              xaxis: {
-                title: 'Chromosome position, bp',
+        {data.complexity === 'None' ?
+          <LinearProgress />
+          :
+          <Plot
+            data={[
+              {
+                x: data.coord_list,
+                y: data.complexity,
+                text: data.OGs,
+                type: 'line',
+                name: 'complexity'
               },
 
-              yaxis: {
-                title: 'complexity',
-                overlaying: 'y2'
+              {
+                x: [data.coord_start, data.coord_start],
+                y: [-data.max_complexity / 2, data.max_complexity],
+                mode: 'lines',
+                name: 'left edge'
+              },
+              {
+                x: [data.coord_end, data.coord_end],
+                y: [-data.max_complexity / 2, data.max_complexity],
+                mode: 'lines',
+                name: 'rigth edge'
               },
 
-              yaxis2: {
-                title: 'user values',
-                side: 'right'
+              // {
+              //   x: this.state.user_coordinates,
+              //   y: this.state.user_values,
+              //   mode: this.state.draw_type,
+              //   name: 'user values',
+              //   opacity: 0.5,
+              //   yaxis: 'y2',
+              //   marker: {
+              //     size: 5,
+              //   },
+              // }
+
+
+            ]}
+            layout={
+              {
+                width: 1000,
+                height: 400,
+                title: 'Genome complexity, ' + data.request.org + ', contig ' + data.request.contig + ', ' + data.request.method,
+
+                xaxis: {
+                  title: 'Chromosome position, bp',
+                },
+
+                yaxis: {
+                  title: 'complexity',
+                  overlaying: 'y2'
+                },
+
+                yaxis2: {
+                  title: 'user values',
+                  side: 'right'
+                }
               }
             }
-          }
-          onClick={(data) => {
-            this.setState({
-              og_start: data.points[0].text,
-              og_end: data.points[0].text,
-              coord_start: data.points[0].x,
-              coord_end: data.points[0].x
-            });
-          }}
-        />
+            onClick={(data) => {
+              this.setState({
+                og_start: data.points[0].text,
+                og_end: data.points[0].text,
+                coord_start: data.points[0].x,
+                coord_end: data.points[0].x
+              });
+            }}
+          />
+        }
+
 
 
         {/* THIS STUFF GOES TO PLOT
@@ -152,5 +164,9 @@ class ComplexityChart extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  complexity: state.reference.complexity
+});
 
-export default ComplexityChart
+
+export default connect(mapStateToProps, { fetchComplexity })(ComplexityChart)

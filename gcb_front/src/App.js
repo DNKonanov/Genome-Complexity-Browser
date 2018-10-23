@@ -29,7 +29,7 @@ import Drawer from '@material-ui/core/Drawer';
 import SelectorAndPlot from './components/SelectrorAndPlot'
 import { SERVER_URL } from './constants'
 
-
+import ComplexityChart from './components/ComplexityChart'
 
 const styles = theme => ({
   root: {
@@ -153,7 +153,7 @@ class App extends Component {
 
             {/* <SelectorAndPlot/> */}
             <Selector getDataFromSelector={this.getDataFromSelector} />
-
+            {/* <ComplexityChart /> */}
             {/* <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>Complexity Plot</Typography>
