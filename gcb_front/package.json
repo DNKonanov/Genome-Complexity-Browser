@@ -20,9 +20,12 @@
     "react-dom": "^16.4.1",
     "react-loading": "^2.0.3",
     "react-plotly.js": "^2.2.0",
+    "react-redux": "^5.0.7",
     "react-scripts": "1.1.4",
     "react-timeseries-charts": "^0.15.3",
     "react-vis": "^1.10.8",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
     "tippy.js": "^2.5.4"
   },
   "scripts": {

@@ -1,6 +1,10 @@
 import React, {
   Component
 } from 'react';
+
+import { Provider } from "react-redux";
+import store from "./redux/store/index"
+
 import './App.css';
 import CytoscapeDagreGraph from './components/CytoscapeDagreGraph'
 import Selector from './components/Selector'
@@ -22,14 +26,9 @@ import Paper from '@material-ui/core/Paper';
 import Drawer from '@material-ui/core/Drawer';
 
 
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
-import ComplexityChart from './components/ComplexityChart'
-
+import SelectorAndPlot from './components/SelectrorAndPlot'
 import { SERVER_URL } from './constants'
+
 
 
 const styles = theme => ({
@@ -71,6 +70,8 @@ class App extends Component {
   }
 
   getDataFromSelector = (data_from_selector) => {
+
+    console.log('GOT DATA FROM SELECTOR')
     let pars_int = 0
     if (data_from_selector.pars === true) pars_int = 1
 
@@ -98,8 +99,8 @@ class App extends Component {
           loading: false
         })
       });
-
   }
+
 
   toggleDrawer = (side, open) => () => {
     this.setState({
@@ -120,45 +121,40 @@ class App extends Component {
     const { classes } = this.props;
 
     return (
-      < div className={classes.root} >
+      <Provider store={store} >
+        < div className={classes.root} >
 
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu"
-              onClick={this.toggleDrawer('top', true)}>
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" className={classes.grow}>
-              Genome Complexity Browser (alpha-0.1.0)
+          <AppBar position="static">
+            <Toolbar>
+              <IconButton className={classes.menuButton} color="inherit" aria-label="Menu"
+                onClick={this.toggleDrawer('top', true)}>
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" color="inherit" className={classes.grow}>
+                Genome Complexity Browser (alpha-0.1.0)
             </Typography>
-          </Toolbar>
-        </AppBar>
+            </Toolbar>
+          </AppBar>
 
-        <Drawer anchor="left" open={this.state.top} onClose={this.toggleDrawer('top', false)}>
-          <div
-            tabIndex={0}
-            role="button"
-            onClick={this.toggleDrawer('left', false)}
-            onKeyDown={this.toggleDrawer('left', false)}
-          >
+          <Drawer anchor="left" open={this.state.top} onClose={this.toggleDrawer('top', false)}>
+            <div
+              tabIndex={0}
+              role="button"
+              onClick={this.toggleDrawer('left', false)}
+              onKeyDown={this.toggleDrawer('left', false)}
+            >
 
-          </div>
-        </Drawer>
+            </div>
+          </Drawer>
 
 
 
-        <div className={classes.content}>
+          <div className={classes.content}>
 
-          <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>Selector</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Selector getDataFromSelector={this.getDataFromSelector} />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+            {/* <SelectorAndPlot/> */}
+            <Selector getDataFromSelector={this.getDataFromSelector} />
 
-          {/* <ExpansionPanel>
+            {/* <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>Complexity Plot</Typography>
             </ExpansionPanelSummary>
@@ -168,13 +164,14 @@ class App extends Component {
           </ExpansionPanel> */}
 
 
-          <Paper>
-            <CytoscapeDagreGraph data={this.state.data} getData={this.getData} />
-          </Paper>
-          {load_field}
+            <Paper>
+              <CytoscapeDagreGraph data={this.state.data} getData={this.getData} />
+            </Paper>
+            {load_field}
 
+          </div>
         </div>
-      </div>
+      </Provider>
 
     );
   }

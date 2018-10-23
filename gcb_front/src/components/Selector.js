@@ -24,6 +24,10 @@ import Grid from '@material-ui/core/Grid';
 
 import { SERVER_URL } from '../constants'
 
+import {fetchOrganisms} from '../redux/actions/referenceActions'
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 
 
 import { withStyles } from '@material-ui/core/styles';
@@ -91,6 +95,35 @@ class Selector extends Component {
   };
 
   prev_state = {}
+
+  componentDidMount() {
+    this.props.fetchOrganisms();
+
+    let link = SERVER_URL + '/org/' + this.state.org + '/stamms/'
+    fetch(link)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          stamms: data,
+          stamm: data[0]
+        })
+      });
+
+    link = link + this.state.stamm + '/contigs/'
+    fetch(link)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          contigs: data,
+          contig: data[0]
+        })
+      });
+
+    link = link + this.state.contig + '/methods/' + this.state.method + '/pars/0/complexity/'
+    fetch(link)
+      .then(response => response.json())
+      .then(data => { this.setState({ complexity: data[0] }); this.setState({ OGs: data[1] }); });
+  }
 
   componentDidUpdate(prev_state) {
     if (this.prev_state.org !== this.state.org) {
@@ -227,41 +260,7 @@ class Selector extends Component {
     this.prev_state = this.state
   }
 
-  componentDidMount() {
-    fetch(SERVER_URL + '/org/')
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          organisms: data.sort(),
-          org: data[0]
-        })
-      });
-
-    let link = SERVER_URL + '/org/' + this.state.org + '/stamms/'
-    fetch(link)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          stamms: data,
-          stamm: data[0]
-        })
-      });
-
-    link = link + this.state.stamm + '/contigs/'
-    fetch(link)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          contigs: data,
-          contig: data[0]
-        })
-      });
-
-    link = link + this.state.contig + '/methods/' + this.state.method + '/pars/0/complexity/'
-    fetch(link)
-      .then(response => response.json())
-      .then(data => { this.setState({ complexity: data[0] }); this.setState({ OGs: data[1] }); });
-  }
+  
 
   handleSubmit = (event) => {
     console.log('SUBMIT IN SELECTOR')
@@ -282,10 +281,9 @@ class Selector extends Component {
     this.setState({ operons: event.target.checked });
   }
 
-  
-
   render() {
     const { classes } = this.props;
+
 
     return (
       <div className={classes.root}>
@@ -300,7 +298,7 @@ class Selector extends Component {
                 <FormControl>
                   <InputLabel htmlFor="org">Organism</InputLabel>
                   <Select value={this.state.org} name='org' input={<Input name="org" id="org" />} onChange={this.handleChange}>
-                    {this.state.organisms.map(org => <MenuItem key={org} value={org}>{org}</MenuItem>)}
+                    {this.props.organisms.map(org => <MenuItem key={org} value={org}>{org}</MenuItem>)}
                   </Select>
                 </FormControl></Grid>
 
@@ -344,7 +342,7 @@ class Selector extends Component {
 
               </Grid>
 
-              <Grid item><Button variant="contained" color="primary" onClick={this.handleSubmit}>Draw</Button></Grid>
+              <Grid item><Button variant="contained" color="primary" onClick={this.handleSubmit} style={{margin: 12}}>Draw</Button></Grid>
             </Grid>
           </Grid>
 
@@ -407,4 +405,8 @@ class Selector extends Component {
 
 }
 
-export default withStyles(styles)(Selector)
+const mapStateToProps = state => ({
+  organisms: state.reference.organisms,
+});
+
+export default connect(mapStateToProps, {fetchOrganisms})(withStyles(styles)(Selector));
