@@ -16,19 +16,35 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+
+import { SERVER_URL } from '../constants'
+
+
 
 import { withStyles } from '@material-ui/core/styles';
 
 
 const styles = theme => ({
   root: {
-    flexWrap: 'wrap',
+    display: 'flex',
+    width: '100%',
+    minHeight: 150
+  },
+  smallText: {
+    maxWidth: 150
   },
   grow: {
     display: 'flex',
     flexGrow: 1,
     flexDirection: 'column',
-    minHeight: 300
+    minHeight: 300,
+    padding: 24,
+    width: 420
   },
   formControl: {
     margin: theme.spacing.unit,
@@ -41,49 +57,45 @@ const styles = theme => ({
 
 class Selector extends Component {
 
-  constructor(props) {
-
-    super(props)
-    this.state = {
-      org: 'Achromobacter_xylosoxidans',
-      stamm: 'GCF_000165835.1_ASM16583v1_genomic',
-      contig: 'NC_014640.1',
-      organisms: [],
-      stamms: [],
-      contigs: [],
-      complexity: [],
-      max_complexity: 0,
-      OGs: [],
-      og_start: 'OG0001707',
-      og_end: 'OG0001707',
-      coord_start: 0,
-      coord_end: 0,
-      coord_list: [],
-      length_list: [],
-      window: '5',
-      tails: '5',
-      depth: '30',
-      freq_min: '2',
-      pars: false,
-      operons: true,
-      methods: ['window complexity (w20)', 'probabilistic window complexity (w20)', 'IO complexity', 'probabilistic IO complexity'],
-      method: 'window complexity (w20)',
-      user_coordinates_str: '',
-      user_coordinates: [],
-      user_values: [],
-      draw_types: ['line', 'markers'],
-      draw_type: 'line plot',
-      data: '',
-      src: '',
-    };
-  }
+  state = {
+    org: 'Achromobacter_xylosoxidans',
+    stamm: 'GCF_000165835.1_ASM16583v1_genomic',
+    contig: 'NC_014640.1',
+    organisms: [],
+    stamms: [],
+    contigs: [],
+    complexity: [],
+    max_complexity: 0,
+    OGs: [],
+    og_start: 'OG0001707',
+    og_end: 'OG0001707',
+    coord_start: 0,
+    coord_end: 0,
+    coord_list: [],
+    length_list: [],
+    window: '5',
+    tails: '5',
+    depth: '30',
+    freq_min: '2',
+    pars: false,
+    operons: true,
+    methods: ['window complexity (w20)', 'probabilistic window complexity (w20)', 'IO complexity', 'probabilistic IO complexity'],
+    method: 'window complexity (w20)',
+    user_coordinates_str: '',
+    user_coordinates: [],
+    user_values: [],
+    draw_types: ['line', 'markers'],
+    draw_type: 'line plot',
+    data: '',
+    src: '',
+  };
 
   prev_state = {}
 
-
   componentDidUpdate(prev_state) {
     if (this.prev_state.org !== this.state.org) {
-      let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/'
+      console.log('FETCHING NEW ORG')
+      let link = SERVER_URL + '/org/' + this.state.org + '/stamms/'
       fetch(link)
         .then(response => response.json())
         .then(data => {
@@ -95,7 +107,9 @@ class Selector extends Component {
     }
 
     if (this.prev_state.stamm !== this.state.stamm) {
-      let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/'
+      console.log('FETCHING NEW STAMM')
+
+      let link = SERVER_URL + '/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/'
       fetch(link)
         .then(response => response.json())
         .then(data => {
@@ -104,19 +118,16 @@ class Selector extends Component {
             contig: data[0]
           });
         });
-
-
-
     }
 
     if (this.prev_state.contig !== this.state.contig) {
+      console.log('FETCHING NEW CONTIG')
 
       let pars_int = 0
       if (this.state.pars === true) {
         pars_int = 1
       }
-
-      let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
+      let link = SERVER_URL + '/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
       fetch(link)
         .then(response => response.json())
         .then(data => {
@@ -139,7 +150,9 @@ class Selector extends Component {
         pars_int = 1
       }
 
-      let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
+      console.log('FETCHING NEW METHOD')
+
+      let link = SERVER_URL + '/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
       fetch(link)
         .then(response => response.json())
         .then(data => {
@@ -162,8 +175,9 @@ class Selector extends Component {
         pars_int = 1
       }
 
+      console.log('FETCHING NEW PARS')
 
-      let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
+      let link = SERVER_URL + '/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
       fetch(link)
         .then(response => response.json())
         .then(data => {
@@ -213,9 +227,8 @@ class Selector extends Component {
     this.prev_state = this.state
   }
 
-
   componentDidMount() {
-    fetch('http://10.210.29.150:5000/org/')
+    fetch(SERVER_URL + '/org/')
       .then(response => response.json())
       .then(data => {
         this.setState({
@@ -224,7 +237,7 @@ class Selector extends Component {
         })
       });
 
-    let link = 'http://10.210.29.150:5000/org/' + this.state.org + '/stamms/'
+    let link = SERVER_URL + '/org/' + this.state.org + '/stamms/'
     fetch(link)
       .then(response => response.json())
       .then(data => {
@@ -248,41 +261,13 @@ class Selector extends Component {
     fetch(link)
       .then(response => response.json())
       .then(data => { this.setState({ complexity: data[0] }); this.setState({ OGs: data[1] }); });
-
-
   }
 
   handleSubmit = (event) => {
-
+    console.log('SUBMIT IN SELECTOR')
     this.props.getDataFromSelector(this.state)
     event.preventDefault();
   }
-
-
-  drawUserCoordinates = (e) => {
-    if (this.state.user_coordinates_str.length !== 0) {
-
-      let string = this.state.user_coordinates_str.replace(' ', '').replace('\t', '').replace('\n', '')
-
-      let lines;
-      lines = string.split(',');
-      this.setState({ user_coordinates: [] })
-      let coord = []
-      let values = []
-      for (let i = 0; i < lines.length; i++) {
-        let line = lines[i].split(':');
-        coord.push(parseInt(line[0], 10));
-        values.push(parseFloat(line[1]))
-      }
-      this.setState({
-        user_coordinates: coord,
-        user_values: values
-      })
-
-    }
-    e.preventDefault()
-  }
-
 
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
@@ -297,229 +282,126 @@ class Selector extends Component {
     this.setState({ operons: event.target.checked });
   }
 
-  inputFileChanged = (e) => {
-
-    if (window.FileReader) {
-      let file = e.target.files[0], reader = new FileReader();
-      reader.onload = function (r) {
-        this.setState({
-          user_coordinates_str: r.target.result
-        });
-      }.bind(this)
-      reader.readAsText(file);
-    }
-    else {
-      alert('Sorry, your browser does\'nt support for preview');
-    }
-  }
+  
 
   render() {
     const { classes } = this.props;
 
-
     return (
-      <div>
-        <Paper className={classes.grow}>
-          {/* <form  onSubmit={this.handleSubmit} style={{ margin: 12 }}> */}
-          <FormControl>
-            <InputLabel htmlFor="org">Organism</InputLabel>
-            <Select
-              value={this.state.org}
-              name='org'
-              input={<Input name="org" id="org" />}
-              onChange={this.handleChange}>
-              {this.state.organisms.map(org =>
-                <MenuItem key={org} value={org}>{org}</MenuItem>
-              )}
-            </Select>
-          </FormControl>
+      <div className={classes.root}>
+        <Grid container direction="row" justify="flex-start" alignItems="flex-start" spacing={24}>
 
-          <InputLabel htmlFor="stamm">Reference</InputLabel>
-          <Select
-            className="input"
-            value={this.state.stamm}
-            name='stamm'
-            onChange={this.handleChange}>
-            {this.state.stamms.map(stamm =>
-              <MenuItem key={stamm} value={stamm}>
-                {stamm}
-              </MenuItem>
-            )}
-          </Select>
+          <Grid item xs={6} > 
+            <Grid container direction="column" justify="space-between" alignItems="flex-start">
 
-        </Paper>
+              <Grid><Typography variant='h6'>Refrerence parameters</Typography></Grid>
 
-        <label>
-          Contig:
-            <select
-            className="input"
-            value={this.state.contig}
-            name='contig'
-            onChange={this.handleChange}>
-            {this.state.contigs.map(contig =>
-              <option key={contig} value={contig}>
-                {contig}
-              </option>
-            )}
-          </select>
-        </label><br />
-        <label>
-          method:
-            <select
-            className="input"
-            value={this.state.method}
-            name='method'
-            onChange={this.handleChange}>
-            {this.state.methods.map(method =>
-              <option key={method} value={method}>
-                {method}
-              </option>)}
-          </select>
-        </label><br />
+              <Grid item>
+                <FormControl>
+                  <InputLabel htmlFor="org">Organism</InputLabel>
+                  <Select value={this.state.org} name='org' input={<Input name="org" id="org" />} onChange={this.handleChange}>
+                    {this.state.organisms.map(org => <MenuItem key={org} value={org}>{org}</MenuItem>)}
+                  </Select>
+                </FormControl></Grid>
 
-        <label>
-          OG start:
-            <input className="input" type="text" name='og_start' value={this.state.og_start} onChange={this.handleChange} />
-        </label><br />
+              <Grid item>
+                <FormControl>
+                  <InputLabel htmlFor="stamm">Reference</InputLabel>
+                  <Select value={this.state.stamm} name='stamm' onChange={this.handleChange}>
+                    {this.state.stamms.map(stamm => <MenuItem key={stamm} value={stamm}> {stamm} </MenuItem>)}
+                  </Select>
+                </FormControl>
+              </Grid>
 
-        <label>
-          OG end:
-            <input className="input" type="text" name='og_end' value={this.state.og_end} onChange={this.handleChange} />
-        </label><br />
+              <Grid item>
+                <FormControl>
+                  <InputLabel htmlFor="contig">Contig:</InputLabel>
+                  <Select value={this.state.contig} name='contig' onChange={this.handleChange}>
+                    {this.state.contigs.map(contig => <MenuItem key={contig} value={contig}> {contig} </MenuItem>)}
+                  </Select>
+                </FormControl></Grid>
 
-        <label>
-          Coordinate start:
-            <input className="input" type="text" name='coord_start' value={this.state.coord_start} onChange={this.handleChange} />
-        </label><br />
-        <label>
-          Coordinate end:
-            <input className="input" type="text" name='coord_end' value={this.state.coord_end} onChange={this.handleChange} />
-        </label><br />
-        <label>
-          Tails:
-            <input className="input" type="text" name='tails' value={this.state.tails} onChange={this.handleChange} />
-        </label><br />
-        <label>
-          Depth:
-            <input className="input" type="text" name='depth' value={this.state.depth} onChange={this.handleChange} />
-        </label><br />
-        <label>
-          Minimal edge:
-            <input className="input" type="text" name='freq_min' value={this.state.freq_min} onChange={this.handleChange} />
-        </label><br />
-        <label>
-          Draw paralogous:
-            <input type="checkbox" name='pars' checked={this.state.pars} onChange={this.checkPars} />
-        </label><br />
-        <label>
-          Draw operons:
-            <input type="checkbox" name='operons' checked={this.state.operons} onChange={this.checkOperons} />
-        </label><br />
-        <label>
-          Window:
-            <input className="input" type="text" name='window' value={this.state.window} onChange={this.handleChange} />
-        </label><br />
-        <input type="submit" value="Draw" />
-        {/* </form> */}
+              <Grid container direction="row" justify="flex-start" alignItems="flex-start">
+
+                <Grid item xs={6}>
+                  <TextField className={classes.smallText} label={'OG start'} name='og_start' value={this.state.og_start} onChange={this.handleChange} />
+                </Grid>
+
+                <Grid item xs={6}>
+                  <TextField label={'OG end'} name='og_end' value={this.state.og_end} onChange={this.handleChange} />
+                </Grid>
+              </Grid>
+
+              <Grid container direction="row" justify="flex-start" alignItems="flex-start">
+
+                <Grid item xs={6}>
+                  <TextField label={'Coordinate start'} name='coord_start' value={this.state.coord_start} onChange={this.handleChange} />
+                </Grid>
+
+                <Grid item xs={6}>
+                  <TextField label={'Coordinate end'} name='coord_end' value={this.state.coord_end} onChange={this.handleChange} />
+                </Grid>
+
+              </Grid>
+
+              <Grid item><Button variant="contained" color="primary" onClick={this.handleSubmit}>Draw</Button></Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={6} >
+            <Grid container direction="column" justify="space-between" alignItems="flex-start" >
+              <Grid><Typography variant='h6' >Alogorithm parameters</Typography></Grid>
+
+              <Grid item>
+                <FormControl>
+                  <InputLabel htmlFor="method">Method</InputLabel>
+                  <Select value={this.state.method} name='method' onChange={this.handleChange}>
+                    {this.state.methods.map(method => <MenuItem key={method} value={method}> {method} </MenuItem>)}
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid container direction="row" justify="flex-start" alignItems="flex-start">
+
+                <Grid item>
+                  <TextField label={'Tails'} name='tails' value={this.state.tails} onChange={this.handleChange} />
+                </Grid>
+
+                <Grid item>
+                  <TextField label={'Depth'} name='depth' value={this.state.depth} onChange={this.handleChange} />
+                </Grid>
+
+              </Grid>
 
 
-        <form className="inputField">
-          <p>
-            <b>Input values</b> (format is "coord1:value1,coord2:value2, ... ". Spaces, tabs and EOLs are allowed)
-            </p>
-          <textarea
-            cols="100"
-            rows="2"
-            style={{ width: 400 }}
-            name='user_coordinates'
-            onChange={e => this.setState({ user_coordinates_str: e.target.value })}
-            value={this.state.user_coordinates_str} />
-          <br />
-          <input style={{ margin: 12 }} type="submit" value='Show user values' onClick={(e) => { this.drawUserCoordinates(e) }} />
+              <Grid container direction="row" justify="flex-start" alignItems="flex-start">
 
-          <label>
-            <input type="file" ref="input_reader" onChange={this.inputFileChanged} />
-          </label>
+                <Grid item>
+                  <TextField label={'Minimal edge'} name='freq_min' value={this.state.freq_min} onChange={this.handleChange} />
+                </Grid>
 
-          <label>
-            <select style={{ margin: 12 }} value={this.state.draw_type} name='draw_types' onChange={e => this.setState({ draw_type: e.target.value })}>
-              {this.state.draw_types.map(draw_type => <option key={draw_type} value={draw_type}>{draw_type}</option>)}
-            </select>
-          </label>
-        </form>
+                <Grid item>
+                  <TextField label={'Window'} name='window' value={this.state.window} onChange={this.handleChange} />
+                </Grid>
 
+              </Grid>
 
-        {/* <Plot
-          data={[
-            {
-              x: this.state.coord_list,
-              y: this.state.complexity,
-              text: this.state.OGs,
-              type: 'line',
-              name: 'complexity'
-            },
+              <Grid item>
+                <FormControlLabel
+                  control={<Switch name='pars' value="checkedB" color="primary" checked={this.state.pars} onChange={this.checkPars} />}
+                  label="Draw paralogous" />
+              </Grid>
 
-            {
-              x: [this.state.coord_start, this.state.coord_start],
-              y: [-this.state.max_complexity / 2, this.state.max_complexity],
-              mode: 'lines',
-              name: 'left edge'
-            },
-            {
-              x: [this.state.coord_end, this.state.coord_end],
-              y: [-this.state.max_complexity / 2, this.state.max_complexity],
-              mode: 'lines',
-              name: 'rigth edge'
-            },
+              <Grid item>
+                <FormControlLabel
+                  control={<Switch name='pars' checked={this.state.operons} onChange={this.checkOperons} value="checkedB" color="primary" />}
+                  label="Draw operons" />
+              </Grid>
+            </Grid>
+          </Grid>
 
-            {
-              x: this.state.user_coordinates,
-              y: this.state.user_values,
-              mode: this.state.draw_type,
-              name: 'user values',
-              opacity: 0.5,
-              yaxis: 'y2',
-              marker: {
-                size: 5,
-              },
-            }
-
-
-          ]}
-          layout={
-            {
-              width: 1000,
-              height: 400,
-              title: 'Genome complexity, ' + this.state.org + ', contig ' + this.state.contig + ', ' + this.state.method,
-
-              xaxis: {
-                title: 'Chromosome position, bp',
-              },
-
-              yaxis: {
-                title: 'complexity',
-                overlaying: 'y2'
-              },
-
-              yaxis2: {
-                title: 'user values',
-                side: 'right'
-              }
-            }
-          }
-          onClick={(data) => {
-            this.setState({
-              og_start: data.points[0].text,
-              og_end: data.points[0].text,
-              coord_start: data.points[0].x,
-              coord_end: data.points[0].x
-            });
-          }}
-        /> */}
-
+        </Grid>
       </div>
-
-
     )
   }
 

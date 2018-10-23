@@ -27,6 +27,10 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import ComplexityChart from './components/ComplexityChart'
+
+import { SERVER_URL } from './constants'
+
 
 const styles = theme => ({
   root: {
@@ -73,8 +77,7 @@ class App extends Component {
     let operons_int = 0
     if (data_from_selector.operons === true) operons_int = 1
 
-
-    let link = 'http://10.210.29.150:5000/org/' + data_from_selector.org + '/strain/' + data_from_selector.stamm + '/contig/' + data_from_selector.contig + '/start/';
+    let link = SERVER_URL + '/org/' + data_from_selector.org + '/strain/' + data_from_selector.stamm + '/contig/' + data_from_selector.contig + '/start/';
     link = link + data_from_selector.og_start + '/end/' + data_from_selector.og_end + '/window/' + data_from_selector.window + '/tails/' + data_from_selector.tails + '/pars/' + pars_int + '/operons/' + operons_int + '/depth/' + data_from_selector.depth + '/freq_min/' + data_from_selector.freq_min
     this.setState({
       loading: true
@@ -93,7 +96,6 @@ class App extends Component {
         this.setState({
           success: 'Undefined error, please choose other OG or coordinates',
           loading: false
-
         })
       });
 
@@ -105,10 +107,8 @@ class App extends Component {
     });
   };
 
-
   render() {
-
-    console.log('render')
+    console.log('render APP component')
     let load_field;
     if (this.state.loading === true) {
       load_field = <div className="LoadAnimation"><p><b>Loading...</b></p><ReactLoading type={'spin'} color={'#000000'} height={'40px'} width={'40px'} /></div>
@@ -134,40 +134,44 @@ class App extends Component {
           </Toolbar>
         </AppBar>
 
-        <Drawer anchor="top" open={this.state.top} onClose={this.toggleDrawer('top', false)}>
+        <Drawer anchor="left" open={this.state.top} onClose={this.toggleDrawer('top', false)}>
           <div
             tabIndex={0}
             role="button"
-            onClick={this.toggleDrawer('top', false)}
-            onKeyDown={this.toggleDrawer('top', false)}
+            onClick={this.toggleDrawer('left', false)}
+            onKeyDown={this.toggleDrawer('left', false)}
           >
-            HAHAHHAHAHAH'
 
           </div>
         </Drawer>
 
+
+
         <div className={classes.content}>
-          <p className="App-intro" >
-            <code > Complexity Graph </code>
-          </p>
-
-          
-
-          <Paper>
-            <CytoscapeDagreGraph data={this.state.data} getData={this.getData} />
-          </Paper>
-          {load_field}
-          <Selector getDataFromSelector={this.getDataFromSelector} />
-
 
           <ExpansionPanel>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>Selector</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-
+              <Selector getDataFromSelector={this.getDataFromSelector} />
             </ExpansionPanelDetails>
           </ExpansionPanel>
+
+          {/* <ExpansionPanel>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>Complexity Plot</Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <ComplexityChart />
+            </ExpansionPanelDetails>
+          </ExpansionPanel> */}
+
+
+          <Paper>
+            <CytoscapeDagreGraph data={this.state.data} getData={this.getData} />
+          </Paper>
+          {load_field}
 
         </div>
       </div>
