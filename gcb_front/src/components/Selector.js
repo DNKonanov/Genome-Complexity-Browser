@@ -24,7 +24,7 @@ import Grid from '@material-ui/core/Grid';
 
 import { SERVER_URL } from '../constants'
 
-import {fetchOrganisms} from '../redux/actions/referenceActions'
+import { fetchOrganisms, fetchStammsForOrg, fetchContigs } from '../redux/actions/referenceActions'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -63,6 +63,7 @@ class Selector extends Component {
 
   state = {
     org: 'Achromobacter_xylosoxidans',
+    // stamm: 'GCF_000165835.1_ASM16583v1_genomic',
     stamm: 'GCF_000165835.1_ASM16583v1_genomic',
     contig: 'NC_014640.1',
     organisms: [],
@@ -97,170 +98,186 @@ class Selector extends Component {
   prev_state = {}
 
   componentDidMount() {
+    console.log('!!DID MOUNT!! FETCHING ORGANISMS')
     this.props.fetchOrganisms();
 
-    let link = SERVER_URL + '/org/' + this.state.org + '/stamms/'
-    fetch(link)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          stamms: data,
-          stamm: data[0]
-        })
-      });
+    // let link = SERVER_URL + '/org/' + this.state.org + '/stamms/'
 
-    link = link + this.state.stamm + '/contigs/'
-    fetch(link)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          contigs: data,
-          contig: data[0]
-        })
-      });
 
-    link = link + this.state.contig + '/methods/' + this.state.method + '/pars/0/complexity/'
-    fetch(link)
-      .then(response => response.json())
-      .then(data => { this.setState({ complexity: data[0] }); this.setState({ OGs: data[1] }); });
+    // link = link + this.state.stamm + '/contigs/'
+    // fetch(link)
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     this.setState({
+    //       contigs: data,
+    //       contig: data[0]
+    //     })
+    //   });
+
+    // link = link + this.state.contig + '/methods/' + this.state.method + '/pars/0/complexity/'
+    // fetch(link)
+    //   .then(response => response.json())
+    //   .then(data => { this.setState({ complexity: data[0] }); this.setState({ OGs: data[1] }); });
   }
 
-  componentDidUpdate(prev_state) {
-    if (this.prev_state.org !== this.state.org) {
-      console.log('FETCHING NEW ORG')
-      let link = SERVER_URL + '/org/' + this.state.org + '/stamms/'
-      fetch(link)
-        .then(response => response.json())
-        .then(data => {
-          this.setState({
-            stamms: data,
-            stamm: data[0]
-          });
-        });
-    }
-
-    if (this.prev_state.stamm !== this.state.stamm) {
-      console.log('FETCHING NEW STAMM')
-
-      let link = SERVER_URL + '/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/'
-      fetch(link)
-        .then(response => response.json())
-        .then(data => {
-          this.setState({
-            contigs: data,
-            contig: data[0]
-          });
-        });
-    }
-
-    if (this.prev_state.contig !== this.state.contig) {
-      console.log('FETCHING NEW CONTIG')
-
-      let pars_int = 0
-      if (this.state.pars === true) {
-        pars_int = 1
-      }
-      let link = SERVER_URL + '/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
-      fetch(link)
-        .then(response => response.json())
-        .then(data => {
-          this.setState({
-            complexity: data[0]
-          });
-          this.setState({
-            max_complexity: math.max(this.state.complexity),
-            length_list: data[3],
-            OGs: data[1],
-            coord_list: data[2]
-          })
-        });
-
-    }
-
-    if (this.prev_state.method !== this.state.method) {
-      let pars_int = 0
-      if (this.state.pars === true) {
-        pars_int = 1
-      }
-
-      console.log('FETCHING NEW METHOD')
-
-      let link = SERVER_URL + '/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
-      fetch(link)
-        .then(response => response.json())
-        .then(data => {
-          this.setState({
-            complexity: data[0]
-          });
-          this.setState({
-            max_complexity: math.max(this.state.complexity),
-            length_list: data[3],
-            OGs: data[1],
-            coord_list: data[2]
-          })
-        });
-
-    }
-
-    if (this.prev_state.pars !== this.state.pars) {
-      let pars_int = 0
-      if (this.state.pars === true) {
-        pars_int = 1
-      }
-
-      console.log('FETCHING NEW PARS')
-
-      let link = SERVER_URL + '/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
-      fetch(link)
-        .then(response => response.json())
-        .then(data => {
-          this.setState({
-            complexity: data[0]
-          });
-          this.setState({
-            max_complexity: math.max(this.state.complexity),
-            length_list: data[3],
-            OGs: data[1],
-            coord_list: data[2]
-          })
-        });
-
-    }
-
-
-    if (this.prev_state.coord_start !== this.state.coord_start || this.prev_state.coord_end !== this.state.coord_end) {
-
-      let close_st_gene = 0
-      let close_end_gene = 0
-      let close_st_len = Math.abs(this.state.coord_list[0] - this.state.coord_start)
-      let close_end_len = Math.abs(this.state.coord_list[0] - this.state.coord_start)
-
-      for (let i = 0; i < this.state.coord_list.length; i++) {
-        let len = Math.abs(this.state.coord_list[i] - this.state.coord_start);
-        if (len < close_st_len) {
-          close_st_gene = i;
-          close_st_len = len
-        }
-        len = Math.abs(this.state.coord_list[i] - this.state.coord_end);
-        if (len < close_end_len) {
-          close_end_gene = i;
-          close_end_len = len
-        }
-
-      }
-
-
-      if (this.state.OGs[close_st_gene] !== undefined && this.state.OGs[close_end_gene] !== undefined) {
-        this.setState({
-          og_end: this.state.OGs[close_end_gene],
-          og_start: this.state.OGs[close_st_gene]
-        })
+  isInArray = (array, element) => {
+    for (let i = 0; i < array.length; i++) {
+      if (element === array[i]) {
+        return true;
       }
     }
-    this.prev_state = this.state
+    return false;
   }
 
-  
+  componentDidUpdate(prevProps, prevState) {
+    console.log('!!DID UPDATE!!')
+
+
+    if (this.props.organisms.length > 0) {// This means we succesfully loaded list of organisms
+      console.log('orgs loaded')
+      if (this.props.stamms.org !== this.state.org) { //Stamms for selected organims are not loaded
+        console.log('stamms for org not loaded; FETCHING STAMMS')
+        this.props.fetchStammsForOrg(this.state.org);
+        return;
+      }
+      else { // stamms loaded
+        console.log('Stamms for org loaded')
+        if (!this.isInArray(this.props.stamms.list, this.state.stamm)) { //selected stamm is not from list
+          console.log('STAMM NOT IN STAMMS setting 0 stamm as selected')
+          this.setState({ stamm: this.props.stamms.list[0] })
+        }
+        else { //selected stamm is from current list
+          console.log('STAMM IN STAMMS')
+          if (this.props.contigs.stamm !== this.state.stamm) { //contigs for stamm not loaded
+            console.log('Contigs not loaded; fetching contigs')
+            this.props.fetchContigs(this.state.org, this.state.stamm);
+            return;
+          }
+          else {//contigs loaded
+            console.log('contigs for stamm loaded')
+            if (!this.isInArray(this.props.contigs.list, this.state.contig)) { //selected stamm is not from list
+              console.log('contig NOT IN contigs setting 0 contig as selected')
+              this.setState({ contig: this.props.contigs.list[0] })
+            }
+            else {
+              console.log('contig in contigs')
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+
+  // if (this.prev_state.contig !== this.state.contig) {
+  //   console.log('FETCHING NEW CONTIG')
+
+  //   let pars_int = 0
+  //   if (this.state.pars === true) {
+  //     pars_int = 1
+  //   }
+  //   let link = SERVER_URL + '/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
+  //   fetch(link)
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       this.setState({
+  //         complexity: data[0]
+  //       });
+  //       this.setState({
+  //         max_complexity: math.max(this.state.complexity),
+  //         length_list: data[3],
+  //         OGs: data[1],
+  //         coord_list: data[2]
+  //       })
+  //     });
+
+  // }
+
+  // if (this.prev_state.method !== this.state.method) {
+  //   let pars_int = 0
+  //   if (this.state.pars === true) {
+  //     pars_int = 1
+  //   }
+
+  //   console.log('FETCHING NEW METHOD')
+
+  //   let link = SERVER_URL + '/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
+  //   fetch(link)
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       this.setState({
+  //         complexity: data[0]
+  //       });
+  //       this.setState({
+  //         max_complexity: math.max(this.state.complexity),
+  //         length_list: data[3],
+  //         OGs: data[1],
+  //         coord_list: data[2]
+  //       })
+  //     });
+
+  // }
+
+  // if (this.prev_state.pars !== this.state.pars) {
+  //   let pars_int = 0
+  //   if (this.state.pars === true) {
+  //     pars_int = 1
+  //   }
+
+  //   console.log('FETCHING NEW PARS')
+
+  //   let link = SERVER_URL + '/org/' + this.state.org + '/stamms/' + this.state.stamm + '/contigs/' + this.state.contig + '/methods/' + this.state.method + '/pars/' + pars_int + '/complexity/'
+  //   fetch(link)
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       this.setState({
+  //         complexity: data[0]
+  //       });
+  //       this.setState({
+  //         max_complexity: math.max(this.state.complexity),
+  //         length_list: data[3],
+  //         OGs: data[1],
+  //         coord_list: data[2]
+  //       })
+  //     });
+
+  // }
+
+
+  // if (this.prev_state.coord_start !== this.state.coord_start || this.prev_state.coord_end !== this.state.coord_end) {
+
+  //   let close_st_gene = 0
+  //   let close_end_gene = 0
+  //   let close_st_len = Math.abs(this.state.coord_list[0] - this.state.coord_start)
+  //   let close_end_len = Math.abs(this.state.coord_list[0] - this.state.coord_start)
+
+  //   for (let i = 0; i < this.state.coord_list.length; i++) {
+  //     let len = Math.abs(this.state.coord_list[i] - this.state.coord_start);
+  //     if (len < close_st_len) {
+  //       close_st_gene = i;
+  //       close_st_len = len
+  //     }
+  //     len = Math.abs(this.state.coord_list[i] - this.state.coord_end);
+  //     if (len < close_end_len) {
+  //       close_end_gene = i;
+  //       close_end_len = len
+  //     }
+
+  //   }
+
+
+  //   if (this.state.OGs[close_st_gene] !== undefined && this.state.OGs[close_end_gene] !== undefined) {
+  //     this.setState({
+  //       og_end: this.state.OGs[close_end_gene],
+  //       og_start: this.state.OGs[close_st_gene]
+  //     })
+  //   }
+  // }
+  // this.prev_state = this.state
+
+
+
 
   handleSubmit = (event) => {
     console.log('SUBMIT IN SELECTOR')
@@ -289,7 +306,7 @@ class Selector extends Component {
       <div className={classes.root}>
         <Grid container direction="row" justify="flex-start" alignItems="flex-start" spacing={24}>
 
-          <Grid item xs={6} > 
+          <Grid item xs={6} >
             <Grid container direction="column" justify="space-between" alignItems="flex-start">
 
               <Grid><Typography variant='h6'>Refrerence parameters</Typography></Grid>
@@ -306,7 +323,7 @@ class Selector extends Component {
                 <FormControl>
                   <InputLabel htmlFor="stamm">Reference</InputLabel>
                   <Select value={this.state.stamm} name='stamm' onChange={this.handleChange}>
-                    {this.state.stamms.map(stamm => <MenuItem key={stamm} value={stamm}> {stamm} </MenuItem>)}
+                    {this.props.stamms.list.map(stamm => <MenuItem key={stamm} value={stamm}> {stamm} </MenuItem>)}
                   </Select>
                 </FormControl>
               </Grid>
@@ -315,7 +332,7 @@ class Selector extends Component {
                 <FormControl>
                   <InputLabel htmlFor="contig">Contig:</InputLabel>
                   <Select value={this.state.contig} name='contig' onChange={this.handleChange}>
-                    {this.state.contigs.map(contig => <MenuItem key={contig} value={contig}> {contig} </MenuItem>)}
+                    {this.props.contigs.list.map(contig => <MenuItem key={contig} value={contig}> {contig} </MenuItem>)}
                   </Select>
                 </FormControl></Grid>
 
@@ -342,7 +359,7 @@ class Selector extends Component {
 
               </Grid>
 
-              <Grid item><Button variant="contained" color="primary" onClick={this.handleSubmit} style={{margin: 12}}>Draw</Button></Grid>
+              <Grid item><Button variant="contained" color="primary" onClick={this.handleSubmit} style={{ margin: 12 }}>Draw</Button></Grid>
             </Grid>
           </Grid>
 
@@ -407,6 +424,8 @@ class Selector extends Component {
 
 const mapStateToProps = state => ({
   organisms: state.reference.organisms,
+  stamms: state.reference.stamms,
+  contigs: state.reference.contigs,
 });
 
-export default connect(mapStateToProps, {fetchOrganisms})(withStyles(styles)(Selector));
+export default connect(mapStateToProps, { fetchOrganisms, fetchStammsForOrg, fetchContigs })(withStyles(styles)(Selector));

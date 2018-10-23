@@ -96,8 +96,8 @@ class CytoscapeDagreGraph extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        console.log(nextProps.data)
-        console.log(this.props.data)
+        // console.log(nextProps.data)
+        // console.log(this.props.data)
 
         if(JSON.stringify(nextProps.data) === JSON.stringify(this.props.data)) {
             return false
