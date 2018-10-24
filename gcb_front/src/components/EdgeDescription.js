@@ -1,7 +1,7 @@
 import React, {
     Component
 } from 'react';
-import 'JSON';
+//import 'JSON';
 import '../App.css';
 
 

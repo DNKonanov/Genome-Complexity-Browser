@@ -1,7 +1,6 @@
 import React, {
     Component
 } from 'react';
-import 'JSON';
 import tippy from 'tippy.js'
 
 import cytoscape from 'cytoscape';
@@ -29,7 +28,8 @@ let conf = {
             'background-color': 'data(color)',
             'border-width': 'data(bwidth)',
             'border-color': 'data(bcolor)',
-            'border-opacity': 0.7
+            'border-opacity': 0.7,
+
         }
     },
     {
@@ -78,9 +78,9 @@ class CytoscapeDagreGraph extends Component {
         super(props);
         this.state = {
             cy: {},
-            edge_description: '',
+            edge_description: 'empty',
             json_format: '',
-            selected_nodes: ''
+            selected_nodes: 'empty'
         }
     }
 
@@ -95,17 +95,8 @@ class CytoscapeDagreGraph extends Component {
 
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log(nextProps.data)
-        console.log(this.props.data)
 
-        if(JSON.stringify(nextProps.data) === JSON.stringify(this.props.data)) {
-            return false
-
-        }
-        return true
-    }
-
+    
     componentWillReceiveProps(nextProps) {
         if (this.state.cy) {
             this.state.cy.destroy();
@@ -117,7 +108,9 @@ class CytoscapeDagreGraph extends Component {
 
         conf.elements = nextProps.data;
 
-        const cy = cytoscape(conf);
+        let cy = cytoscape(conf);
+        
+        const prev_cy = cy.edges().map(edge => ({...edge}))
 
         let makeTippy = function (node, text) {
             return tippy(node.popperRef(), {
@@ -145,6 +138,7 @@ class CytoscapeDagreGraph extends Component {
             tips.push({'edge':ele.id(), 'tip': makeTippy(ele, ele.data().description)})
         });
 
+
         let clicked = []
         cy.on('click', 'node', function (evt) {
             let node_id = evt.target.id()
@@ -165,7 +159,35 @@ class CytoscapeDagreGraph extends Component {
 
         cy.on('click', 'edge', function (evt) {
 
-            this.props.getData(this.state)
+            this.setState({
+                edge_description: evt.target.data().description
+            })
+
+            let organisms = evt.target.data().description.split('\n')
+
+            cy.edges().forEach(function (ele) {
+                ele.style({'line-color': ele.data().color})
+                ele.style({'target-arrow-color': ele.data().color})
+            });
+            
+            cy.edges().forEach(function (ele) {
+
+                if (ele.data().color === 'blue') {}
+                else {
+                    for (let i = 0; i < organisms.length; i++) {
+                        
+                        if (ele.data().description.indexOf(organisms[i]) !== -1) {
+
+                            ele.style({ 'line-color': 'blue'})
+                            ele.style({'target-arrow-color': 'blue'})
+                        }
+                    }
+                }
+            });
+
+            this.setState ({
+                json_format: JSON.stringify(cy.json())
+            });
 
 
         }.bind(this));
@@ -182,8 +204,14 @@ class CytoscapeDagreGraph extends Component {
                 for(let i=0; i < tips.length; i++){
                     tips[i].tip.hide()
                 }
+                cy.edges().forEach(function (ele) {
+                    
+                    ele.style({'line-color': ele.data().color})
+                    ele.style({'target-arrow-color': ele.data().color})
+                });
             }
-        });
+            
+        }.bind(this));
 
         cy.on('select', 'node', function() {
 
@@ -194,7 +222,9 @@ class CytoscapeDagreGraph extends Component {
                 }
             });
 
-            this.props.getData(this.state)
+            this.setState({
+                selected_nodes: nodes_list
+            })
 
         }.bind(this));
         
@@ -202,6 +232,7 @@ class CytoscapeDagreGraph extends Component {
             cy: cy,
             json_format: JSON.stringify(cy.json())
         });
+
         console.log('DRAW')
     }
 
@@ -223,6 +254,8 @@ class CytoscapeDagreGraph extends Component {
                     <div style={cyStyle} ref={(cyRef) => { this.cyRef = cyRef; }} />
                 </div >
                 
+                <EdgeDescription edge_description={this.state.edge_description}/>
+                <SelectedNodes  className="LeftFloat" edge_description={this.state.selected_nodes}/>
                 <button style={{ margin: 12 }} onClick={this.downloadJson}>Download json subgraph</button>
             </div>
         )
