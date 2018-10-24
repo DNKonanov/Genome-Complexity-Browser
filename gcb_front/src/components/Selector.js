@@ -168,10 +168,6 @@ class Selector extends Component {
         }
       }
     }
-
-
-
-
   }
 
 
@@ -260,7 +256,6 @@ class Selector extends Component {
 
                   </Grid>
 
-                  <Grid item><Button variant="contained" color="primary" onClick={this.handleSubmit} style={{ margin: 12 }}>Draw</Button></Grid>
                 </Grid>
               </Grid>
 
@@ -318,8 +313,10 @@ class Selector extends Component {
 
             </Grid>
 
+
           </ExpansionPanelDetails>
         </ExpansionPanel>
+        <Button variant="contained" color="primary" onClick={this.handleSubmit} style={{ margin: 12 }}>Draw</Button>
 
 
         {data.complexity === 'None' ?
