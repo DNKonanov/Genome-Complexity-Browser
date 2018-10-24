@@ -149,7 +149,6 @@ class App extends Component {
 
 
 
-          {load_field}
           <div className={classes.content}>
 
             {/* <SelectorAndPlot/> */}
@@ -168,6 +167,7 @@ class App extends Component {
             <Paper>
               <CytoscapeDagreGraph data={this.state.data} getData={this.getData} />
             </Paper>
+            {load_field}
 
           </div>
         </div>
