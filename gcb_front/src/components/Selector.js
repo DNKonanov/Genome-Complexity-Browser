@@ -92,7 +92,6 @@ class Selector extends Component {
     src: '',
   };
 
-  prev_state = {}
 
   componentDidMount() {
     this.props.fetchOrganisms();
@@ -139,26 +138,26 @@ class Selector extends Component {
                   let close_end_gene = 0
                   let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
                   let close_end_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
-
                   for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
                     let len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_start);
                     if (len < close_st_len) {
                       close_st_gene = i;
                       close_st_len = len
                     }
+
+
                     len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_end);
                     if (len < close_end_len) {
                       close_end_gene = i;
                       close_end_len = len
-                    }
-
+                    }    
                   }
 
-                  if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity[close_end_gene] !== undefined) {
-                    console.log('some')
+                  if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
+
                     this.setState({
-                      og_end: this.props.complexity[close_end_gene],
-                      og_start: this.props.complexity[close_st_gene]
+                      og_end: this.props.complexity.OGs[close_end_gene],
+                      og_start: this.props.complexity.OGs[close_st_gene]
                     })
                   }
                 }
@@ -168,9 +167,6 @@ class Selector extends Component {
         }
       }
     }
-    this.prev_state = this.state
-
-
 
 
   }
@@ -242,7 +238,7 @@ class Selector extends Component {
     const data = this.props.complexity
     return (
       <div className={classes.root}>
-
+        <Button variant="contained" color="primary" onClick={this.handleSubmit} style={{ margin: 12 }}>Draw</Button>
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>SELECT PARAMETERS</Typography>
@@ -362,8 +358,39 @@ class Selector extends Component {
 
           </ExpansionPanelDetails>
         </ExpansionPanel>
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>USER COORDINATES</Typography>
+          </ExpansionPanelSummary>
 
-        <Button variant="contained" color="primary" onClick={this.handleSubmit} style={{ margin: 12 }}>Draw</Button>
+
+          <ExpansionPanelDetails>
+          <Grid container direction="column" justify="space-between" alignItems="flex-start" >
+
+            <Typography> <b>Input values</b> (format is "coord1:value1,coord2:value2, ... ". </Typography>
+            <Typography>Spaces, tabs and EOLs are allowed)</Typography>
+
+            <TextField id="user_coordinates" label="Coordinates" multiline rowsMax="4"
+              value={this.state.user_coordinates_str} 
+              onChange={e => this.setState({ user_coordinates_str: e.target.value })}
+              fullWidth margin="normal"
+            />
+
+            <input type="submit" value='Show user values' onClick={(e) => { this.drawUserCoordinates(e) }} />
+
+            <label>
+              <input type="file" ref="input_reader" onChange={this.inputFileChanged} />
+            </label>
+
+            <label>
+              <select style={{ margin: 12 }} value={this.state.draw_type} name='draw_types' onChange={e => this.setState({ draw_type: e.target.value })}>
+                {this.state.draw_types.map(draw_type => <option key={draw_type} value={draw_type}>{draw_type}</option>)}
+              </select>
+            </label>
+            </Grid> 
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+        
         {data.complexity === 'None' ?
           <LinearProgress />
           :
@@ -371,29 +398,7 @@ class Selector extends Component {
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>COMPLEXITY PLOT</Typography>
             </ExpansionPanelSummary>
-            <Grid xs={3} container direction="column" justify="space-between" alignItems="flex-start" >
-
-              <Typography> <b>Input values</b> (format is "coord1:value1,coord2:value2, ... ". </Typography>
-              <Typography>Spaces, tabs and EOLs are allowed)</Typography>
-
-              <TextField id="user_coordinates" label="Coordinates" multiline rowsMax="4"
-                value={this.state.user_coordinates_str} 
-                onChange={e => this.setState({ user_coordinates_str: e.target.value })}
-                fullWidth margin="normal"
-              />
-
-              <Button onClick={(e) => { this.drawUserCoordinates(e) }} > Show user values </Button>
-
-              <label>
-                <Button type="file" ref="input_reader" onChange={this.inputFileChanged} >Choose file</Button>
-              </label>
-
-              <label>
-                <select style={{ margin: 12 }} value={this.state.draw_type} name='draw_types' onChange={e => this.setState({ draw_type: e.target.value })}>
-                  {this.state.draw_types.map(draw_type => <option key={draw_type} value={draw_type}>{draw_type}</option>)}
-                </select>
-              </label>
-            </Grid> 
+            
             <ExpansionPanelDetails>
               <Plot
                 data={[

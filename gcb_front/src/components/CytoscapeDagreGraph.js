@@ -110,8 +110,6 @@ class CytoscapeDagreGraph extends Component {
 
         let cy = cytoscape(conf);
         
-        const prev_cy = cy.edges().map(edge => ({...edge}))
-
         let makeTippy = function (node, text) {
             return tippy(node.popperRef(), {
                 html: (function () {
@@ -211,7 +209,7 @@ class CytoscapeDagreGraph extends Component {
                 });
             }
             
-        }.bind(this));
+        });
 
         cy.on('select', 'node', function() {
 
