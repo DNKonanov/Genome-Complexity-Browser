@@ -127,13 +127,16 @@ class Selector extends Component {
             }
             else {
               let comp_par = this.props.complexity.request;
+
+              let p = comp_par.pars
               if (comp_par.org !== this.state.org || comp_par.stamm !== this.state.stamm ||
                 comp_par.contig !== this.state.contig || comp_par.method !== this.state.method ||
                 comp_par.pars !== this.state.pars) {
                 this.props.fetchComplexity(this.state.org, this.state.stamm, this.state.contig, this.state.method, this.state.pars)
               }
+
               else {
-                if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end) {
+                if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end || p !== this.state.pars) {
                   let close_st_gene = 0
                   let close_end_gene = 0
                   let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)

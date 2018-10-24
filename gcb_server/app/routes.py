@@ -15,7 +15,7 @@ import sqlite3
 def index():
     return "Hello, World!"
 
-data_path = '/home/dmitry/projects/Genome-Complexity-Browser-master/gcb_server/data/'
+data_path = './data/'
 
 methods = {'window complexity (w20)': 'win_var 20',
             'probabilistic window complexity (w20)': 'prob_win_var 20',

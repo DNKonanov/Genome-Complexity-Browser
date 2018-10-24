@@ -166,45 +166,7 @@ class CytoscapeDagreGraph extends Component {
 
     });
 
-<<<<<<< HEAD
-    
-    componentWillReceiveProps(nextProps) {
-        if (this.state.cy) {
-            this.state.cy.destroy();
-        }
-        
-
-        
-        conf.container = this.cyRef;
-
-        conf.elements = nextProps.data;
-
-        let cy = cytoscape(conf);
-        
-        let makeTippy = function (node, text) {
-            return tippy(node.popperRef(), {
-                html: (function () {
-                    let div = document.createElement('div');
-                    div.innerHTML = text;
-                    return div;
-                })(),
-                trigger: 'manual',
-                arrow: true,
-                placement: 'bottom',
-                hideOnClick: false,
-                multiple: true,
-                sticky: true
-            }).tooltips[0];
-        };
-
-        let tips = []
-
-        cy.nodes().forEach(function (ele) {
-            tips.push({'node':ele.id(), 'tip': makeTippy(ele, ele.data().description)})
-        });
-=======
     cy.on('click', 'edge', function (evt) {
->>>>>>> 9a554a38a158160b399005d1b54603e12eb286d9
 
       this.setState({
         edge_description: evt.target.data().description
@@ -228,29 +190,6 @@ class CytoscapeDagreGraph extends Component {
               ele.style({ 'line-color': 'blue' })
               ele.style({ 'target-arrow-color': 'blue' })
             }
-<<<<<<< HEAD
-            
-        });
-
-        cy.on('select', 'node', function() {
-
-            let nodes_list = ''
-            cy.nodes().forEach(function (ele) {
-                if (ele.selected()) {
-                    if (ele.data().description !== undefined) nodes_list = nodes_list + ele.data().id + '\t' + ele.data().description.split(':')[0] + '\n'
-                }
-            });
-
-            this.setState({
-                selected_nodes: nodes_list
-            })
-
-        }.bind(this));
-        
-        this.setState ({
-            cy: cy,
-            json_format: JSON.stringify(cy.json())
-=======
           }
         }
       });
@@ -275,7 +214,6 @@ class CytoscapeDagreGraph extends Component {
 
           ele.style({ 'line-color': ele.data().color })
           ele.style({ 'target-arrow-color': ele.data().color })
->>>>>>> 9a554a38a158160b399005d1b54603e12eb286d9
         });
       }
 
