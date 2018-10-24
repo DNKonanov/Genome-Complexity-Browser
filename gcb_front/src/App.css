@@ -1,0 +1,53 @@
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 50px;
+  text-align: center;
+}
+
+.App-header {
+  background-color: #222;
+  height: 45px;
+  padding: 12px;
+  color: white;
+  text-align: center;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+  text-align: center;
+}
+
+.Container {
+  display: flex;
+  height: 800px;
+  width: 100%;
+}
+
+.LeftFloat {
+  float: left;
+}
+
+.EdgeDescription {
+  display: flex;
+  margin: 20px;
+}
+
+.SaveButton {
+  position: absolute;
+  width: 100px;
+  margin-left: 10%;
+}
+
+.LoadAnimation {
+  margin-left: 20px;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
