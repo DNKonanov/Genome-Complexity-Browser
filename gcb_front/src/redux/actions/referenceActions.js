@@ -17,7 +17,7 @@ export function fetchOrganisms() {
       .then(response => response.json())
       .then(organisms => dispatch({
         type: FETCH_ORGANISMS,
-        payload: organisms
+        payload: organisms.sort()
       }));
   }
 }
@@ -28,7 +28,7 @@ export function fetchStammsForOrg(org) {
       .then(response => response.json())
       .then(stamms => dispatch({
         type: FETCH_STAMMS,
-        payload: stamms,
+        payload: stamms.sort(),
         org: org
       }));
   }
@@ -40,7 +40,7 @@ export function fetchContigs(org, stamm) {
       .then(response => response.json())
       .then(contigs => dispatch({
         type: FETCH_CONTIGS,
-        payload: contigs,
+        payload: contigs.sort(),
         stamm: stamm
       }));
   }

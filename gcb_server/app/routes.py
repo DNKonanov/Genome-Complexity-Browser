@@ -15,12 +15,12 @@ import sqlite3
 def index():
     return "Hello, World!"
 
-data_path = './data/'
+data_path = '/home/dmitry/projects/Genome-Complexity-Browser-master/gcb_server/data/'
 
-methods = {'window complexity': 'win_var',
-            'probabilistic window complexity': 'prob_win_var',
-            'IO complexity': 'io',
-            'probabilistic IO complexity': 'prob_io'}
+methods = {'window complexity (w20)': 'win_var 20',
+            'probabilistic window complexity (w20)': 'prob_win_var 20',
+            'IO complexity': 'io 20',
+            'probabilistic IO complexity': 'prob_io 20'}
 
 
 @app.route('/org/<organism>/strain/<ref_strain>/contig/<contig>/start/<og_start>/end/<og_end>/window/<window>/tails/<tails>/pars/<pars>/operons/<operons>/depth/<depth>/freq_min/<freq_min>')

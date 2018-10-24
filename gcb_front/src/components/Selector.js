@@ -135,19 +135,18 @@ class Selector extends Component {
               }
               else {
                 if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end) {
-
                   let close_st_gene = 0
                   let close_end_gene = 0
-                  let close_st_len = Math.abs(this.state.coord_list[0] - this.state.coord_start)
-                  let close_end_len = Math.abs(this.state.coord_list[0] - this.state.coord_start)
+                  let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
+                  let close_end_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
 
-                  for (let i = 0; i < this.state.coord_list.length; i++) {
-                    let len = Math.abs(this.state.coord_list[i] - this.state.coord_start);
+                  for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
+                    let len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_start);
                     if (len < close_st_len) {
                       close_st_gene = i;
                       close_st_len = len
                     }
-                    len = Math.abs(this.state.coord_list[i] - this.state.coord_end);
+                    len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_end);
                     if (len < close_end_len) {
                       close_end_gene = i;
                       close_end_len = len
@@ -156,6 +155,7 @@ class Selector extends Component {
                   }
 
                   if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity[close_end_gene] !== undefined) {
+                    console.log('some')
                     this.setState({
                       og_end: this.props.complexity[close_end_gene],
                       og_start: this.props.complexity[close_st_gene]
@@ -168,6 +168,11 @@ class Selector extends Component {
         }
       }
     }
+    this.prev_state = this.state
+
+
+
+
   }
 
 
@@ -191,6 +196,47 @@ class Selector extends Component {
     this.setState({ operons: event.target.checked });
   }
 
+  drawUserCoordinates = (e) => {
+    if (this.state.user_coordinates_str.length !== 0) {
+
+      let string = this.state.user_coordinates_str.replace(' ', '').replace('\t', '').replace('\n', '')
+
+      let lines;
+      lines = string.split(',');
+      this.setState({ user_coordinates: [] })
+      let coord = []
+      let values = []
+      for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].split(':');
+        coord.push(parseInt(line[0], 10));
+        values.push(parseFloat(line[1]))
+      }
+      this.setState({
+        user_coordinates: coord,
+        user_values: values
+      })
+
+    }
+    e.preventDefault()
+  }
+
+  inputFileChanged = (e) => {
+
+    if (window.FileReader) {
+      let file = e.target.files[0], reader = new FileReader();
+      reader.onload = function (r) {
+        this.setState({
+          user_coordinates_str: r.target.result
+        });
+      }.bind(this)
+      reader.readAsText(file);
+    }
+    else {
+      alert('Sorry, your browser does\'nt support for preview');
+    }
+  }
+
+  
   render() {
     const { classes } = this.props;
     const data = this.props.complexity
@@ -206,7 +252,7 @@ class Selector extends Component {
               <Grid item xs={6} >
                 <Grid container direction="column" justify="space-between" alignItems="flex-start">
 
-                  <Grid><Typography variant='h6'>Refrerence parameters</Typography></Grid>
+                  <Grid><Typography variant='h6'>Reference parameters</Typography></Grid>
 
                   <Grid item>
                     <FormControl>
@@ -256,12 +302,13 @@ class Selector extends Component {
 
                   </Grid>
 
+                  
                 </Grid>
               </Grid>
 
               <Grid item xs={6} >
                 <Grid container direction="column" justify="space-between" alignItems="flex-start" >
-                  <Grid><Typography variant='h6' >Alogorithm parameters</Typography></Grid>
+                  <Grid><Typography variant='h6' >Algorithm parameters</Typography></Grid>
 
                   <Grid item>
                     <FormControl>
@@ -313,12 +360,10 @@ class Selector extends Component {
 
             </Grid>
 
-
           </ExpansionPanelDetails>
         </ExpansionPanel>
+
         <Button variant="contained" color="primary" onClick={this.handleSubmit} style={{ margin: 12 }}>Draw</Button>
-
-
         {data.complexity === 'None' ?
           <LinearProgress />
           :
@@ -326,6 +371,29 @@ class Selector extends Component {
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>COMPLEXITY PLOT</Typography>
             </ExpansionPanelSummary>
+            <Grid xs={3} container direction="column" justify="space-between" alignItems="flex-start" >
+
+              <Typography> <b>Input values</b> (format is "coord1:value1,coord2:value2, ... ". </Typography>
+              <Typography>Spaces, tabs and EOLs are allowed)</Typography>
+
+              <TextField id="user_coordinates" label="Coordinates" multiline rowsMax="4"
+                value={this.state.user_coordinates_str} 
+                onChange={e => this.setState({ user_coordinates_str: e.target.value })}
+                fullWidth margin="normal"
+              />
+
+              <Button onClick={(e) => { this.drawUserCoordinates(e) }} > Show user values </Button>
+
+              <label>
+                <Button type="file" ref="input_reader" onChange={this.inputFileChanged} >Choose file</Button>
+              </label>
+
+              <label>
+                <select style={{ margin: 12 }} value={this.state.draw_type} name='draw_types' onChange={e => this.setState({ draw_type: e.target.value })}>
+                  {this.state.draw_types.map(draw_type => <option key={draw_type} value={draw_type}>{draw_type}</option>)}
+                </select>
+              </label>
+            </Grid> 
             <ExpansionPanelDetails>
               <Plot
                 data={[

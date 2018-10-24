@@ -5,6 +5,7 @@ import pandas as pd
 methods = ['win_var', 'prob_win_var', 'IO', 'prob_IO']
 
 def get_complexity_from_db(data_path, organism, reference, contig, pars, method):
+    method, window = method.split(' ')[0], method.split(' ')[1]
     if pars == 0:
        
         db = data_path + organism + '/' + organism + '.db'

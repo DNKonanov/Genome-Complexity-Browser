@@ -167,9 +167,36 @@ class CytoscapeDagreGraph extends Component {
     });
 
     cy.on('click', 'edge', function (evt) {
-      //  this.props.getData(this.state)
-      console.log(evt.target.data().description)
 
+      this.setState({
+        edge_description: evt.target.data().description
+      })
+
+      let organisms = evt.target.data().description.split('\n')
+
+      cy.edges().forEach(function (ele) {
+        ele.style({ 'line-color': ele.data().color })
+        ele.style({ 'target-arrow-color': ele.data().color })
+      });
+
+      cy.edges().forEach(function (ele) {
+
+        if (ele.data().color === 'blue') { }
+        else {
+          for (let i = 0; i < organisms.length; i++) {
+
+            if (ele.data().description.indexOf(organisms[i]) !== -1) {
+
+              ele.style({ 'line-color': 'blue' })
+              ele.style({ 'target-arrow-color': 'blue' })
+            }
+          }
+        }
+      });
+
+      this.setState({
+        json_format: JSON.stringify(cy.json())
+      });
     }.bind(this));
 
     cy.on('position', function (evt) {
@@ -183,10 +210,17 @@ class CytoscapeDagreGraph extends Component {
         for (let i = 0; i < tips.length; i++) {
           tips[i].tip.hide()
         }
+        cy.edges().forEach(function (ele) {
+
+          ele.style({ 'line-color': ele.data().color })
+          ele.style({ 'target-arrow-color': ele.data().color })
+        });
       }
-    });
+
+    }.bind(this));
 
     cy.on('select', 'node', function () {
+
       let nodes_list = ''
       cy.nodes().forEach(function (ele) {
         if (ele.selected()) {
@@ -194,7 +228,9 @@ class CytoscapeDagreGraph extends Component {
         }
       });
 
-      //this.props.getData(this.state)
+      this.setState({
+        selected_nodes: nodes_list
+      })
 
     }.bind(this));
 
@@ -231,12 +267,21 @@ class CytoscapeDagreGraph extends Component {
         }
 
       }
-    console.log(this.props)
+      console.log(this.props)
 
       this.prepareCy(this.props)
     }
 
   }
+
+  downloadJson = () => {
+    var element = document.createElement("a");
+    var file = new Blob([this.state.json_format], { type: 'text/plain' });
+    element.href = URL.createObjectURL(file);
+    element.download = "subgraph.json";
+    element.click();
+  }
+
 
 
   downloadJson = () => {
@@ -250,7 +295,7 @@ class CytoscapeDagreGraph extends Component {
   render() {
     return (
       <div>
-        <FormControl component="fieldset" style={{marginTop:6, marginleft: 16}}>
+        <FormControl component="fieldset" style={{ marginTop: 6, marginleft: 16 }}>
           <FormLabel component="legend">Layouter</FormLabel>
           <RadioGroup
             aria-label="layouter"
