@@ -2,7 +2,8 @@ import {
   FETCH_ORGANISMS,
   FETCH_STAMMS,
   FETCH_CONTIGS,
-  FETCH_COMPLEXITY
+  FETCH_COMPLEXITY,
+  PUT_SELECTION
 } from "../constants/action-types";
 
 import {
@@ -68,5 +69,24 @@ export function fetchComplexity(org, stamm, contig, method, pars) {
           pars: pars
         }
       }));
+  }
+}
+
+
+export function putSelectedRef(org, stamm, contig, og_start, og_end, method, pars, operons) {
+  return function (dispatch) {
+    dispatch({
+      type: PUT_SELECTION,
+      payload: {
+        org: org,
+        stamm: stamm,
+        contig: contig,
+        og_start: og_start,
+        og_end: og_end,
+        method: method,
+        pars_int: pars,
+        operons_int: operons
+      }
+    })
   }
 }

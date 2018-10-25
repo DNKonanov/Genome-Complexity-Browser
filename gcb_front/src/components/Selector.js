@@ -1,7 +1,6 @@
 import React, {
   Component
 } from 'react';
-import './Selector.css';
 import Plot from 'react-plotly.js';
 import * as math from 'mathjs';
 
@@ -25,7 +24,6 @@ import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
-import { SERVER_URL } from '../constants'
 
 import { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity } from '../redux/actions/referenceActions'
 import { connect } from 'react-redux';
@@ -68,19 +66,17 @@ class Selector extends Component {
 
   state = {
     org: 'Achromobacter_xylosoxidans',
-    // stamm: 'GCF_000165835.1_ASM16583v1_genomic',
     stamm: 'GCF_000165835.1_ASM16583v1_genomic',
     contig: 'NC_014640.1',
+
     og_start: 'OG0001707',
     og_end: 'OG0001707',
     coord_start: 0,
     coord_end: 0,
-    window: '5',
-    tails: '5',
-    depth: '30',
-    freq_min: '2',
+
     pars: false,
     operons: true,
+    
     methods: ['window complexity (w20)', 'probabilistic window complexity (w20)', 'IO complexity', 'probabilistic IO complexity'],
     method: 'window complexity (w20)',
     user_coordinates_str: '',
@@ -169,10 +165,6 @@ class Selector extends Component {
       }
     }
     this.prev_state = this.state
-
-
-
-
   }
 
 
@@ -236,7 +228,7 @@ class Selector extends Component {
     }
   }
 
-  
+
   render() {
     const { classes } = this.props;
     const data = this.props.complexity
@@ -277,7 +269,14 @@ class Selector extends Component {
                       <Select value={this.state.contig} name='contig' onChange={this.handleChange}>
                         {this.props.contigs.list.map(contig => <MenuItem key={contig} value={contig}> {contig} </MenuItem>)}
                       </Select>
-                    </FormControl></Grid>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+              </Grid>
+
+              <Grid item xs={6} >
+                <Grid container direction="column" justify="space-between" alignItems="flex-start" >
+                  {/* <Grid><Typography variant='h6' >Algorithm parameters</Typography></Grid> */}
 
                   <Grid container direction="row" justify="flex-start" alignItems="flex-start">
 
@@ -301,25 +300,16 @@ class Selector extends Component {
                     </Grid>
 
                   </Grid>
-
-                  
-                </Grid>
-              </Grid>
-
-              <Grid item xs={6} >
-                <Grid container direction="column" justify="space-between" alignItems="flex-start" >
-                  <Grid><Typography variant='h6' >Algorithm parameters</Typography></Grid>
-
-                  <Grid item>
+                  {/* <Grid item>
                     <FormControl>
                       <InputLabel htmlFor="method">Method</InputLabel>
                       <Select value={this.state.method} name='method' onChange={this.handleChange}>
                         {this.state.methods.map(method => <MenuItem key={method} value={method}> {method} </MenuItem>)}
                       </Select>
                     </FormControl>
-                  </Grid>
+                  </Grid> */}
 
-                  <Grid container direction="row" justify="flex-start" alignItems="flex-start">
+                  {/* <Grid container direction="row" justify="flex-start" alignItems="flex-start">
 
                     <Grid item>
                       <TextField label={'Tails'} name='tails' value={this.state.tails} onChange={this.handleChange} />
@@ -342,7 +332,7 @@ class Selector extends Component {
                       <TextField label={'Window'} name='window' value={this.state.window} onChange={this.handleChange} />
                     </Grid>
 
-                  </Grid>
+                  </Grid> */}
 
                   <Grid item>
                     <FormControlLabel
@@ -363,7 +353,6 @@ class Selector extends Component {
           </ExpansionPanelDetails>
         </ExpansionPanel>
 
-        <Button variant="contained" color="primary" onClick={this.handleSubmit} style={{ margin: 12 }}>Draw</Button>
         {data.complexity === 'None' ?
           <LinearProgress />
           :
@@ -371,102 +360,131 @@ class Selector extends Component {
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>COMPLEXITY PLOT</Typography>
             </ExpansionPanelSummary>
-            <Grid xs={3} container direction="column" justify="space-between" alignItems="flex-start" >
 
-              <Typography> <b>Input values</b> (format is "coord1:value1,coord2:value2, ... ". </Typography>
-              <Typography>Spaces, tabs and EOLs are allowed)</Typography>
+            <ExpansionPanelDetails>
+              <Grid container direction="column" justify="flex-start" alignItems="stretch">
+                <Grid item >
+                  <Grid container direction="row" justify="flex-start" alignItems="flex-start" style={{ width: '100%' }}>
+                    <Grid item>
 
-              <TextField id="user_coordinates" label="Coordinates" multiline rowsMax="4"
-                value={this.state.user_coordinates_str} 
+                      <FormControl>
+                        <InputLabel htmlFor="method">Method</InputLabel>
+                        <Select value={this.state.method} name='method' onChange={this.handleChange}>
+                          {this.state.methods.map(method => <MenuItem key={method} value={method}> {method} </MenuItem>)}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item>
+                      <Typography style={{ maxWidth: 350 }}> <b>Input values</b> (format is "coord1:value1,coord2:value2, ... ".
+                      {/* Spaces, tabs and EOLs are allowed) */}
+                      </Typography>
+                    </Grid>
+
+                    {/* <TextField id="user_coordinates" label="Coordinates" multiline rowsMax="4"
+                value={this.state.user_coordinates_str}
                 onChange={e => this.setState({ user_coordinates_str: e.target.value })}
                 fullWidth margin="normal"
-              />
+              /> */}
 
-              <Button onClick={(e) => { this.drawUserCoordinates(e) }} > Show user values </Button>
+                    <Grid item>
 
-              <label>
-                <Button type="file" ref="input_reader" onChange={this.inputFileChanged} >Choose file</Button>
-              </label>
+                      <Button onClick={(e) => { this.drawUserCoordinates(e) }} > Show user values </Button>
+                    </Grid>
+                    <Grid item>
 
-              <label>
-                <select style={{ margin: 12 }} value={this.state.draw_type} name='draw_types' onChange={e => this.setState({ draw_type: e.target.value })}>
-                  {this.state.draw_types.map(draw_type => <option key={draw_type} value={draw_type}>{draw_type}</option>)}
-                </select>
-              </label>
-            </Grid> 
-            <ExpansionPanelDetails>
-              <Plot
-                data={[
-                  {
-                    x: data.coord_list,
-                    y: data.complexity,
-                    text: data.OGs,
-                    type: 'line',
-                    name: 'complexity'
-                  },
+                      <label>
+                        <Button type="file" ref="input_reader" onChange={this.inputFileChanged} >Choose file</Button>
+                      </label>
+                    </Grid>
+                    <Grid item>
 
-                  {
-                    x: [this.state.coord_start, this.state.coord_start],
-                    y: [-data.max_complexity / 2, data.max_complexity],
-                    mode: 'lines',
-                    name: 'left edge'
-                  },
-                  {
-                    x: [this.state.coord_end, this.state.coord_end],
-                    y: [-data.max_complexity / 2, data.max_complexity],
-                    mode: 'lines',
-                    name: 'rigth edge'
-                  },
+                      <label>
+                        <select style={{ margin: 12 }} value={this.state.draw_type} name='draw_types' onChange={e => this.setState({ draw_type: e.target.value })}>
+                          {this.state.draw_types.map(draw_type => <option key={draw_type} value={draw_type}>{draw_type}</option>)}
+                        </select>
+                      </label>
+                    </Grid>
 
-                  {
-                    x: this.state.user_coordinates,
-                    y: this.state.user_values,
-                    mode: this.state.draw_type,
-                    name: 'user values',
-                    opacity: 0.5,
-                    yaxis: 'y2',
-                    marker: {
-                      size: 5,
-                    },
-                  }
+                  </Grid>
+                </Grid>
+
+                <Grid item>
+                  <Plot
+                    data={[
+                      {
+                        x: data.coord_list,
+                        y: data.complexity,
+                        text: data.OGs,
+                        type: 'line',
+                        name: 'complexity'
+                      },
+
+                      {
+                        x: [this.state.coord_start, this.state.coord_start],
+                        y: [-data.max_complexity / 2, data.max_complexity],
+                        mode: 'lines',
+                        name: 'left edge'
+                      },
+                      {
+                        x: [this.state.coord_end, this.state.coord_end],
+                        y: [-data.max_complexity / 2, data.max_complexity],
+                        mode: 'lines',
+                        name: 'rigth edge'
+                      },
+
+                      {
+                        x: this.state.user_coordinates,
+                        y: this.state.user_values,
+                        mode: this.state.draw_type,
+                        name: 'user values',
+                        opacity: 0.5,
+                        yaxis: 'y2',
+                        marker: {
+                          size: 5,
+                        },
+                      }
 
 
-                ]}
-                layout={
-                  {
-                    autosize: true,
-                    title: 'Genome complexity, ' + data.request.org + ', contig ' + data.request.contig + ', ' + data.request.method,
+                    ]}
+                    layout={
+                      {
+                        autosize: true,
+                        title: 'Genome complexity, ' + data.request.org + ', contig ' + data.request.contig + ', ' + data.request.method,
 
-                    xaxis: {
-                      title: 'Chromosome position, bp',
-                    },
+                        xaxis: {
+                          title: 'Chromosome position, bp',
+                        },
 
-                    yaxis: {
-                      title: 'complexity',
-                      overlaying: 'y2'
-                    },
+                        yaxis: {
+                          title: 'complexity',
+                          overlaying: 'y2'
+                        },
 
-                    yaxis2: {
-                      title: 'user values',
-                      side: 'right'
+                        yaxis2: {
+                          title: 'user values',
+                          side: 'right'
+                        }
+                      }
                     }
-                  }
-                }
-                useResizeHandler={true}
-                style={{ width: "100%", height: "400" }}
-                onClick={(data) => {
-                  this.setState({
-                    og_start: data.points[0].text,
-                    og_end: data.points[0].text,
-                    coord_start: data.points[0].x,
-                    coord_end: data.points[0].x
-                  });
-                }}
-              />
+                    useResizeHandler={true}
+                    style={{ width: "100%", height: "400" }}
+                    onClick={(data) => {
+                      this.setState({
+                        og_start: data.points[0].text,
+                        og_end: data.points[0].text,
+                        coord_start: data.points[0].x,
+                        coord_end: data.points[0].x
+                      });
+                    }}
+                  />
+                </Grid>
+              </Grid>
             </ExpansionPanelDetails>
           </ExpansionPanel>
 
         }
+
+
       </div>
     )
   }
