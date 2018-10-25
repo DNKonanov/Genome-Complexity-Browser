@@ -77,7 +77,7 @@ let cyStyle = {
 class CytoscapeDagreGraph extends Component {
 
   state = {
-    cy: {},
+    cy: false,
     edge_description: 'empty',
     json_format: '',
     selected_nodes: 'empty'
@@ -85,6 +85,7 @@ class CytoscapeDagreGraph extends Component {
 
 
   componentDidMount() {
+    console.log('GRAPH DID MOUNT')
     conf.container = this.cyRef;
     conf.elements = this.props.data;
     const cy = cytoscape(conf);
@@ -99,9 +100,12 @@ class CytoscapeDagreGraph extends Component {
 
 
   prepareCy = (nextProps) => {
+    console.log(this.state.cy)
+
     if (this.state.cy) {
       this.state.cy.destroy();
     }
+
     conf.container = this.cyRef;
 
     conf.elements = nextProps.data;

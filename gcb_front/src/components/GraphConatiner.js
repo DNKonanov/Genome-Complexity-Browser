@@ -11,6 +11,9 @@ import FormLabel from '@material-ui/core/FormLabel';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+
 
 import CytoscapeDagreGraph from './CytoscapeDagreGraph'
 
@@ -26,6 +29,7 @@ class GraphContainer extends Component {
     depth: '30',
     freq_min: '2',
     layout: 'graphviz',
+    loading: false
   }
 
   handleChange = (event) => {
@@ -35,7 +39,7 @@ class GraphContainer extends Component {
   handleLayout = event => {
     this.setState({ layout: event.target.value });
   };
-  
+
   handleGraphDraw = () => {
     // Get selector data from redux store
     let sel = this.props.selection
@@ -57,11 +61,41 @@ class GraphContainer extends Component {
 
     // Make redux request
     this.props.fetchGraph(graph_params)
+    this.setState({ loading: true })
+  }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log('DID UPDATE')
+    console.log(this.props.graph)
+
+    if (this.props.graph.result === 'SUCCESS' && this.state.loading === true) {
+      this.setState({ loading: false })
+    }
   }
 
 
   render() {
+
+    let what_to_show = null
+    if (this.state.loading) {
+      what_to_show =
+        <div style={{ display: 'flex', height: 800, width: '100%' }}>
+          <CircularProgress style={{ margin: 'auto' }}
+            //className={classes.progress} 
+            size={300} />
+        </div>
+    }
+    else {
+      if (this.props.graph.result === 'NOT LOADED') {
+        what_to_show =
+          <div style={{ display: 'flex', height: 800, width: '100%' }}>
+            <Typography variant="h2"style={{ margin: 'auto', textAlign: 'center' }} > Please, select parameters and click DRAW button</Typography>
+          </div>
+      }
+      else {
+        what_to_show = < CytoscapeDagreGraph data={this.props.graph.data} layout={this.state.layout} />
+      }
+    }
 
     console.log(this.props.graph)
     return (
@@ -104,9 +138,7 @@ class GraphContainer extends Component {
           </Grid>
         </Grid>
 
-        
-        <CytoscapeDagreGraph data={this.props.graph.data} layout={this.state.layout}/>
-
+        {what_to_show}
       </div>
     )
   }
