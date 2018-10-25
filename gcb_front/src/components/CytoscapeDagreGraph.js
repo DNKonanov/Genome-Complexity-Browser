@@ -10,7 +10,8 @@ import dagre from 'cytoscape-dagre';
 import EdgeDescription from '../components/EdgeDescription';
 import SelectedNodes from '../components/SelectedNodes';
 import '../App.css';
-
+import Button from '@material-ui/core/Button';
+import removeAllTips from './Selector';
 
 cytoscape.use(dagre);
 cytoscape.use(popper);
@@ -73,6 +74,7 @@ let cyStyle = {
   width: '100%',
   display: 'block'
 };
+
 
 class CytoscapeDagreGraph extends Component {
 
@@ -261,15 +263,6 @@ class CytoscapeDagreGraph extends Component {
 
   }
 
-  downloadJson = () => {
-    var element = document.createElement("a");
-    var file = new Blob([this.state.json_format], { type: 'text/plain' });
-    element.href = URL.createObjectURL(file);
-    element.download = "subgraph.json";
-    element.click();
-  }
-
-
 
   downloadJson = () => {
     var element = document.createElement("a");
@@ -286,9 +279,14 @@ class CytoscapeDagreGraph extends Component {
         <div className="Container" >
           <div style={cyStyle} ref={(cyRef) => { this.cyRef = cyRef; }} />
         </div >
-
-        <button style={{ margin: 12 }} onClick={this.downloadJson}>Download json subgraph</button>
-
+        <Button
+          style={{ margin: 12 }}
+          variant="contained" 
+          color="primary"
+          component="label"
+          onClick={this.downloadJson}
+        >Load json graph
+        </Button>
         <EdgeDescription edge_description={this.state.edge_description} />
         <SelectedNodes className="LeftFloat" edge_description={this.state.selected_nodes} />
       </div>

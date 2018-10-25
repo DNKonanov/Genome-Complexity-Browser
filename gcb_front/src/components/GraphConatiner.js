@@ -18,6 +18,14 @@ import { fetchGraph } from '../redux/actions/graphActions'
 import { connect } from 'react-redux';
 
 
+function removeAllTips(){
+  console.log('remove tips')
+  var elements = document.getElementsByClassName('tippy-popper');
+  while(elements.length > 0){
+      elements[0].parentNode.removeChild(elements[0]);
+  }
+}
+
 class GraphContainer extends Component {
 
   state = {
@@ -26,6 +34,10 @@ class GraphContainer extends Component {
     depth: '30',
     freq_min: '2',
     layout: 'graphviz',
+  }
+
+  componentDidUpdate() {
+    removeAllTips()
   }
 
   handleChange = (event) => {

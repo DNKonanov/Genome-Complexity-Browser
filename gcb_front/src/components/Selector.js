@@ -36,6 +36,14 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { withStyles } from '@material-ui/core/styles';
 
 
+function removeAllTips(){
+  console.log('remove tips')
+  var elements = document.getElementsByClassName('tippy-popper');
+  while(elements.length > 0){
+      elements[0].parentNode.removeChild(elements[0]);
+  }
+}
+
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -104,6 +112,7 @@ class Selector extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    removeAllTips()
     if (this.props.organisms.length > 0) {// This means we succesfully loaded list of organisms
       if (this.props.stamms.org !== this.state.org) { //Stamms for selected organims are not loaded
         this.props.fetchStammsForOrg(this.state.org);
@@ -418,7 +427,7 @@ class Selector extends Component {
                     </Grid>
 
                     <Grid item>
-                    {this.state.user_coordinates_str.length === 0 ? <Typography>Coordinates are not loaded</Typography> : <Typography> Coordinates was loaded succesfully</Typography>}
+                    {this.state.user_coordinates_str.length === 0 ? <Typography>User coordinates are not loaded</Typography> : <Typography> Coordinates was loaded succesfully</Typography>}
                     </Grid>
 
                   </Grid>
