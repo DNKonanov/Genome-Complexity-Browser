@@ -19,6 +19,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import RaisedButton from '@material-ui/core/Button';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
@@ -68,7 +69,6 @@ class Selector extends Component {
 
   state = {
     org: 'Achromobacter_xylosoxidans',
-    // stamm: 'GCF_000165835.1_ASM16583v1_genomic',
     stamm: 'GCF_000165835.1_ASM16583v1_genomic',
     contig: 'NC_014640.1',
     og_start: 'OG0001707',
@@ -379,17 +379,39 @@ class Selector extends Component {
               fullWidth margin="normal"
             />
 
-            <input type="submit" value='Show user values' onClick={(e) => { this.drawUserCoordinates(e) }} />
+              <Grid container direction="row" justify="flex-start" alignItems="flex-start">
+                <Button 
+                  style={{ margin: 12 }}
+                  variant="contained" 
+                  color="primary"
+                  component="label"
+                >
+                  Show user coordinates
+                  <input
+                    onClick={(e) => { this.drawUserCoordinates(e) }}
+                    style={{ display: 'none' }}
+                    type="submit"
+                  />
+                </Button>
 
-            <label>
-              <input type="file" ref="input_reader" onChange={this.inputFileChanged} />
-            </label>
+                <Button
+                  style={{ margin: 12 }}
+                  variant="contained" 
+                  color="primary"
+                  component="label"
+                >
+                  Load file
+                  <input
+                    onChange={this.inputFileChanged}
+                    style={{ display: 'none' }}
+                    type="file"
+                  />
+                </Button>
 
-            <label>
-              <select style={{ margin: 12 }} value={this.state.draw_type} name='draw_types' onChange={e => this.setState({ draw_type: e.target.value })}>
-                {this.state.draw_types.map(draw_type => <option key={draw_type} value={draw_type}>{draw_type}</option>)}
-              </select>
-            </label>
+                <Select style={{ margin: 12 }} value={this.state.draw_type} name='draw_types' onChange={e => this.setState({ draw_type: e.target.value })}>
+                  {this.state.draw_types.map(draw_type => <MenuItem key={draw_type} value={draw_type}>{draw_type}</MenuItem>)}
+                </Select>
+              </Grid>
             </Grid> 
           </ExpansionPanelDetails>
         </ExpansionPanel>
