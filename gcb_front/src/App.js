@@ -93,7 +93,7 @@ class App extends Component {
       <Provider store={store} >
         < div className={classes.root} >
 
-          <AppBar position="static">
+          {/* <AppBar position="static">
             <Toolbar>
               <IconButton className={classes.menuButton} color="inherit" aria-label="Menu"
                 onClick={this.toggleDrawer('top', true)}>
@@ -114,7 +114,7 @@ class App extends Component {
             >
 
             </div>
-          </Drawer>
+          </Drawer> */}
 
 
 

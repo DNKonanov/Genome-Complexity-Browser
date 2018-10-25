@@ -5,7 +5,8 @@ import {
 const initialState = {
   graph: {
     params: {},
-    data: ""
+    data: "",
+    result: 'NOT LOADED'
   }
 }
 
@@ -17,7 +18,8 @@ export default function (state = initialState, action) {
         ...state,
         graph: {
           params: action.params,
-          data: action.payload
+          data: action.payload,
+          result: action.result
         }
       };
     default:
