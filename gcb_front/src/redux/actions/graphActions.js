@@ -25,6 +25,6 @@ export function fetchGraph(params) {
         payload: {},
         params: params,
         result: 'FAIL'
-      }));
+    }));
   }
 }

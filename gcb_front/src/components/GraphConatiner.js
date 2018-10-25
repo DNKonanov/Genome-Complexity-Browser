@@ -49,6 +49,7 @@ class GraphContainer extends Component {
   }
 
   handleLayout = event => {
+    removeAllTips()
     this.setState({ layout: event.target.value });
   };
 

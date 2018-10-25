@@ -167,12 +167,18 @@ class Selector extends Component {
                     }    
                   }
                   console.log('ALL SET OUT')
+                  
                   if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
                     this.setState({
                       og_end: this.props.complexity.OGs[close_end_gene],
                       og_start: this.props.complexity.OGs[close_st_gene]
                     })
+                    this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
+                    this.props.complexity.OGs[close_st_gene], this.props.complexity.OGs[close_end_gene], this.state.method, this.state.pars, this.state.operons
+    
+                    )
                   }
+                  
                 }
               }
             }
