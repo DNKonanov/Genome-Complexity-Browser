@@ -85,7 +85,7 @@ class CytoscapeDagreGraph extends Component {
 
 
   componentDidMount() {
-    console.log('GRAPH DID MOUNT')
+    // console.log('GRAPH DID MOUNT')
     conf.container = this.cyRef;
     conf.elements = this.props.data;
     const cy = cytoscape(conf);
@@ -100,7 +100,7 @@ class CytoscapeDagreGraph extends Component {
 
 
   prepareCy = (nextProps) => {
-    console.log(this.state.cy)
+    // console.log(this.state.cy)
 
     if (this.state.cy) {
       this.state.cy.destroy();
@@ -158,8 +158,8 @@ class CytoscapeDagreGraph extends Component {
 
     cy.on('click', 'edge', function (evt) {
 
-      console.log(evt.target.controlPoints())
-      console.log(evt.target.segmentPoints())
+      // console.log(evt.target.controlPoints())
+      // console.log(evt.target.segmentPoints())
 
       this.setState({
         edge_description: evt.target.data().description
@@ -234,11 +234,11 @@ class CytoscapeDagreGraph extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(' CY WILL RECIEVE PROPS ')
+    // console.log(' CY WILL RECIEVE PROPS ')
 
     this.prepareCy(nextProps)
-    console.log(nextProps)
-    console.log('DRAW')
+    // console.log(nextProps)
+    // console.log('DRAW')
   }
 
   componentDidUpdate(prevProps, prevState) {

@@ -40,7 +40,7 @@ class GraphContainer extends Component {
     this.setState({ layout: event.target.value });
   };
 
-  handleGraphDraw = () => {
+  getGraphParams() {
     // Get selector data from redux store
     let sel = this.props.selection
 
@@ -59,23 +59,27 @@ class GraphContainer extends Component {
       freq_min: this.state.freq_min
     }
 
+    return graph_params
+  }
+
+  handleGraphDraw = () => {
     // Make redux request
-    this.props.fetchGraph(graph_params)
+    let params = this.getGraphParams()
+    //console.log(params)
+    this.props.fetchGraph(params)
     this.setState({ loading: true })
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('DID UPDATE')
-    console.log(this.props.graph)
-
+    
     if (this.props.graph.result === 'SUCCESS' && this.state.loading === true) {
-      this.setState({ loading: false })
+      if(JSON.stringify(this.props.graph.params) === JSON.stringify(this.getGraphParams()))
+        this.setState({ loading: false })
     }
   }
 
 
   render() {
-
     let what_to_show = null
     if (this.state.loading) {
       what_to_show =
@@ -89,15 +93,16 @@ class GraphContainer extends Component {
       if (this.props.graph.result === 'NOT LOADED') {
         what_to_show =
           <div style={{ display: 'flex', height: 800, width: '100%' }}>
-            <Typography variant="h2"style={{ margin: 'auto', textAlign: 'center' }} > Please, select parameters and click DRAW button</Typography>
+            <Typography variant="h2" style={{ margin: 'auto', textAlign: 'center' }} > Please, select parameters and click DRAW button</Typography>
           </div>
       }
       else {
+
         what_to_show = < CytoscapeDagreGraph data={this.props.graph.data} layout={this.state.layout} />
       }
     }
 
-    console.log(this.props.graph)
+    // console.log(what_to_show)
     return (
       <div>
         <Grid container direction="row" justify="flex-start" alignItems="center">
@@ -139,6 +144,7 @@ class GraphContainer extends Component {
         </Grid>
 
         {what_to_show}
+
       </div>
     )
   }
