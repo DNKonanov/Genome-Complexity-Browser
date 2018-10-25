@@ -216,6 +216,16 @@ class Selector extends Component {
     e.preventDefault()
   }
 
+
+  deleteUserCoordinates = (e) => {
+
+    this.setState({
+      user_coordinates: [],
+      user_coordinates_str: ''
+    })
+    e.preventDefault()
+  }
+
   inputFileChanged = (e) => {
 
     if (window.FileReader) {
@@ -230,6 +240,8 @@ class Selector extends Component {
     else {
       alert('Sorry, your browser does\'nt support for preview');
     }
+
+    e.preventDefault()
   }
 
 
@@ -413,6 +425,22 @@ class Selector extends Component {
                     </Grid>
                     <Grid item>
 
+                      <Button 
+                        style={{ margin: 12 }}
+                        variant="contained" 
+                        color="primary"
+                        component="label"
+                      >
+                        Delete user coordinates
+                        <input
+                          onClick={(e) => { this.deleteUserCoordinates(e) }}
+                          style={{ display: 'none' }}
+                          type="submit"
+                        />
+                      </Button>
+                    </Grid>
+                    <Grid item>
+
                       <Button
                         style={{ margin: 12 }}
                         variant="contained" 
@@ -421,7 +449,7 @@ class Selector extends Component {
                       >
                         Load file
                         <input
-                          onChange={this.inputFileChanged}
+                          onChange={(e) => {this.inputFileChanged(e)}}
                           style={{ display: 'none' }}
                           type="file"
                         />
