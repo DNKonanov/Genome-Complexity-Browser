@@ -12,7 +12,6 @@ import SelectedNodes from '../components/SelectedNodes';
 import '../App.css';
 
 
-
 cytoscape.use(dagre);
 cytoscape.use(popper);
 

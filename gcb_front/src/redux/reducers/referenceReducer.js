@@ -19,8 +19,8 @@ const initialState = {
     stamm: 'None'
   },
   complexity: {
-    complexity: 'None',
-    max_complexity: [],
+    complexity: [],
+    max_complexity: 0,
     length_list: [],
     OGs: [],
     coord_list: [],

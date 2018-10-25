@@ -18,6 +18,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import RaisedButton from '@material-ui/core/Button';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
@@ -83,12 +84,11 @@ class Selector extends Component {
     user_coordinates: [],
     user_values: [],
     draw_types: ['line', 'markers'],
-    draw_type: 'line plot',
+    draw_type: 'line',
     data: '',
     src: '',
   };
 
-  prev_state = {}
 
   componentDidMount() {
     this.props.fetchOrganisms();
@@ -124,37 +124,40 @@ class Selector extends Component {
             }
             else {
               let comp_par = this.props.complexity.request;
+
+              let p = comp_par.pars
               if (comp_par.org !== this.state.org || comp_par.stamm !== this.state.stamm ||
                 comp_par.contig !== this.state.contig || comp_par.method !== this.state.method ||
                 comp_par.pars !== this.state.pars) {
                 this.props.fetchComplexity(this.state.org, this.state.stamm, this.state.contig, this.state.method, this.state.pars)
               }
+
               else {
-                if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end) {
+                if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end || p !== this.state.pars) {
                   let close_st_gene = 0
                   let close_end_gene = 0
                   let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
                   let close_end_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
-
                   for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
                     let len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_start);
                     if (len < close_st_len) {
                       close_st_gene = i;
                       close_st_len = len
                     }
+
+
                     len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_end);
                     if (len < close_end_len) {
                       close_end_gene = i;
                       close_end_len = len
-                    }
-
+                    }    
                   }
 
-                  if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity[close_end_gene] !== undefined) {
-                    console.log('some')
+                  if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
+
                     this.setState({
-                      og_end: this.props.complexity[close_end_gene],
-                      og_start: this.props.complexity[close_st_gene]
+                      og_end: this.props.complexity.OGs[close_end_gene],
+                      og_start: this.props.complexity.OGs[close_st_gene]
                     })
                   }
                 }
@@ -164,7 +167,8 @@ class Selector extends Component {
         }
       }
     }
-    this.prev_state = this.state
+
+
   }
 
 
@@ -234,7 +238,7 @@ class Selector extends Component {
     const data = this.props.complexity
     return (
       <div className={classes.root}>
-
+      <Button variant="contained" color="primary" onClick={this.handleSubmit} style={{ margin: 12 }}>Draw</Button>
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>SELECT PARAMETERS</Typography>
@@ -352,6 +356,11 @@ class Selector extends Component {
 
           </ExpansionPanelDetails>
         </ExpansionPanel>
+        {/*<ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>USER COORDINATES</Typography>
+          </ExpansionPanelSummary>
+        </ExpansionPanel>*/}
 
         {data.complexity === 'None' ?
           <LinearProgress />
@@ -374,11 +383,11 @@ class Selector extends Component {
                         </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item>
+                    {/*<Grid item>
                       <Typography style={{ maxWidth: 350 }}> <b>Input values</b> (format is "coord1:value1,coord2:value2, ... ".
-                      {/* Spaces, tabs and EOLs are allowed) */}
+                      {/* Spaces, tabs and EOLs are allowed)
                       </Typography>
-                    </Grid>
+                    </Grid>*/}
 
                     {/* <TextField id="user_coordinates" label="Coordinates" multiline rowsMax="4"
                 value={this.state.user_coordinates_str}
@@ -388,21 +397,46 @@ class Selector extends Component {
 
                     <Grid item>
 
-                      <Button onClick={(e) => { this.drawUserCoordinates(e) }} > Show user values </Button>
+                      <Button 
+                        style={{ margin: 12 }}
+                        variant="contained" 
+                        color="primary"
+                        component="label"
+                      >
+                        Show user coordinates
+                        <input
+                          onClick={(e) => { this.drawUserCoordinates(e) }}
+                          style={{ display: 'none' }}
+                          type="submit"
+                        />
+                      </Button>
                     </Grid>
                     <Grid item>
 
-                      <label>
-                        <Button type="file" ref="input_reader" onChange={this.inputFileChanged} >Choose file</Button>
-                      </label>
+                      <Button
+                        style={{ margin: 12 }}
+                        variant="contained" 
+                        color="primary"
+                        component="label"
+                      >
+                        Load file
+                        <input
+                          onChange={this.inputFileChanged}
+                          style={{ display: 'none' }}
+                          type="file"
+                        />
+                      </Button>
                     </Grid>
                     <Grid item>
 
-                      <label>
-                        <select style={{ margin: 12 }} value={this.state.draw_type} name='draw_types' onChange={e => this.setState({ draw_type: e.target.value })}>
-                          {this.state.draw_types.map(draw_type => <option key={draw_type} value={draw_type}>{draw_type}</option>)}
-                        </select>
-                      </label>
+                      <Select style={{ margin: 12 }} value={this.state.draw_type} name='draw_types' onChange={e => this.setState({ draw_type: e.target.value })}>
+                        {this.state.draw_types.map(draw_type => <MenuItem key={draw_type} value={draw_type}>{draw_type}</MenuItem>)}
+                      </Select>
+                      
+                    </Grid>
+
+                    <Grid item>
+                    {this.state.user_coordinates_str.length === 0 ? <Typography>Coordinates are not loaded</Typography> : <Typography> Coordinates was loaded succesfully</Typography>}
                     </Grid>
 
                   </Grid>
@@ -483,9 +517,14 @@ class Selector extends Component {
           </ExpansionPanel>
 
         }
-
-
+      
+      
+      
+      
       </div>
+        
+
+      
     )
   }
 

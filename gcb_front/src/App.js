@@ -116,12 +116,14 @@ class App extends Component {
             </div>
           </Drawer>
 
+
+
+          {load_field}
           <div className={classes.content}>
             <Selector getDataFromSelector={this.getDataFromSelector} />
             <Paper>
               <GraphContainer data={this.state.data} getData={this.getData} />
             </Paper>
-            {load_field}
 
           </div>
         </div>
