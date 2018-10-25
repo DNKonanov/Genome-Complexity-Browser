@@ -118,7 +118,6 @@ class App extends Component {
 
 
 
-          {load_field}
           <div className={classes.content}>
             <Selector getDataFromSelector={this.getDataFromSelector} />
             <Paper>

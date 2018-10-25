@@ -2,7 +2,8 @@ import {
   FETCH_ORGANISMS,
   FETCH_STAMMS,
   FETCH_CONTIGS,
-  FETCH_COMPLEXITY
+  FETCH_COMPLEXITY,
+  PUT_SELECTION
 } from "../constants/action-types";
 
 import * as math from 'mathjs';
@@ -31,7 +32,8 @@ const initialState = {
       method: '',
       pars: ''
     }
-  }
+  },
+  selection: 'None'
 }
 
 
@@ -70,6 +72,11 @@ export default function (state = initialState, action) {
           request: action.params
         }
       };
+    case PUT_SELECTION:
+      return {
+        ...state,
+        selection: action.payload
+      }
     default:
       return state;
   }
