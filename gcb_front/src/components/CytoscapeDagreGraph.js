@@ -10,12 +10,7 @@ import dagre from 'cytoscape-dagre';
 import EdgeDescription from '../components/EdgeDescription';
 import SelectedNodes from '../components/SelectedNodes';
 import '../App.css';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
+
 
 cytoscape.use(dagre);
 cytoscape.use(popper);
@@ -35,8 +30,6 @@ let conf = {
       'border-width': 'data(bwidth)',
       'border-color': 'data(bcolor)',
       'border-opacity': 0.7,
-      // 'position': 'data(position)'
-      // 'position': {x: 'data(posx)', y: 'data(posy)'}
     }
   },
   {
@@ -44,6 +37,7 @@ let conf = {
     style: {
       'width': 'data(penwidth)',
       "curve-style": "unbundled-bezier",
+      // "curve-style": "segments",
       'target-arrow-shape': 'triangle',
       'line-color': 'data(color)',
       'target-arrow-color': 'data(color)',
@@ -65,7 +59,12 @@ let conf = {
   layout: {
     name: 'preset',
     positions: function (node) { return node.data().position }
-
+    // name: 'dagre',
+    // rankDir: "LR",
+    // ranker: 'network-simplex',
+    // nodeSep: 4, // the separation between adjacent nodes in the same rank
+    // edgeSep: 4, // the separation between adjacent edges in the same rank
+    // rankSep: 60, // the separation between adjacent nodes in the same rank
   }
 };
 
@@ -78,11 +77,10 @@ let cyStyle = {
 class CytoscapeDagreGraph extends Component {
 
   state = {
-    layout: 'graphviz',
     cy: {},
-    edge_description: '',
+    edge_description: 'empty',
     json_format: '',
-    selected_nodes: ''
+    selected_nodes: 'empty'
   };
 
 
@@ -95,14 +93,6 @@ class CytoscapeDagreGraph extends Component {
       cy: cy
     });
 
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    // if (JSON.strinstateis.props.data)) {
-    //   return false
-    // }
-
-    return true
   }
 
   handleChange = event => {
@@ -166,6 +156,9 @@ class CytoscapeDagreGraph extends Component {
     });
 
     cy.on('click', 'edge', function (evt) {
+
+      console.log(evt.target.controlPoints())
+      console.log(evt.target.segmentPoints())
 
       this.setState({
         edge_description: evt.target.data().description
@@ -248,7 +241,7 @@ class CytoscapeDagreGraph extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(' CY DID UPDATE ')
+    // console.log(' CY DID UPDATE ')
     if (prevState.layout !== this.state.layout) {
       conf.layout = {
         name: 'preset',
@@ -264,10 +257,8 @@ class CytoscapeDagreGraph extends Component {
           edgeSep: 4, // the separation between adjacent edges in the same rank
           rankSep: 60, // the separation between adjacent nodes in the same rank
         }
-
       }
-      console.log(this.props)
-
+      
       this.prepareCy(this.props)
     }
 
@@ -294,20 +285,7 @@ class CytoscapeDagreGraph extends Component {
   render() {
     return (
       <div>
-        <FormControl component="fieldset" style={{ marginTop: 6, marginleft: 16 }}>
-          <FormLabel component="legend">Layouter</FormLabel>
-          <RadioGroup
-            aria-label="layouter"
-            name="layouter"
 
-            value={this.state.layout}
-            onChange={this.handleChange}
-            style={{ display: 'inline' }}
-          >
-            <FormControlLabel value="dagre" control={<Radio />} label="Dagre" />
-            <FormControlLabel value="graphviz" control={<Radio />} label="Graphviz" />
-          </RadioGroup>
-        </FormControl>
         <div className="Container" >
           <div style={cyStyle} ref={(cyRef) => { this.cyRef = cyRef; }} />
         </div >
