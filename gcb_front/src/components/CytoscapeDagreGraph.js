@@ -95,10 +95,7 @@ class CytoscapeDagreGraph extends Component {
 
   }
 
-  handleChange = event => {
-    console.log(this.state)
-    this.setState({ layout: event.target.value });
-  };
+  
 
 
   prepareCy = (nextProps) => {
@@ -242,13 +239,13 @@ class CytoscapeDagreGraph extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     // console.log(' CY DID UPDATE ')
-    if (prevState.layout !== this.state.layout) {
+    if (prevProps.layout !== this.props.layout) {
       conf.layout = {
         name: 'preset',
         positions: function (node) { return node.data().position }
       }
 
-      if (this.state.layout === 'dagre') {
+      if (this.props.layout === 'dagre') {
         conf.layout = {
           name: 'dagre',
           rankDir: "LR",

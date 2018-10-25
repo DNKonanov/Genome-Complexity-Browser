@@ -5,7 +5,7 @@ import {
 const initialState = {
   graph: {
     params: {},
-    data: {}
+    data: ""
   }
 }
 

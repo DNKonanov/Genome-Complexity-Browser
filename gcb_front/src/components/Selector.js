@@ -26,7 +26,7 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
 
-import { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity } from '../redux/actions/referenceActions'
+import { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity, putSelectedRef } from '../redux/actions/referenceActions'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -130,6 +130,11 @@ class Selector extends Component {
                 comp_par.contig !== this.state.contig || comp_par.method !== this.state.method ||
                 comp_par.pars !== this.state.pars) {
                 this.props.fetchComplexity(this.state.org, this.state.stamm, this.state.contig, this.state.method, this.state.pars)
+                this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
+                  this.state.og_start, this.state.og_end, this.state.method, this.state.pars, this.state.operons
+
+                )
+                console.log('ALL SET OUT')
               }
 
               else {
@@ -152,9 +157,8 @@ class Selector extends Component {
                       close_end_len = len
                     }    
                   }
-
+                  console.log('ALL SET OUT')
                   if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
-
                     this.setState({
                       og_end: this.props.complexity.OGs[close_end_gene],
                       og_start: this.props.complexity.OGs[close_st_gene]
@@ -238,7 +242,6 @@ class Selector extends Component {
     const data = this.props.complexity
     return (
       <div className={classes.root}>
-      <Button variant="contained" color="primary" onClick={this.handleSubmit} style={{ margin: 12 }}>Draw</Button>
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>SELECT PARAMETERS</Typography>
@@ -304,39 +307,6 @@ class Selector extends Component {
                     </Grid>
 
                   </Grid>
-                  {/* <Grid item>
-                    <FormControl>
-                      <InputLabel htmlFor="method">Method</InputLabel>
-                      <Select value={this.state.method} name='method' onChange={this.handleChange}>
-                        {this.state.methods.map(method => <MenuItem key={method} value={method}> {method} </MenuItem>)}
-                      </Select>
-                    </FormControl>
-                  </Grid> */}
-
-                  {/* <Grid container direction="row" justify="flex-start" alignItems="flex-start">
-
-                    <Grid item>
-                      <TextField label={'Tails'} name='tails' value={this.state.tails} onChange={this.handleChange} />
-                    </Grid>
-
-                    <Grid item>
-                      <TextField label={'Depth'} name='depth' value={this.state.depth} onChange={this.handleChange} />
-                    </Grid>
-
-                  </Grid>
-
-
-                  <Grid container direction="row" justify="flex-start" alignItems="flex-start">
-
-                    <Grid item>
-                      <TextField label={'Minimal edge'} name='freq_min' value={this.state.freq_min} onChange={this.handleChange} />
-                    </Grid>
-
-                    <Grid item>
-                      <TextField label={'Window'} name='window' value={this.state.window} onChange={this.handleChange} />
-                    </Grid>
-
-                  </Grid> */}
 
                   <Grid item>
                     <FormControlLabel
@@ -356,11 +326,6 @@ class Selector extends Component {
 
           </ExpansionPanelDetails>
         </ExpansionPanel>
-        {/*<ExpansionPanel>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>USER COORDINATES</Typography>
-          </ExpansionPanelSummary>
-        </ExpansionPanel>*/}
 
         {data.complexity === 'None' ?
           <LinearProgress />
@@ -383,17 +348,6 @@ class Selector extends Component {
                         </Select>
                       </FormControl>
                     </Grid>
-                    {/*<Grid item>
-                      <Typography style={{ maxWidth: 350 }}> <b>Input values</b> (format is "coord1:value1,coord2:value2, ... ".
-                      {/* Spaces, tabs and EOLs are allowed)
-                      </Typography>
-                    </Grid>*/}
-
-                    {/* <TextField id="user_coordinates" label="Coordinates" multiline rowsMax="4"
-                value={this.state.user_coordinates_str}
-                onChange={e => this.setState({ user_coordinates_str: e.target.value })}
-                fullWidth margin="normal"
-              /> */}
 
                     <Grid item>
 
@@ -518,13 +472,7 @@ class Selector extends Component {
 
         }
       
-      
-      
-      
       </div>
-        
-
-      
     )
   }
 
@@ -537,4 +485,4 @@ const mapStateToProps = state => ({
   complexity: state.reference.complexity
 });
 
-export default connect(mapStateToProps, { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity })(withStyles(styles)(Selector));
+export default connect(mapStateToProps, { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity, putSelectedRef })(withStyles(styles)(Selector));

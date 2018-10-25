@@ -32,42 +32,38 @@ class GraphContainer extends Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
+  handleLayout = event => {
+    this.setState({ layout: event.target.value });
+  };
+  
   handleGraphDraw = () => {
-    console.log('HANDLE DRAW BUTTON')
-    let graph_params = {
-      org: '',
-      stamm: '',
-      contig: '',
-      og_start: '',
-      og_end: '',
-      window: '',
-      tails: '',
-      pars_int: '',
-      operons_int: '',
-      depth: '',
-      freq_min: ''
-    }
-
     // Get selector data from redux store
-    let pars_int = 0
-    // if (data_from_selector.pars === true) pars_int = 1
-
-    let operons_int = 0
-    // if (data_from_selector.operons === true) operons_int = 1
+    let sel = this.props.selection
 
     // Get data from current component 
-    graph_params.window = this.state.window;
-    graph_params.tails = this.state.tails;
-    graph_params.depth = this.state.depth;
-    graph_params.freq_min = this.state.freq_min;
+    let graph_params = {
+      org: sel.org,
+      stamm: sel.stamm,
+      contig: sel.contig,
+      og_start: sel.og_start,
+      og_end: sel.og_end,
+      window: this.state.window,
+      tails: this.state.tails,
+      pars_int: sel.pars_int.toString(),
+      operons_int: sel.operons_int.toString(),
+      depth: this.state.depth,
+      freq_min: this.state.freq_min
+    }
 
     // Make redux request
     this.props.fetchGraph(graph_params)
-    
+
   }
 
 
   render() {
+
+    console.log(this.props.graph)
     return (
       <div>
         <Grid container direction="row" justify="flex-start" alignItems="center">
@@ -79,7 +75,7 @@ class GraphContainer extends Component {
                 name="layouter"
 
                 value={this.state.layout}
-                onChange={this.handleChange}
+                onChange={this.handleLayout}
                 style={{ display: 'inline' }}
               >
                 <FormControlLabel value="dagre" control={<Radio />} label="Dagre" />
@@ -105,12 +101,11 @@ class GraphContainer extends Component {
 
           <Grid item >
             <Button variant="contained" color="primary" onClick={this.handleGraphDraw} style={{ margin: 12 }}>Draw</Button>
-
           </Grid>
         </Grid>
 
         
-        <CytoscapeDagreGraph data={this.props.data}/>
+        <CytoscapeDagreGraph data={this.props.graph.data} layout={this.state.layout}/>
 
       </div>
     )
@@ -118,7 +113,8 @@ class GraphContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  graph: state.graph.graph
+  graph: state.graph.graph,
+  selection: state.reference.selection
 });
 
 export default connect(mapStateToProps, { fetchGraph })(GraphContainer)

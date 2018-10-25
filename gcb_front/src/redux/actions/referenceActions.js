@@ -75,6 +75,11 @@ export function fetchComplexity(org, stamm, contig, method, pars) {
 
 export function putSelectedRef(org, stamm, contig, og_start, og_end, method, pars, operons) {
   return function (dispatch) {
+    let pars_int = 0
+    if (pars === true) pars_int = 1
+
+    let operons_int = 0
+    if (operons === true) operons_int = 1
     dispatch({
       type: PUT_SELECTION,
       payload: {
@@ -84,8 +89,8 @@ export function putSelectedRef(org, stamm, contig, og_start, og_end, method, par
         og_start: og_start,
         og_end: og_end,
         method: method,
-        pars_int: pars,
-        operons_int: operons
+        pars_int: pars_int,
+        operons_int: operons_int
       }
     })
   }
