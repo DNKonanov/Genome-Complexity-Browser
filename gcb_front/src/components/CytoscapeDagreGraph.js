@@ -91,22 +91,12 @@ class CytoscapeDagreGraph extends Component {
 
 
   componentDidMount() {
-    console.log('GRAPH DID MOUNT')
-    conf.container = this.cyRef;
-    conf.elements = this.props.data;
-    const cy = cytoscape(conf);
-
-    this.setState({
-      cy: cy
-    });
-
+    console.log('--CY DID MOUNT')
+    this.prepareCy(this.props)
   }
 
-  
-
-
   prepareCy = (nextProps) => {
-    console.log(this.state.cy)
+    console.log("--prepareCy")
 
     if (this.state.cy) {
       this.state.cy.destroy();
@@ -164,8 +154,8 @@ class CytoscapeDagreGraph extends Component {
 
     cy.on('click', 'edge', function (evt) {
 
-      console.log(evt.target.controlPoints())
-      console.log(evt.target.segmentPoints())
+      // console.log(evt.target.controlPoints())
+      // console.log(evt.target.segmentPoints())
 
       this.setState({
         edge_description: evt.target.data().description
@@ -240,15 +230,16 @@ class CytoscapeDagreGraph extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(' CY WILL RECIEVE PROPS ')
+    console.log('--CY WILL RECIEVE PROPS ')
 
     this.prepareCy(nextProps)
-    console.log(nextProps)
-    console.log('DRAW')
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // console.log(' CY DID UPDATE ')
+    console.log('--CY DID UPDATE ')
+    console.log(this.props)
+    console.log(prevProps)
+    //if (this.prevProps === undefined) {this.prepareCy(this.props)}
     if (prevProps.layout !== this.props.layout) {
       conf.layout = {
         name: 'preset',
@@ -265,7 +256,6 @@ class CytoscapeDagreGraph extends Component {
           rankSep: 60, // the separation between adjacent nodes in the same rank
         }
       }
-      
       this.prepareCy(this.props)
     }
 
