@@ -28,25 +28,15 @@ class GraphLayout extends Component {
 
     render() {
         let what_to_show = null
-        if (false) {
-            what_to_show =
-            <div style={{ display: 'flex', height: 800, width: '100%' }}>
-                <CircularProgress style={{ margin: 'auto' }}
-                //className={classes.progress} 
-                size={100} />
+        if (this.props.graph.result === 'NOT LOADED') {
+        what_to_show =
+            <div style={{ display: 'flex', height: 300, width: '100%' }}>
+            <Typography variant="h4" style={{ margin: 'auto', textAlign: 'center' }} > Please, select parameters and click DRAW button</Typography>
             </div>
         }
         else {
-            if (this.props.graph.result === 'NOT LOADED') {
-            what_to_show =
-                <div style={{ display: 'flex', height: 300, width: '100%' }}>
-                <Typography variant="h4" style={{ margin: 'auto', textAlign: 'center' }} > Please, select parameters and click DRAW button</Typography>
-                </div>
-            }
-            else {
 
             what_to_show = < CytoscapeDagreGraph data={this.props.graph.data} layout={this.props.graph.params.layout} />
-            }
         }
 
         // console.log(what_to_show)
