@@ -282,7 +282,7 @@ class CytoscapeDagreGraph extends Component {
           color="primary"
           component="label"
           onClick={this.downloadJson}
-        >Load json graph
+        >Download json graph
         </Button>
         <EdgeDescription edge_description={this.state.edge_description} />
         <SelectedNodes className="LeftFloat" edge_description={this.state.selected_nodes} />

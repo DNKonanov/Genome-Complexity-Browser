@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 
+import {putSelectedRef } from '../redux/actions/referenceActions'
 
 import CytoscapeDagreGraph from './CytoscapeDagreGraph'
 
@@ -36,7 +37,8 @@ class GraphContainer extends Component {
     depth: '30',
     freq_min: '2',
     layout: 'graphviz',
-    loading: false
+    loading: false,
+    step: 1
   }
 
 
@@ -88,6 +90,38 @@ class GraphContainer extends Component {
     }
   }
 
+  stepOfGraph = (e, direction) => {
+
+    let sel = this.props.selection
+
+    console.log(sel)
+
+    let n
+    if (direction === 'right') n = parseInt(this.state.step)
+    else if (direction === 'left') n = -parseInt(this.state.step)
+
+    let start = this.props.complexity.OGs[this.props.complexity.OGs.indexOf(sel.og_start) + n]
+    let end = this.props.complexity.OGs[this.props.complexity.OGs.indexOf(sel.og_end) + n]
+
+    // Get data from current component 
+    let params = {
+      org: sel.org,
+      stamm: sel.stamm,
+      contig: sel.contig,
+      og_start: start,
+      og_end: end,
+      window: this.state.window,
+      tails: this.state.tails,
+      pars_int: sel.pars_int.toString(),
+      operons_int: sel.operons_int.toString(),
+      depth: this.state.depth,
+      freq_min: this.state.freq_min,
+      layout: this.state.layout
+    }
+    this.props.putSelectedRef(sel.org, sel.stamm, sel.contig, start, end, sel.method, sel.pars, sel.operons)
+    this.props.fetchGraph(params)
+    this.setState({ loading: true })
+  }
 
   render() {
     let show_load
@@ -98,7 +132,9 @@ class GraphContainer extends Component {
           size={40} />
     }
     else {
-      show_load = undefined
+      show_load = <CircularProgress style={{ margin: 'auto' }} 
+      variant='static'
+      size={40} />
     }
     // console.log(what_to_show)
     return (
@@ -143,6 +179,18 @@ class GraphContainer extends Component {
           <Grid item>
             {show_load}
           </Grid>
+          <Grid item >
+            <Button  onClick={(e) => this.stepOfGraph(e, 'left')}>{'\u27F5'}</Button>
+          </Grid>
+
+          <Grid item >
+            <Button  onClick={(e) => this.stepOfGraph(e, 'right')}>{'\u27F6'}</Button>
+          </Grid>
+
+          <Grid item style={{ maxWidth: 150, margin: 12 }}>
+            <TextField type="number" label={'Step'} name='step' value={this.state.step} onChange={this.handleChange} />
+          </Grid>
+
         </Grid>
 
 
@@ -153,7 +201,8 @@ class GraphContainer extends Component {
 
 const mapStateToProps = state => ({
   graph: state.graph.graph,
-  selection: state.reference.selection
+  selection: state.reference.selection,
+  complexity: state.reference.complexity
 });
 
-export default connect(mapStateToProps, { fetchGraph })(GraphContainer)
+export default connect(mapStateToProps, { fetchGraph, putSelectedRef })(GraphContainer)

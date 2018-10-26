@@ -111,6 +111,9 @@ class Selector extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    
+    console.log(this.state.og_start)
+
     removeAllTips()
     if (this.props.organisms.length > 0) {// This means we succesfully loaded list of organisms
       if (this.props.stamms.org !== this.state.org) { //Stamms for selected organims are not loaded
@@ -132,20 +135,34 @@ class Selector extends Component {
             }
             else {
               let comp_par = this.props.complexity.request;
+              this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
+                this.state.og_start, this.state.og_end, this.state.method, this.state.pars, this.state.operons
 
+              )
               let p = comp_par.pars
               if (comp_par.org !== this.state.org || comp_par.stamm !== this.state.stamm ||
                 comp_par.contig !== this.state.contig || comp_par.method !== this.state.method ||
                 comp_par.pars !== this.state.pars) {
                 this.props.fetchComplexity(this.state.org, this.state.stamm, this.state.contig, this.state.method, this.state.pars)
-                this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
-                  this.state.og_start, this.state.og_end, this.state.method, this.state.pars, this.state.operons
-
-                )
+                
                 console.log('ALL SET OUT')
               }
 
               else {
+                if (this.props.og_start !== this.state.og_start || this.props.og_end !== this.state.og_end) {
+                  console.log(this.props.og_end)
+                  console.log(this.state.og_end)
+                  this.setState({
+                    og_start: this.props.og_start,
+                    og_end: this.props.og_end
+                  })
+                  this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
+                    this.props.og_start, this.props.og_end, this.state.method, this.state.pars, this.state.operons
+    
+                  )
+                }
+
+
                 if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end || p !== this.state.pars) {
                   let close_st_gene = 0
                   let close_end_gene = 0
@@ -173,9 +190,7 @@ class Selector extends Component {
                       og_start: this.props.complexity.OGs[close_st_gene]
                     })
                     this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
-                    this.props.complexity.OGs[close_st_gene], this.props.complexity.OGs[close_end_gene], this.state.method, this.state.pars, this.state.operons
-    
-                    )
+                    this.props.complexity.OGs[close_st_gene], this.props.complexity.OGs[close_end_gene], this.state.method, this.state.pars, this.state.operons)
                   }
                   
                 }
@@ -268,7 +283,7 @@ class Selector extends Component {
     const data = this.props.complexity
     return (
       <div className={classes.root}>
-        <ExpansionPanel defaultExpanded='true'>
+        <ExpansionPanel defaultExpanded={true}>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>SELECT PARAMETERS</Typography>
           </ExpansionPanelSummary>
@@ -524,7 +539,9 @@ const mapStateToProps = state => ({
   organisms: state.reference.organisms,
   stamms: state.reference.stamms,
   contigs: state.reference.contigs,
-  complexity: state.reference.complexity
+  complexity: state.reference.complexity,
+  og_start: state.reference.selection.og_start,
+  og_end: state.reference.selection.og_end
 });
 
 export default connect(mapStateToProps, { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity, putSelectedRef })(withStyles(styles)(Selector));
