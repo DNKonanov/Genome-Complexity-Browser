@@ -37,7 +37,6 @@ import { withStyles } from '@material-ui/core/styles';
 
 
 function removeAllTips(){
-  console.log('remove tips')
   var elements = document.getElementsByClassName('tippy-popper');
   while(elements.length > 0){
       elements[0].parentNode.removeChild(elements[0]);
@@ -269,7 +268,7 @@ class Selector extends Component {
     const data = this.props.complexity
     return (
       <div className={classes.root}>
-        <ExpansionPanel>
+        <ExpansionPanel defaultExpanded='true'>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>SELECT PARAMETERS</Typography>
           </ExpansionPanelSummary>

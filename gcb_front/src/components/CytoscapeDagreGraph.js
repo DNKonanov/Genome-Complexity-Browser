@@ -95,6 +95,7 @@ class CytoscapeDagreGraph extends Component {
     this.prepareCy(this.props)
   }
 
+
   prepareCy = (nextProps) => {
     console.log("--prepareCy")
 
@@ -237,8 +238,6 @@ class CytoscapeDagreGraph extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     console.log('--CY DID UPDATE ')
-    console.log(this.props)
-    console.log(prevProps)
     //if (this.prevProps === undefined) {this.prepareCy(this.props)}
     if (prevProps.layout !== this.props.layout) {
       conf.layout = {

@@ -27,6 +27,7 @@ import Drawer from '@material-ui/core/Drawer';
 
 
 import GraphContainer from './components/GraphConatiner'
+import GraphLayout from './components/GraphLayout'
 
 // import { SERVER_URL } from './constants'
 
@@ -62,13 +63,6 @@ class App extends Component {
     selected_nodes: '',
   }
 
-  getData = (data) => {
-    this.setState({
-      edge_description: data.edge_description,
-      selected_nodes: data.selected_nodes,
-    })
-    console.log(data)
-  }
 
   
   toggleDrawer = (side, open) => () => {
@@ -121,7 +115,8 @@ class App extends Component {
           <div className={classes.content}>
             <Selector getDataFromSelector={this.getDataFromSelector} />
             <Paper>
-              <GraphContainer data={this.state.data} getData={this.getData} />
+              <GraphContainer data={this.state.data}/>
+              <GraphLayout  />
             </Paper>
 
           </div>

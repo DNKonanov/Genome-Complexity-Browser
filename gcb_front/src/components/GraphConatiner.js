@@ -22,7 +22,6 @@ import { connect } from 'react-redux';
 
 
 function removeAllTips(){
-  console.log('remove tips')
   var elements = document.getElementsByClassName('tippy-popper');
   while(elements.length > 0){
       elements[0].parentNode.removeChild(elements[0]);
@@ -40,9 +39,6 @@ class GraphContainer extends Component {
     loading: false
   }
 
-  componentDidUpdate() {
-    removeAllTips()
-  }
 
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
@@ -69,7 +65,8 @@ class GraphContainer extends Component {
       pars_int: sel.pars_int.toString(),
       operons_int: sel.operons_int.toString(),
       depth: this.state.depth,
-      freq_min: this.state.freq_min
+      freq_min: this.state.freq_min,
+      layout: this.state.layout
     }
 
     return graph_params
@@ -84,7 +81,7 @@ class GraphContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    
+    removeAllTips()
     if (this.props.graph.result === 'SUCCESS' && this.state.loading === true) {
       if(JSON.stringify(this.props.graph.params) === JSON.stringify(this.getGraphParams()))
         this.setState({ loading: false })
@@ -93,28 +90,16 @@ class GraphContainer extends Component {
 
 
   render() {
-    let what_to_show = null
+    let show_load
     if (this.state.loading) {
-      what_to_show =
-        <div style={{ display: 'flex', height: 800, width: '100%' }}>
+      show_load =
           <CircularProgress style={{ margin: 'auto' }}
-            //className={classes.progress} 
-            size={300} />
-        </div>
+          //className={classes.progress} 
+          size={40} />
     }
     else {
-      if (this.props.graph.result === 'NOT LOADED') {
-        what_to_show =
-          <div style={{ display: 'flex', height: 800, width: '100%' }}>
-            <Typography variant="h2" style={{ margin: 'auto', textAlign: 'center' }} > Please, select parameters and click DRAW button</Typography>
-          </div>
-      }
-      else {
-
-        what_to_show = < CytoscapeDagreGraph data={this.props.graph.data} layout={this.state.layout} />
-      }
+      show_load = undefined
     }
-
     // console.log(what_to_show)
     return (
       <div>
@@ -154,9 +139,12 @@ class GraphContainer extends Component {
           <Grid item >
             <Button variant="contained" color="primary" onClick={this.handleGraphDraw} style={{ margin: 12 }}>Draw</Button>
           </Grid>
+
+          <Grid item>
+            {show_load}
+          </Grid>
         </Grid>
 
-        {what_to_show}
 
       </div>
     )
