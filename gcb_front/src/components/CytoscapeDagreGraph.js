@@ -1,7 +1,6 @@
 import React, {
   Component
 } from 'react';
-//import 'JSON';
 import tippy from 'tippy.js'
 
 import cytoscape from 'cytoscape';
@@ -11,14 +10,23 @@ import EdgeDescription from '../components/EdgeDescription';
 import SelectedNodes from '../components/SelectedNodes';
 import '../App.css';
 import Button from '@material-ui/core/Button';
-import removeAllTips from './Selector';
-
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
+import { Paper } from '@material-ui/core';
+
+import { withStyles } from '@material-ui/core/styles';
 
 
 cytoscape.use(dagre);
 cytoscape.use(popper);
+
+
+const styles = theme => ({
+  paper: {
+    height: 300,
+    overflow: 'auto'
+
+  }
+});
 
 let conf = {
   boxSelectionEnabled: true,
@@ -91,13 +99,11 @@ class CytoscapeDagreGraph extends Component {
 
 
   componentDidMount() {
-    console.log('--CY DID MOUNT')
     this.prepareCy(this.props)
   }
 
 
   prepareCy = (nextProps) => {
-    console.log("--prepareCy")
 
     if (this.state.cy) {
       this.state.cy.destroy();
@@ -207,7 +213,7 @@ class CytoscapeDagreGraph extends Component {
         });
       }
 
-    }.bind(this));
+    });
 
     cy.on('select', 'node', function () {
 
@@ -231,13 +237,11 @@ class CytoscapeDagreGraph extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('--CY WILL RECIEVE PROPS ')
 
     this.prepareCy(nextProps)
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('--CY DID UPDATE ')
     //if (this.prevProps === undefined) {this.prepareCy(this.props)}
     if (prevProps.layout !== this.props.layout) {
       conf.layout = {
@@ -270,6 +274,8 @@ class CytoscapeDagreGraph extends Component {
   }
 
   render() {
+
+    const { classes } = this.props;
     return (
       <div>
 
@@ -284,11 +290,24 @@ class CytoscapeDagreGraph extends Component {
           onClick={this.downloadJson}
         >Download json graph
         </Button>
-        <EdgeDescription edge_description={this.state.edge_description} />
-        <SelectedNodes className="LeftFloat" edge_description={this.state.selected_nodes} />
+        <Grid alignItems="flex-start" container direction="row" spacing={24}>
+          <Grid xs={6} item>
+            <Paper className={classes.paper}>
+              <EdgeDescription edge_description={this.state.edge_description} />
+            </Paper>
+            
+          </Grid>
+          <Grid xs={6} item>
+            <Paper className={classes.paper}>
+             <SelectedNodes className="LeftFloat" selected_nodes={this.state.selected_nodes} />
+            </Paper>
+            
+          </Grid>
+            
+        </Grid>
       </div>
     )
   }
 }
 
-export default CytoscapeDagreGraph;
+export default (withStyles(styles)(CytoscapeDagreGraph));

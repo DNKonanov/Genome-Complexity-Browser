@@ -2,23 +2,16 @@ import React, {
   Component
 } from 'react';
 import Plot from 'react-plotly.js';
-import * as math from 'mathjs';
-
-import Paper from '@material-ui/core/Paper';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Input from '@material-ui/core/Input';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import RaisedButton from '@material-ui/core/Button';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
@@ -28,7 +21,6 @@ import Grid from '@material-ui/core/Grid';
 
 import { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity, putSelectedRef } from '../redux/actions/referenceActions'
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 
@@ -112,8 +104,6 @@ class Selector extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     
-    console.log(this.state.og_start)
-
     removeAllTips()
     if (this.props.organisms.length > 0) {// This means we succesfully loaded list of organisms
       if (this.props.stamms.org !== this.state.org) { //Stamms for selected organims are not loaded
@@ -145,13 +135,10 @@ class Selector extends Component {
                 comp_par.pars !== this.state.pars) {
                 this.props.fetchComplexity(this.state.org, this.state.stamm, this.state.contig, this.state.method, this.state.pars)
                 
-                console.log('ALL SET OUT')
               }
 
               else {
                 if (this.props.og_start !== this.state.og_start || this.props.og_end !== this.state.og_end) {
-                  console.log(this.props.og_end)
-                  console.log(this.state.og_end)
                   this.setState({
                     og_start: this.props.og_start,
                     og_end: this.props.og_end
@@ -182,7 +169,6 @@ class Selector extends Component {
                       close_end_len = len
                     }    
                   }
-                  console.log('ALL SET OUT')
                   
                   if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
                     this.setState({
@@ -208,7 +194,6 @@ class Selector extends Component {
 
 
   handleSubmit = (event) => {
-    console.log('SUBMIT IN SELECTOR')
     this.props.getDataFromSelector(this.state)
     event.preventDefault();
   }
@@ -324,7 +309,6 @@ class Selector extends Component {
 
               <Grid item xs={6} >
                 <Grid container direction="column" justify="space-between" alignItems="flex-start" >
-                  {/* <Grid><Typography variant='h6' >Algorithm parameters</Typography></Grid> */}
 
                   <Grid container direction="row" justify="flex-start" alignItems="flex-start">
 

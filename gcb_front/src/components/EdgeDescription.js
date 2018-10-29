@@ -3,20 +3,44 @@ import React, {
 } from 'react';
 //import 'JSON';
 import '../App.css';
-
-import TextField from '@material-ui/core/TextField';
-
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import { Grid, Typography } from '@material-ui/core';
 
 class EdgeDescription extends Component {
 
     render() {
         return (
-            <div>
-                <div className="LeftFloat">
-                    <b className="EdgeDescription">List of strains</b>
-                    <textarea cols="60" rows='6' className="EdgeDescription" value={this.props.edge_description} readOnly/>
-                </div>
-            </div>
+            <Grid>
+                <Typography align="center" variant='h6'>List of genomes</Typography>
+                <Table>
+
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Reference code</TableCell>
+                            <TableCell>Reference name</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {this.props.edge_description.split('\n').map(
+                            edge => {
+                                return (
+                                    <TableRow key={edge}>
+                                        <TableCell>{edge}</TableCell>
+                                        <TableCell>none</TableCell>
+                                    </TableRow>
+                                )
+                            }
+                        )}
+                    </TableBody>
+                </Table>
+            </Grid>
+            
+                
+                
         )
     }
 }

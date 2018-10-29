@@ -7,7 +7,6 @@ import {
 } from "../constants/urls";
 
 export function fetchGraph(params) {
-  console.log(params)
   return function (dispatch) {
     let url = SERVER_URL + '/org/' + params.org + '/strain/' + params.stamm + '/contig/' + params.contig +
       '/start/' + params.og_start + '/end/' + params.og_end + '/window/' + params.window + '/tails/' + params.tails +
