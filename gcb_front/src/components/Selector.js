@@ -17,15 +17,19 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-
-
+import {
+  SERVER_URL
+} from "../redux/constants/urls";
 import { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity, putSelectedRef } from '../redux/actions/referenceActions'
 import { connect } from 'react-redux';
 import LinearProgress from '@material-ui/core/LinearProgress';
-
-
-
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/core/styles';
+import { Paper } from '@material-ui/core';
 
 
 function removeAllTips(){
@@ -34,6 +38,7 @@ function removeAllTips(){
       elements[0].parentNode.removeChild(elements[0]);
   }
 }
+
 
 const styles = theme => ({
   root: {
@@ -60,6 +65,11 @@ const styles = theme => ({
   selectEmpty: {
     marginTop: theme.spacing.unit * 2,
   },
+  paper: {
+    height: 300,
+    overflow: 'auto'
+
+  }
 });
 
 class Selector extends Component {
@@ -86,6 +96,8 @@ class Selector extends Component {
     draw_type: 'line',
     data: '',
     src: '',
+    search_query: '',
+    search_results: []
   };
 
 
@@ -262,10 +274,59 @@ class Selector extends Component {
     e.preventDefault()
   }
 
+  search = (e) => {
+    let url = SERVER_URL + '/search/org/' + this.state.org + '/strain/' + this.state.stamm + '/input/' + this.state.search_query + '/'
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {this.setState({search_results: data})})
+      .catch(error => console.log('error'));
+
+  }
+
+  clearSearchResults = (e) => {
+    this.setState({
+      search_results: []
+    }
+    )
+  }
 
   render() {
     const { classes } = this.props;
     const data = this.props.complexity
+
+
+    let search_field = this.state.search_results.length === 0 ? <Typography>There are not results to show</Typography> :
+      
+      <Paper className={classes.paper} style={{margin:12}}>
+      <Table>
+
+        <TableHead>
+            <TableRow>
+                <TableCell>OG</TableCell>
+                <TableCell>Gene description</TableCell>
+                <TableCell>Position</TableCell>
+                <TableCell>Contig</TableCell>
+            </TableRow>
+        </TableHead>
+        <TableBody>
+            {this.state.search_results.map(
+                result => {
+                    return (
+                        <TableRow key={result[0]}>
+                            <TableCell>{result[0]}</TableCell>
+                            <TableCell>{result[1]}</TableCell>
+                            <TableCell>{result[2]}</TableCell>
+                            <TableCell>{result[3]}</TableCell>
+                        </TableRow>
+                      )
+                  }
+              )}
+        </TableBody>
+        </Table>  
+      </Paper>
+      
+      
+
     return (
       <div className={classes.root}>
         <ExpansionPanel defaultExpanded={true}>
@@ -352,6 +413,38 @@ class Selector extends Component {
           </ExpansionPanelDetails>
         </ExpansionPanel>
 
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>SEARCH</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <Grid container direction='column'>
+              <Grid container direction="row" alignItems="flex-start" spacing={24}>
+                
+                <Grid item>
+                  <TextField label={'Search'} name='search_query' value={this.state.search_query}  onChange={this.handleChange} />
+                </Grid>
+
+                <Grid item>
+                  <Button color='primary' variant='contained' onClick={(e) => {this.search(e)}}>SEARCH</Button>
+                </Grid>
+
+                <Grid item>
+                  <Button color='primary' variant='contained' onClick={(e) => {this.clearSearchResults(e)}}>CLEAR SEARCH RESULTS</Button>
+                </Grid>
+
+              </Grid>
+
+              <Grid item>
+                {search_field}
+              </Grid>
+            </Grid>
+            
+            
+
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+
         {data.complexity === 'None' ?
           <LinearProgress />
           :
@@ -381,13 +474,9 @@ class Selector extends Component {
                         variant="contained" 
                         color="primary"
                         component="label"
+                        onClick={(e) => { this.drawUserCoordinates(e) }}
                       >
                         Show user coordinates
-                        <input
-                          onClick={(e) => { this.drawUserCoordinates(e) }}
-                          style={{ display: 'none' }}
-                          type="submit"
-                        />
                       </Button>
                     </Grid>
                     <Grid item>
@@ -397,13 +486,9 @@ class Selector extends Component {
                         variant="contained" 
                         color="primary"
                         component="label"
+                        onClick={(e) => { this.deleteUserCoordinates(e) }}
                       >
                         Delete user coordinates
-                        <input
-                          onClick={(e) => { this.deleteUserCoordinates(e) }}
-                          style={{ display: 'none' }}
-                          type="submit"
-                        />
                       </Button>
                     </Grid>
                     <Grid item>

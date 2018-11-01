@@ -18,8 +18,6 @@ import { connect } from 'react-redux';
 
 
 
-
-
 function removeAllTips(){
   var elements = document.getElementsByClassName('tippy-popper');
   while(elements.length > 0){

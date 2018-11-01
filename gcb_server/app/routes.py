@@ -41,8 +41,6 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
     graph_json = get_json_graph(subgr, int(freq_min))
 
     
-
-
     if int(pars) == 1:
         db = data_path + organism + '/' + organism + '_pars.db'
     
@@ -175,3 +173,20 @@ def get_complexity(org, stamm, contig, pars, method):
     
     complexity = get_complexity_from_db(data_path, org, stamm, contig, int(pars), methods[method])
     return jsonify(complexity)
+
+
+@app.route('/search/org/<org>/strain/<stamm>/input/<input>/')
+def search(org, stamm, input):
+
+    connect = sqlite3.connect(data_path + org + '/' + org + '.db')
+    c = connect.cursor()
+
+    stamm_key = [row for row in c.execute('SELECT id FROM stamms_table WHERE stamm = "' + stamm + '"')][0][0]
+    contigs = [row for row in c.execute('SELECT id, contig FROM contigs_table WHERE stamm_key = ' + str(stamm_key))]
+
+    table = []
+    for contig in contigs:
+        query = 'SELECT og, description, (start_coord+end_coord)/2 FROM og_table WHERE contig=' + str(contig[0])
+        table += [list(q) + [contig[1]] for q in c.execute(query) if input.lower() in q[1].lower()]
+
+    return jsonify(table)
