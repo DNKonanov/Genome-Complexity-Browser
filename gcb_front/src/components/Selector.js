@@ -141,7 +141,6 @@ class Selector extends Component {
                 this.state.og_start, this.state.og_end, this.state.method, this.state.pars, this.state.operons
 
               )
-              let p = comp_par.pars
               if (comp_par.org !== this.state.org || comp_par.stamm !== this.state.stamm ||
                 comp_par.contig !== this.state.contig || comp_par.method !== this.state.method ||
                 comp_par.pars !== this.state.pars) {
@@ -162,7 +161,7 @@ class Selector extends Component {
                 }
 
 
-                if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end || p !== this.state.pars) {
+                if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end) {
                   let close_st_gene = 0
                   let close_end_gene = 0
                   let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
@@ -190,7 +189,6 @@ class Selector extends Component {
                     this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
                     this.props.complexity.OGs[close_st_gene], this.props.complexity.OGs[close_end_gene], this.state.method, this.state.pars, this.state.operons)
                   }
-                  
                 }
               }
             }
@@ -198,8 +196,6 @@ class Selector extends Component {
         }
       }
     }
-
-
   }
 
 
@@ -254,6 +250,22 @@ class Selector extends Component {
       user_coordinates_str: ''
     })
     e.preventDefault()
+  }
+
+  uploadData = (e) => {
+
+
+    let data = 'organism=' + this.state.org + '\tgenome=' + this.state.stamm + '\tcontig=' + this.state.contig + '\tmethod=' + this.state.method + '\n'
+    data = data + 'position\tcomplexity\n'
+    for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
+      data = data + this.props.complexity.coord_list[i] + '\t' + this.props.complexity.complexity[i] + '\n'
+    }
+
+    var element = document.createElement("a");
+    var file = new Blob([data], { type: 'text/plain' });
+    element.href = URL.createObjectURL(file);
+    element.download = this.state.contig + ".txt";
+    element.click();
   }
 
   inputFileChanged = (e) => {
@@ -469,32 +481,8 @@ class Selector extends Component {
 
                     <Grid item>
 
-                      <Button 
-                        style={{ margin: 12 }}
-                        variant="contained" 
-                        color="primary"
-                        component="label"
-                        onClick={(e) => { this.drawUserCoordinates(e) }}
-                      >
-                        Show user coordinates
-                      </Button>
-                    </Grid>
-                    <Grid item>
-
-                      <Button 
-                        style={{ margin: 12 }}
-                        variant="contained" 
-                        color="primary"
-                        component="label"
-                        onClick={(e) => { this.deleteUserCoordinates(e) }}
-                      >
-                        Delete user coordinates
-                      </Button>
-                    </Grid>
-                    <Grid item>
-
                       <Button
-                        style={{ margin: 12 }}
+                        style={{ margin: 6 }}
                         variant="contained" 
                         color="primary"
                         component="label"
@@ -509,14 +497,39 @@ class Selector extends Component {
                     </Grid>
                     <Grid item>
 
-                      <Select style={{ margin: 12 }} value={this.state.draw_type} name='draw_types' onChange={e => this.setState({ draw_type: e.target.value })}>
+                      <Button 
+                        style={{ margin: 6 }}
+                        variant="contained" 
+                        color="primary"
+                        component="label"
+                        onClick={(e) => { this.drawUserCoordinates(e) }}
+                      >
+                        Show user coordinates
+                      </Button>
+                    </Grid>
+                    <Grid item>
+
+                      <Button 
+                        style={{ margin: 6 }}
+                        variant="contained" 
+                        color="primary"
+                        component="label"
+                        onClick={(e) => { this.deleteUserCoordinates(e) }}
+                      >
+                        Delete user coordinates
+                      </Button>
+                    </Grid>
+                    
+                    <Grid item>
+
+                      <Select style={{ margin: 6 }} value={this.state.draw_type} name='draw_types' onChange={e => this.setState({ draw_type: e.target.value })}>
                         {this.state.draw_types.map(draw_type => <MenuItem key={draw_type} value={draw_type}>{draw_type}</MenuItem>)}
                       </Select>
                       
                     </Grid>
 
                     <Grid item>
-                    {this.state.user_coordinates_str.length === 0 ? <Typography>User coordinates are not loaded</Typography> : <Typography> Coordinates was loaded succesfully</Typography>}
+                    {this.state.user_coordinates_str.length === 0 ? <Typography style={{margin:6}}>User coordinates are not loaded</Typography> : <Typography style={{margin:6}}> Coordinates was loaded succesfully</Typography>}
                     </Grid>
 
                   </Grid>
@@ -592,7 +605,22 @@ class Selector extends Component {
                     }}
                   />
                 </Grid>
+                <Grid item>
+                  <Button 
+                    style={{ margin: 6 }}
+                    variant="contained" 
+                    color="primary"
+                    component="label"
+                    onClick={(e) => { this.uploadData(e) }}
+                  >
+                    Upload data
+                  </Button>
+
+                </Grid>
+              
               </Grid>
+                
+                       
             </ExpansionPanelDetails>
           </ExpansionPanel>
 
