@@ -35,8 +35,6 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
     
     subgr = get_subgraph(graph_file, organism, ref_strain, window=int(window), start=og_start, end=og_end, tails=int(tails), depth=int(depth))
     
-    print(subgr)
-
     graph_json = get_json_graph(subgr, int(freq_min))
 
     

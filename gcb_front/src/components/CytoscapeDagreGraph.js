@@ -94,7 +94,8 @@ class CytoscapeDagreGraph extends Component {
     cy: false,
     edge_description: 'empty',
     json_format: '',
-    selected_nodes: 'empty'
+    selected_nodes: 'empty',
+    jpg_format: ''
   };
 
 
@@ -191,13 +192,15 @@ class CytoscapeDagreGraph extends Component {
       });
 
       this.setState({
-        json_format: JSON.stringify(cy.json())
+        json_format: JSON.stringify(cy.json()),
+        jpg_format: cy.jpg({maxWidth: 10000})
       });
     }.bind(this));
 
     cy.on('position', function (evt) {
       this.setState({
-        json_format: JSON.stringify(cy.json())
+        json_format: JSON.stringify(cy.json()),
+        jpg_format: cy.jpg({maxWidth: 10000})
       });
     }.bind(this));
 
@@ -232,7 +235,8 @@ class CytoscapeDagreGraph extends Component {
 
     this.setState({
       cy: cy,
-      json_format: JSON.stringify(cy.json())
+      json_format: JSON.stringify(cy.json()),
+      jpg_format: cy.jpg({maxWidth: 10000})
     });
   }
 
@@ -264,6 +268,14 @@ class CytoscapeDagreGraph extends Component {
 
   }
 
+  downloadjpg = () => {
+
+    var element = document.createElement("a");
+    element.href = this.state.jpg_format;
+    element.download = "subgraph.jpg";
+    element.click();
+
+  }
 
   downloadJson = () => {
     var element = document.createElement("a");
@@ -290,6 +302,17 @@ class CytoscapeDagreGraph extends Component {
           onClick={this.downloadJson}
         >Download json graph
         </Button>
+
+        <Button
+          style={{ margin: 12 }}
+          variant="contained" 
+          color="primary"
+          component="label"
+          onClick={this.downloadjpg}
+        >Download JPG
+        </Button>
+
+
         <Grid alignItems="flex-start" container direction="row" spacing={24}>
           <Grid xs={6} item>
             <Paper className={classes.paper}>
