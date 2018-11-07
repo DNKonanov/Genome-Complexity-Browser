@@ -33,10 +33,9 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
 
     graph_file = data_path+organism+'/' + paths
     
-    subgr = get_subgraph(graph_file, organism, ref_strain, window=int(window), start=og_start, end=og_end, tails=int(tails), depth=int(depth))[0]
+    subgr = get_subgraph(graph_file, organism, ref_strain, window=int(window), start=og_start, end=og_end, tails=int(tails), depth=int(depth))
     
-    # Remove last EOL and split in lines
-    subgr = subgr[0:-1].split('\n')
+    print(subgr)
 
     graph_json = get_json_graph(subgr, int(freq_min))
 
@@ -183,7 +182,7 @@ def search(org, stamm, pars, input):
 
     elif pars == 'true':
         connect = sqlite3.connect(data_path + org + '/' + org + '_pars.db')
-        
+
     c = connect.cursor()
 
     stamm_key = [row for row in c.execute('SELECT id FROM stamms_table WHERE stamm = "' + stamm + '"')][0][0]

@@ -328,6 +328,7 @@ class Selector extends Component {
                             <TableCell>{result[0]}</TableCell>
                             <TableCell>{result[1]}</TableCell>
                             <TableCell>
+
                               <button
                               value={result[2]} 
                               onClick={(e) => {
@@ -335,7 +336,11 @@ class Selector extends Component {
                                 coord_start: e.target.value,
                                 coord_end: e.target.value
                               })
-                              }}>{result[2]}</button>
+                              }}
+                              >
+                              {result[2]}
+                              </button>
+                            
                             </TableCell>
                             <TableCell>{result[3]}</TableCell>
                         </TableRow>
