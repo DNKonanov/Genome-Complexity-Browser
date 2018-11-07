@@ -155,13 +155,11 @@ class Selector extends Component {
                     og_end: this.props.og_end
                   })
                   this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
-                    this.props.og_start, this.props.og_end, this.state.method, this.state.pars, this.state.operons
-    
-                  )
+                    this.props.og_start, this.props.og_end, this.state.method, this.state.pars, this.state.operons)
                 }
 
 
-                if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end) {
+                if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end || this.props.complexity.OGs.indexOf(this.state.og_start) === -1) {
                   let close_st_gene = 0
                   let close_end_gene = 0
                   let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
@@ -302,6 +300,8 @@ class Selector extends Component {
     )
   }
 
+
+
   render() {
     const { classes } = this.props;
     const data = this.props.complexity
@@ -327,7 +327,16 @@ class Selector extends Component {
                         <TableRow key={result[0]}>
                             <TableCell>{result[0]}</TableCell>
                             <TableCell>{result[1]}</TableCell>
-                            <TableCell>{result[2]}</TableCell>
+                            <TableCell>
+                              <button
+                              value={result[2]} 
+                              onClick={(e) => {
+                                this.setState({
+                                coord_start: e.target.value,
+                                coord_end: e.target.value
+                              })
+                              }}>{result[2]}</button>
+                            </TableCell>
                             <TableCell>{result[3]}</TableCell>
                         </TableRow>
                       )

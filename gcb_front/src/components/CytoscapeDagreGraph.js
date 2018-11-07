@@ -220,7 +220,6 @@ class CytoscapeDagreGraph extends Component {
       let nodes_list = ''
       cy.nodes().forEach(function (ele) {
         if (ele.selected()) {
-          console.log(ele.data())
           if (ele.data().description !== undefined) nodes_list = nodes_list + ele.data().id + '\t' + ele.data().description.split(':')[0] + '\n'
         }
       });
