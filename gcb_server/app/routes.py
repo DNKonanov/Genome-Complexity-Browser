@@ -175,10 +175,15 @@ def get_complexity(org, stamm, contig, pars, method):
     return jsonify(complexity)
 
 
-@app.route('/search/org/<org>/strain/<stamm>/input/<input>/')
-def search(org, stamm, input):
+@app.route('/search/org/<org>/strain/<stamm>/pars/<pars>/input/<input>/')
+def search(org, stamm, pars, input):
 
-    connect = sqlite3.connect(data_path + org + '/' + org + '.db')
+    if pars == 'false':
+        connect = sqlite3.connect(data_path + org + '/' + org + '.db')
+
+    elif pars == 'true':
+        connect = sqlite3.connect(data_path + org + '/' + org + '_pars.db')
+        
     c = connect.cursor()
 
     stamm_key = [row for row in c.execute('SELECT id FROM stamms_table WHERE stamm = "' + stamm + '"')][0][0]

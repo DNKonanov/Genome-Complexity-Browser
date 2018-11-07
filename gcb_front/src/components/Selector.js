@@ -285,7 +285,7 @@ class Selector extends Component {
   }
 
   search = (e) => {
-    let url = SERVER_URL + '/search/org/' + this.state.org + '/strain/' + this.state.stamm + '/input/' + this.state.search_query + '/'
+    let url = SERVER_URL + '/search/org/' + this.state.org + '/strain/' + this.state.stamm + '/pars/' + this.state.pars + '/input/' + this.state.search_query + '/'
     fetch(url)
       .then(response => response.json())
       .then(data => {this.setState({search_results: data})})
