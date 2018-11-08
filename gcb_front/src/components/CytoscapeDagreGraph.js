@@ -95,7 +95,6 @@ class CytoscapeDagreGraph extends Component {
     edge_description: 'empty',
     json_format: '',
     selected_nodes: 'empty',
-    jpg_format: ''
   };
 
 
@@ -191,17 +190,6 @@ class CytoscapeDagreGraph extends Component {
         }
       });
 
-      this.setState({
-        json_format: JSON.stringify(cy.json()),
-        jpg_format: cy.jpg({maxWidth: 10000})
-      });
-    }.bind(this));
-
-    cy.on('position', function (evt) {
-      this.setState({
-        json_format: JSON.stringify(cy.json()),
-        jpg_format: cy.jpg({maxWidth: 10000})
-      });
     }.bind(this));
 
     cy.on('click', function (evt) {
@@ -235,8 +223,6 @@ class CytoscapeDagreGraph extends Component {
 
     this.setState({
       cy: cy,
-      json_format: JSON.stringify(cy.json()),
-      jpg_format: cy.jpg({maxWidth: 10000})
     });
   }
 
@@ -269,9 +255,9 @@ class CytoscapeDagreGraph extends Component {
   }
 
   downloadjpg = () => {
-
+    console.log(this.state.cy)
     var element = document.createElement("a");
-    element.href = this.state.jpg_format;
+    element.href = this.state.cy.jpg({maxWidth:10000});
     element.download = "subgraph.jpg";
     element.click();
 
@@ -279,7 +265,7 @@ class CytoscapeDagreGraph extends Component {
 
   downloadJson = () => {
     var element = document.createElement("a");
-    var file = new Blob([this.state.json_format], { type: 'text/plain' });
+    var file = new Blob([JSON.stringify(this.state.cy.json())], { type: 'text/plain' });
     element.href = URL.createObjectURL(file);
     element.download = "subgraph.json";
     element.click();
