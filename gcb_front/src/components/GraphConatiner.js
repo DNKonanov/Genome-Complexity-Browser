@@ -93,8 +93,17 @@ class GraphContainer extends Component {
     if (direction === 'right') n = parseInt(this.state.step, 10)
     else if (direction === 'left') n = -parseInt(this.state.step, 10)
 
-    let start = this.props.complexity.OGs[this.props.complexity.OGs.indexOf(sel.og_start) + n]
-    let end = this.props.complexity.OGs[this.props.complexity.OGs.indexOf(sel.og_end) + n]
+    let newStartIndex = this.props.complexity.OGs.indexOf(sel.og_start) + n
+    let newEndIndex = this.props.complexity.OGs.indexOf(sel.og_end) + n
+
+    newStartIndex = newStartIndex >= 0 ? newStartIndex : 0
+    newEndIndex = newEndIndex >= 0 ? newEndIndex : 0
+
+    newStartIndex = newStartIndex < this.props.complexity.OGs.length ? newStartIndex : this.props.complexity.OGs.length - 1
+    newEndIndex = newEndIndex < this.props.complexity.OGs.length ? newEndIndex : this.props.complexity.OGs.length - 1
+
+    let start = this.props.complexity.OGs[newStartIndex]
+    let end = this.props.complexity.OGs[newEndIndex]
 
     // Get data from current component 
     let params = {
@@ -158,7 +167,7 @@ class GraphContainer extends Component {
           </Grid>
 
           <Grid item style={{ maxWidth: 150, margin: 12 }}>
-            <TextField type="number" margin="normal" label={'Minimal edge'} name='freq_min' value={this.state.freq_min} onChange={this.handleChange} />
+            <TextField type="number" margin="normal" label={'Minimal edge weight'} name='freq_min' value={this.state.freq_min} onChange={this.handleChange} />
           </Grid>
 
           <Grid item style={{ maxWidth: 100, margin: 12 }}>

@@ -160,6 +160,9 @@ class Selector extends Component {
 
 
                 if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end || this.props.complexity.OGs.indexOf(this.state.og_start) === -1) {
+
+                  
+
                   let close_st_gene = 0
                   let close_end_gene = 0
                   let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
@@ -250,7 +253,7 @@ class Selector extends Component {
     e.preventDefault()
   }
 
-  uploadData = (e) => {
+  downloadData = (e) => {
 
 
     let data = 'organism=' + this.state.org + '\tgenome=' + this.state.stamm + '\tcontig=' + this.state.contig + '\tmethod=' + this.state.method + '\n'
@@ -400,22 +403,22 @@ class Selector extends Component {
                   <Grid container direction="row" justify="flex-start" alignItems="flex-start">
 
                     <Grid item xs={6}>
-                      <TextField className={classes.smallText} label={'OG start'} name='og_start' value={this.state.og_start} onChange={this.handleChange} />
+                      <TextField label={'Start OG'} name='og_start' value={this.state.og_start} onChange={this.handleChange} />
                     </Grid>
 
                     <Grid item xs={6}>
-                      <TextField label={'OG end'} name='og_end' value={this.state.og_end} onChange={this.handleChange} />
+                      <TextField label={'End OG'} name='og_end' value={this.state.og_end} onChange={this.handleChange} />
                     </Grid>
                   </Grid>
 
                   <Grid container direction="row" justify="flex-start" alignItems="flex-start">
 
                     <Grid item xs={6}>
-                      <TextField label={'Coordinate start'} name='coord_start' value={this.state.coord_start} onChange={this.handleChange} />
+                      <TextField label={'Start coordinate'} name='coord_start' value={this.state.coord_start} onChange={this.handleChange} />
                     </Grid>
 
                     <Grid item xs={6}>
-                      <TextField label={'Coordinate end'} name='coord_end' value={this.state.coord_end} onChange={this.handleChange} />
+                      <TextField label={'End coordinate'} name='coord_end' value={this.state.coord_end} onChange={this.handleChange} />
                     </Grid>
 
                   </Grid>
@@ -625,9 +628,9 @@ class Selector extends Component {
                     variant="contained" 
                     color="primary"
                     component="label"
-                    onClick={(e) => { this.uploadData(e) }}
+                    onClick={(e) => { this.downloadData(e) }}
                   >
-                    Upload data
+                    Download data
                   </Button>
 
                 </Grid>
