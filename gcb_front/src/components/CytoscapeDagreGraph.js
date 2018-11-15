@@ -12,12 +12,12 @@ import '../App.css';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { Paper } from '@material-ui/core';
-
 import { withStyles } from '@material-ui/core/styles';
 
 
 cytoscape.use(dagre);
 cytoscape.use(popper);
+
 
 
 const styles = theme => ({
@@ -134,14 +134,20 @@ class CytoscapeDagreGraph extends Component {
     let tips = []
 
     cy.nodes().forEach(function (ele) {
+      if (ele.data().id === 'm') {
+        tips.push({ 'node': ele.id(), 'tip': makeTippy(ele, 'selected region') })
+      }
       tips.push({ 'node': ele.id(), 'tip': makeTippy(ele, ele.data().description) })
     });
 
-    cy.edges().forEach(function (ele) {
-      tips.push({ 'edge': ele.id(), 'tip': makeTippy(ele, ele.data().description) })
-    });
-
     let clicked = []
+
+
+    cy.on('cxttap', 'node', function (evt) {
+      console.log('Right click')
+    })
+
+
     cy.on('click', 'node', function (evt) {
       let node_id = evt.target.id()
       let clickedTippy = tips.find(function (ele) {
@@ -210,6 +216,10 @@ class CytoscapeDagreGraph extends Component {
 
       let nodes_list = ''
       cy.nodes().forEach(function (ele) {
+
+        if (ele.data().id === 'm') {
+          ele.unselect()
+        }
         if (ele.selected()) {
           if (ele.data().description !== undefined) nodes_list = nodes_list + ele.data().id + '\t' + ele.data().description.split(':')[0] + '\n'
         }

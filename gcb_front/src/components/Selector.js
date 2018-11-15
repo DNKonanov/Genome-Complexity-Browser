@@ -97,7 +97,7 @@ class Selector extends Component {
     data: '',
     src: '',
     search_query: '',
-    search_results: []
+    search_results: [],
   };
 
 
@@ -144,51 +144,53 @@ class Selector extends Component {
               if (comp_par.org !== this.state.org || comp_par.stamm !== this.state.stamm ||
                 comp_par.contig !== this.state.contig || comp_par.method !== this.state.method ||
                 comp_par.pars !== this.state.pars) {
-                this.props.fetchComplexity(this.state.org, this.state.stamm, this.state.contig, this.state.method, this.state.pars)
                 
-              }
+                this.props.fetchComplexity(this.state.org, this.state.stamm, this.state.contig, this.state.method, this.state.pars)
+
+                
+                }
 
               else {
                 if (this.props.og_start !== this.state.og_start || this.props.og_end !== this.state.og_end) {
-                  this.setState({
-                    og_start: this.props.og_start,
-                    og_end: this.props.og_end
-                  })
                   this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
-                    this.props.og_start, this.props.og_end, this.state.method, this.state.pars, this.state.operons)
+                    this.state.og_start, this.state.og_end, this.state.method, this.state.pars, this.state.operons);
+
                 }
-
-
-                if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end || this.props.complexity.OGs.indexOf(this.state.og_start) === -1) {
-
+                else {
                   
+                  if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end ) {
 
-                  let close_st_gene = 0
-                  let close_end_gene = 0
-                  let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
-                  let close_end_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
-                  for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
-                    let len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_start);
-                    if (len < close_st_len) {
-                      close_st_gene = i;
-                      close_st_len = len
+                    
+
+                    let close_st_gene = 0
+                    let close_end_gene = 0
+                    let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
+                    let close_end_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
+                    for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
+                      let len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_start);
+                      if (len < close_st_len) {
+                        close_st_gene = i;
+                        close_st_len = len
+                      }
+
+
+                      len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_end);
+                      if (len < close_end_len) {
+                        close_end_gene = i;
+                        close_end_len = len
+                      }    
                     }
+                    
+                    if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
+                      this.setState({
+                        og_end: this.props.complexity.OGs[close_end_gene],
+                        og_start: this.props.complexity.OGs[close_st_gene]
+                      })
+                      this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
+                      this.props.complexity.OGs[close_st_gene], this.props.complexity.OGs[close_end_gene], this.state.method, this.state.pars, this.state.operons)
 
-
-                    len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_end);
-                    if (len < close_end_len) {
-                      close_end_gene = i;
-                      close_end_len = len
-                    }    
-                  }
-                  
-                  if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
-                    this.setState({
-                      og_end: this.props.complexity.OGs[close_end_gene],
-                      og_start: this.props.complexity.OGs[close_st_gene]
-                    })
-                    this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
-                    this.props.complexity.OGs[close_st_gene], this.props.complexity.OGs[close_end_gene], this.state.method, this.state.pars, this.state.operons)
+                    
+                    }
                   }
                 }
               }

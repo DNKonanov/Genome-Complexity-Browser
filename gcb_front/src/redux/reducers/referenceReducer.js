@@ -30,7 +30,7 @@ const initialState = {
       stamm: '',
       contig: '',
       method: '',
-      pars: ''
+      pars: false
     }
   },
   selection: 'None'
