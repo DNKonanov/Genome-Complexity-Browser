@@ -29,9 +29,13 @@ class EdgeDescription extends Component {
                             edge => {
                                 return (
                                     <TableRow key={edge}>
-                                        <TableCell>{edge}</TableCell>
-                                        <TableCell>none</TableCell>
+                                        {edge.split('\t').map(txt => {
+                                            return (
+                                                <TableCell key={txt}>{txt}</TableCell>
+                                            )
+                                        })}
                                     </TableRow>
+                                    
                                 )
                             }
                         )}

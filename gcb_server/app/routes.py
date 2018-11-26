@@ -62,7 +62,10 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
             edge['data']['description'] = stamms[0][0]
 
             edge['data']['penwidth'] = str(10*math.sqrt(stamms[0][1]/max_width))
-            if ref_strain in stamms[0][0].split('\n'):
+
+            list_ = [s.split('\t')[0] for s in stamms[0][0].split('\n')]
+
+            if ref_strain in list_:
 
                 if edge['data']['color'] == '#ff0000':
                     edge['data']['weight'] = '100'
@@ -74,6 +77,7 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
                 added_nodes.add(edge['data']['source'])
                 added_nodes.add(edge['data']['target'])
         else:
+            print(edge)
             edge['data']['description'] = 'null'
 
     
@@ -93,10 +97,9 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
         else: operons_file = data_path + organism + '/ref_' + ref_strain + '/operons.txt'
             
         operons_list = get_operons(operons_file)
-
+    
     
     for node in nodes:
-        
         node['data']['bwidth'] = '0' 
         node['data']['bcolor'] = 'blue'
 
@@ -123,9 +126,12 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
             
             if operons == '0':
                 continue
-
+                
             for color in operons_list:
+
+                
                 if node['data']['id'] in operons_list[color]:
+                    print(node['data']['id'])
                     node['data']['bwidth'] = '5'
                     node['data']['bcolor'] = color
 

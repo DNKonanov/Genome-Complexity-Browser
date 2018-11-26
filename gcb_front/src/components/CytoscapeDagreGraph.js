@@ -180,15 +180,15 @@ class CytoscapeDagreGraph extends Component {
         ele.style({ 'line-color': ele.data().color })
         ele.style({ 'target-arrow-color': ele.data().color })
       });
-
       cy.edges().forEach(function (ele) {
 
         if (ele.data().color === 'blue') { }
         else {
           for (let i = 0; i < organisms.length; i++) {
-
+            if (organisms[i] == '') {
+              continue
+            }
             if (ele.data().description.indexOf(organisms[i]) !== -1) {
-
               ele.style({ 'line-color': 'blue' })
               ele.style({ 'target-arrow-color': 'blue' })
             }
