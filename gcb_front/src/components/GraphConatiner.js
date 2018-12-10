@@ -70,7 +70,25 @@ class GraphContainer extends Component {
     return graph_params
   }
 
+  checkOG = () => {
+    if (this.props.complexity.OGs.indexOf(this.props.selection.og_start) ==-1) {
+      alert('Start OG is not in chosen genome')
+      return true
+    }
+    
+    if (this.props.complexity.OGs.indexOf(this.props.selection.og_end) ==-1) {
+      alert('End OG is not in chosen genome')
+      return true
+    }
+    return false
+
+  }
+
   handleGraphDraw = () => {
+
+    if (this.checkOG() === true) return
+
+
     // Make redux request
     let params = this.getGraphParams()
     //console.log(params)

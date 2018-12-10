@@ -106,3 +106,4 @@ venv.bak/
 # data
 gcb_server/data
 gcb_front/node_modules
+gcb_server/app/__pycache__

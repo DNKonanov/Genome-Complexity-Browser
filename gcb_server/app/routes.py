@@ -17,10 +17,10 @@ def index():
 
 data_path = './data/'
 
-methods = {'window complexity (w20)': 'win_var 20',
-            'probabilistic window complexity (w20)': 'prob_win_var 20',
-            'IO complexity': 'io 20',
-            'probabilistic IO complexity': 'prob_io 20'}
+methods = {'window complexity (w20)': 'window_complexity 20',
+            'probabilistic window complexity (w20)': 'prob_window_complexity 20',
+            'IO complexity': 'io_complexity 20',
+            'probabilistic IO complexity': 'prob_io_complexity 20'}
 
 
 @app.route('/org/<organism>/strain/<ref_strain>/contig/<contig>/start/<og_start>/end/<og_end>/window/<window>/tails/<tails>/pars/<pars>/operons/<operons>/depth/<depth>/freq_min/<freq_min>')
@@ -49,14 +49,20 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
     nodes = graph_json['nodes']
     edges = graph_json['edges']
 
-    query = 'SELECT MAX(edge_freq) FROM freq_table'
+    query = 'SELECT MAX(frequency) FROM edges_table'
     max_width = [og for og in c.execute(query)][0][0]
+
+
+    query = 'select node_name, node_id from nodekey'
+    nodes_keys = {i[0]: str(i[1]) for i in c.execute(query)}
+
+
     print('adding edges...')
     added_nodes = set([])
     for edge in edges:
         edge['data']['opacity'] = '1'
         edge['data']['eweight'] = '1'
-        query = 'SELECT stamms_list, edge_freq FROM freq_table WHERE edge = "' + edge['data']['source'] + ' ' + edge['data']['target'] + '"'
+        query = 'SELECT genomes, frequency FROM edges_table WHERE source_id =' + nodes_keys[edge['data']['source']] + ' and target_id =' + nodes_keys[edge['data']['target']]
         stamms = [og for og in c.execute(query)]
         if (len(stamms) > 0):
             edge['data']['description'] = stamms[0][0]
@@ -85,7 +91,7 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
     
     
     coordinates = get_coordinates_from_db (data_path, organism, ref_strain, contig, int(pars))
-    query = 'SELECT og, description, end_coord-start_coord FROM og_table'
+    query = 'SELECT node_name, description, end_coord-start_coord FROM nodes_table'
     OGs = [og for og in c.execute(query)]
     og_list = [og[0] for og in OGs]
     descripton_list = [og[1] for og in OGs]
@@ -155,7 +161,7 @@ def get_stamm_list(org):
     connect = sqlite3.connect(data_path + org + '/' + org + '.db')
     c = connect.cursor()
     
-    stamms = [row for row in c.execute('SELECT stamm FROM stamms_table')]
+    stamms = [row for row in c.execute('SELECT genome_code FROM genomes_table')]
     stamms.sort()
     print(org)
     connect.close()
@@ -165,8 +171,8 @@ def get_stamm_list(org):
 def get_contig_list(org, stamm):
     connect = sqlite3.connect(data_path + org + '/' + org + '.db')
     c = connect.cursor()
-    stamm_key = [row for row in c.execute('SELECT id FROM stamms_table WHERE stamm = "' + stamm + '"')][0][0]
-    contigs = [row for row in c.execute('SELECT contig FROM contigs_table WHERE stamm_key = ' + str(stamm_key))]
+    stamm_key = [row for row in c.execute('SELECT genome_id FROM genomes_table WHERE genome_code = "' + stamm + '"')][0][0]
+    contigs = [row for row in c.execute('SELECT contig_code FROM contigs_table WHERE genome_id = ' + str(stamm_key))]
     contigs.sort()
     connect.close()
     return jsonify(contigs)
@@ -189,12 +195,12 @@ def search(org, stamm, pars, input):
 
     c = connect.cursor()
 
-    stamm_key = [row for row in c.execute('SELECT id FROM stamms_table WHERE stamm = "' + stamm + '"')][0][0]
-    contigs = [row for row in c.execute('SELECT id, contig FROM contigs_table WHERE stamm_key = ' + str(stamm_key))]
+    stamm_key = [row for row in c.execute('SELECT genome_id FROM genomes_table WHERE genome_code = "' + stamm + '"')][0][0]
+    contigs = [row for row in c.execute('SELECT contig_id, contig_code FROM contigs_table WHERE genome_id = ' + str(stamm_key))]
 
     table = []
     for contig in contigs:
-        query = 'SELECT og, description, (start_coord+end_coord)/2 FROM og_table WHERE contig=' + str(contig[0])
+        query = 'SELECT node_name, description, (start_coord+end_coord)/2 FROM nodes_table WHERE contig=' + str(contig[0])
         table += [list(q) + [contig[1]] for q in c.execute(query) if input.lower() in q[1].lower()]
 
     return jsonify(table)

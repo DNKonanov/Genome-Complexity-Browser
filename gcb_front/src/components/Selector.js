@@ -75,8 +75,8 @@ const styles = theme => ({
 class Selector extends Component {
 
   state = {
-    org: 'Achromobacter_xylosoxidans',
-    stamm: 'GCF_000165835.1_ASM16583v1_genomic',
+    org: 'Escherichia_coli',
+    stamm: 'GCF_00005845.2_ASM584v2',
     contig: 'NC_014640.1',
 
     og_start: 'OG0001707',
@@ -201,8 +201,63 @@ class Selector extends Component {
     }
   }
 
+  checkOGs = (event) => {
+    let close_st_gene = 0
+    let close_end_gene = 0
+    let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
+    let close_end_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
+    for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
+      let len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_start);
+      if (len < close_st_len) {
+        close_st_gene = i;
+        close_st_len = len
+      }
 
 
+      len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_end);
+      if (len < close_end_len) {
+        close_end_gene = i;
+        close_end_len = len
+      }    
+    }
+    
+    if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
+      this.setState({
+        og_end: this.props.complexity.OGs[close_end_gene],
+        og_start: this.props.complexity.OGs[close_st_gene]
+      })
+    }
+  }
+
+  checkCoord = (event) => {
+    let coord_start = -1
+    let coord_end = -1
+
+    for (let i = 0; i < this.props.complexity.OGs.length; i++) {
+      if (this.props.complexity.OGs[i] === this.state.og_start) {
+        coord_start = this.props.complexity.coord_list[i]
+      }
+      if (this.props.complexity.OGs[i] === this.state.og_end) {
+        coord_end = this.props.complexity.coord_list[i]
+      }
+    }
+
+    if (coord_start == -1) {
+      alert('Start OG is not in chosed genome!')
+    }
+
+    else if (coord_end == -1) {
+      alert('Eng OG is not in chosed genome!')
+    }
+
+    if (coord_start !== -1 && coord_end !== -1) {
+      this.setState({
+        coord_start: coord_start,
+        coord_end: coord_end
+      })
+    }
+    
+  }
 
   handleSubmit = (event) => {
     this.props.getDataFromSelector(this.state)
@@ -410,6 +465,7 @@ class Selector extends Component {
 
                     <Grid item xs={6}>
                       <TextField label={'End OG'} name='og_end' value={this.state.og_end} onChange={this.handleChange} />
+                      <Button style={{margin:12}} color='primary' variant='contained' onClick={(e) => {this.checkOGs(e)}}>Update genes</Button>
                     </Grid>
                   </Grid>
 
@@ -421,6 +477,7 @@ class Selector extends Component {
 
                     <Grid item xs={6}>
                       <TextField label={'End coordinate'} name='coord_end' value={this.state.coord_end} onChange={this.handleChange} />
+                      <Button style={{margin:12}} color='primary' variant='contained' onClick={(e) => {this.checkCoord(e)}}>Update coordinates</Button>
                     </Grid>
 
                   </Grid>
