@@ -4,8 +4,7 @@ import pandas as pd
 
 methods = ['win_var', 'prob_win_var', 'IO', 'prob_IO']
 
-def get_complexity_from_db(data_path, organism, reference, contig, pars, method):
-    method, window = method.split(' ')[0], method.split(' ')[1]
+def get_complexity_from_db(data_path, organism, reference, contig, pars, method, window):
     if pars == 0:
        
         db = data_path + organism + '/' + organism + '.db'
@@ -28,6 +27,29 @@ def get_complexity_from_db(data_path, organism, reference, contig, pars, method)
     connect.close()
 
     return [complexity_list, [i[0] for i in full_data], [i[1] for i in full_data], [i[2] for i in full_data]]
+
+
+def get_windows_from_db(data_path, organism, reference, pars):
+
+    if pars == 0:
+       
+        db = data_path + organism + '/' + organism + '.db'
+
+    else:
+        db = data_path + organism + '/' + organism + '_pars.db'
+
+    connect = sqlite3.connect(db)
+    c = connect.cursor()
+
+    stamm_key = [row for row in c.execute('SELECT genome_id FROM genomes_table WHERE genome_code = "' + reference + '"')][0][0]
+    contig_key = [row for row in c.execute('SELECT contig_id FROM contigs_table WHERE genome_id = ' + str(stamm_key))][0][0]
+
+    windows = list(set([int(value[0]) for value in c.execute('SELECT window FROM complexity_table WHERE contig_id = ' + str(contig_key))]))
+
+    connect.close()
+
+    return windows
+
 
 
 def get_coordinates_from_db(data_path, organism, reference, contig, pars):

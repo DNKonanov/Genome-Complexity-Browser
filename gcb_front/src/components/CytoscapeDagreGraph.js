@@ -185,7 +185,7 @@ class CytoscapeDagreGraph extends Component {
         if (ele.data().color === 'blue') { }
         else {
           for (let i = 0; i < organisms.length; i++) {
-            if (organisms[i] == '') {
+            if (organisms[i] === '') {
               continue
             }
             if (ele.data().description.indexOf(organisms[i]) !== -1) {

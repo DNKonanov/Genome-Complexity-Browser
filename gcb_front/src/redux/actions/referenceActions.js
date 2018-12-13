@@ -3,7 +3,8 @@ import {
   FETCH_STAMMS,
   FETCH_CONTIGS,
   FETCH_COMPLEXITY,
-  PUT_SELECTION
+  PUT_SELECTION,
+  FETCH_WINDOWS
 } from "../constants/action-types";
 
 import {
@@ -35,6 +36,23 @@ export function fetchStammsForOrg(org) {
   }
 }
 
+export function fetchWindows(org, stamm, pars) {
+  return function (dispatch) {
+    let pars_int = 0
+    if (pars === true) {
+      pars_int = 1
+    }
+    fetch(SERVER_URL + '/org/' + org + '/stamms/' + stamm + '/complexity_windows/pars/' + pars_int)
+    .then(response => response.json())
+    .then(complexity_windows => dispatch({
+      type: FETCH_WINDOWS,
+      payload: complexity_windows.sort(),
+      stamm: stamm
+    }))
+  }
+}
+
+
 export function fetchContigs(org, stamm) {
   return function (dispatch) {
     fetch(SERVER_URL + '/org/' + org + '/stamms/' + stamm + '/contigs/')
@@ -48,13 +66,14 @@ export function fetchContigs(org, stamm) {
 }
 
 
-export function fetchComplexity(org, stamm, contig, method, pars) {
+export function fetchComplexity(org, stamm, contig, method, pars, complexity_window) {
   return function (dispatch) {
+
     let pars_int = 0
     if (pars === true) {
       pars_int = 1
     }
-    let url = SERVER_URL + '/org/' + org + '/stamms/' + stamm + '/contigs/' + contig + '/methods/' + method + '/pars/' + pars_int + '/complexity/'
+    let url = SERVER_URL + '/org/' + org + '/stamms/' + stamm + '/contigs/' + contig + '/methods/' + method + '/pars/' + pars_int + '/complexity/window/' + complexity_window + '/'
 
     fetch(url)
       .then(response => response.json())
@@ -66,14 +85,15 @@ export function fetchComplexity(org, stamm, contig, method, pars) {
           stamm: stamm,
           contig: contig,
           method: method,
-          pars: pars
+          pars: pars,
+          complexity_window: complexity_window
         }
       }));
   }
 }
 
 
-export function putSelectedRef(org, stamm, contig, og_start, og_end, method, pars, operons) {
+export function putSelectedRef(org, stamm, contig, og_start, og_end, method, pars, operons, complexity_window) {
   return function (dispatch) {
     let pars_int = 0
     if (pars === true) pars_int = 1
@@ -83,6 +103,7 @@ export function putSelectedRef(org, stamm, contig, og_start, og_end, method, par
     dispatch({
       type: PUT_SELECTION,
       payload: {
+        complexity_window: complexity_window,
         org: org,
         stamm: stamm,
         contig: contig,

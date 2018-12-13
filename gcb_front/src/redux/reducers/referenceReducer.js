@@ -3,7 +3,8 @@ import {
   FETCH_STAMMS,
   FETCH_CONTIGS,
   FETCH_COMPLEXITY,
-  PUT_SELECTION
+  PUT_SELECTION,
+  FETCH_WINDOWS
 } from "../constants/action-types";
 
 import * as math from 'mathjs';
@@ -19,6 +20,11 @@ const initialState = {
     list: [],
     stamm: 'None'
   },
+
+  complexity_windows: {
+    list: [],
+    complexity_window: 0,
+  },
   complexity: {
     complexity: [],
     max_complexity: 0,
@@ -26,6 +32,7 @@ const initialState = {
     OGs: [],
     coord_list: [],
     request : {
+      complexity_window: 0,
       org: '',
       stamm: '',
       contig: '',
@@ -50,6 +57,15 @@ export default function (state = initialState, action) {
         stamms: {
           list: action.payload,
           org: action.org
+        }
+      };
+
+    case FETCH_WINDOWS:
+      return {
+        ...state,
+        complexity_windows: {
+          list: action.payload,
+          stamm: action.stamm
         }
       };
     case FETCH_CONTIGS:

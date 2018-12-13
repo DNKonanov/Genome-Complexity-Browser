@@ -20,7 +20,7 @@ import Grid from '@material-ui/core/Grid';
 import {
   SERVER_URL
 } from "../redux/constants/urls";
-import { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity, putSelectedRef } from '../redux/actions/referenceActions'
+import { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity, putSelectedRef, fetchWindows } from '../redux/actions/referenceActions'
 import { connect } from 'react-redux';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Table from '@material-ui/core/Table';
@@ -75,9 +75,9 @@ const styles = theme => ({
 class Selector extends Component {
 
   state = {
-    org: 'Escherichia_coli',
-    stamm: 'GCF_00005845.2_ASM584v2',
-    contig: 'NC_014640.1',
+    org: 'Campylobacter_coli',
+    stamm: 'GCF_000253555.1_ASM25355v2_genomic',
+    contig: 'NZ_AIMP01000001.1',
 
     og_start: 'OG0001707',
     og_end: 'OG0001707',
@@ -87,8 +87,13 @@ class Selector extends Component {
     pars: false,
     operons: true,
     
-    methods: ['window complexity (w20)', 'probabilistic window complexity (w20)', 'IO complexity', 'probabilistic IO complexity'],
-    method: 'window complexity (w20)',
+    methods: [
+    'window complexity', 
+    'probabilistic window complexity',
+    'IO complexity', 
+    'probabilistic IO complexity',
+  ],
+    method: 'window complexity',
     user_coordinates_str: '',
     user_coordinates: [],
     user_values: [],
@@ -96,6 +101,7 @@ class Selector extends Component {
     draw_type: 'line',
     data: '',
     src: '',
+    complexity_window: 20,
     search_query: '',
     search_results: [],
   };
@@ -131,65 +137,72 @@ class Selector extends Component {
             this.props.fetchContigs(this.state.org, this.state.stamm);
             return;
           }
-          else {//contigs loaded
-            if (!this.isInArray(this.props.contigs.list, this.state.contig)) { //selected stamm is not from list
-              this.setState({ contig: this.props.contigs.list[0] })
+          else { //selected stamm is from current list
+            if (this.props.complexity_windows.stamm !== this.state.stamm) { //contigs for stamm not loaded
+              this.props.fetchWindows(this.state.org, this.state.stamm);
+              return;
             }
-            else {
-              let comp_par = this.props.complexity.request;
-              this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
-                this.state.og_start, this.state.og_end, this.state.method, this.state.pars, this.state.operons
 
-              )
-              if (comp_par.org !== this.state.org || comp_par.stamm !== this.state.stamm ||
-                comp_par.contig !== this.state.contig || comp_par.method !== this.state.method ||
-                comp_par.pars !== this.state.pars) {
-                
-                this.props.fetchComplexity(this.state.org, this.state.stamm, this.state.contig, this.state.method, this.state.pars)
-
-                
-                }
-
+            else {//contigs loaded
+              if (!this.isInArray(this.props.contigs.list, this.state.contig)) { //selected stamm is not from list
+                this.setState({ contig: this.props.contigs.list[0] })
+              }
               else {
-                if (this.props.og_start !== this.state.og_start || this.props.og_end !== this.state.og_end) {
-                  this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
-                    this.state.og_start, this.state.og_end, this.state.method, this.state.pars, this.state.operons);
+                let comp_par = this.props.complexity.request;
+                this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
+                  this.state.og_start, this.state.og_end, this.state.method, this.state.pars, this.state.operons, this.state.complexity_window
 
-                }
-                else {
+                )
+                if (comp_par.org !== this.state.org || comp_par.stamm !== this.state.stamm ||
+                  comp_par.contig !== this.state.contig || comp_par.method !== this.state.method ||
+                  comp_par.pars !== this.state.pars || comp_par.complexity_window !== this.state.complexity_window) {
                   
-                  if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end ) {
+                  this.props.fetchComplexity(this.state.org, this.state.stamm, this.state.contig, this.state.method, this.state.pars, this.state.complexity_window)
 
+                  
+                  }
+
+                else {
+                  if (this.props.og_start !== this.state.og_start || this.props.og_end !== this.state.og_end) {
+                    this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
+                      this.state.og_start, this.state.og_end, this.state.method, this.state.pars, this.state.operons, this.state.complexity_window);
+
+                  }
+                  else {
                     
+                    if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end ) {
 
-                    let close_st_gene = 0
-                    let close_end_gene = 0
-                    let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
-                    let close_end_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
-                    for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
-                      let len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_start);
-                      if (len < close_st_len) {
-                        close_st_gene = i;
-                        close_st_len = len
+                      
+
+                      let close_st_gene = 0
+                      let close_end_gene = 0
+                      let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
+                      let close_end_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
+                      for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
+                        let len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_start);
+                        if (len < close_st_len) {
+                          close_st_gene = i;
+                          close_st_len = len
+                        }
+
+
+                        len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_end);
+                        if (len < close_end_len) {
+                          close_end_gene = i;
+                          close_end_len = len
+                        }    
                       }
+                      
+                      if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
+                        this.setState({
+                          og_end: this.props.complexity.OGs[close_end_gene],
+                          og_start: this.props.complexity.OGs[close_st_gene]
+                        })
+                        this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
+                        this.props.complexity.OGs[close_st_gene], this.props.complexity.OGs[close_end_gene], this.state.method, this.state.pars, this.state.operons, this.state.complexity_window)
 
-
-                      len = Math.abs(this.props.complexity.coord_list[i] - this.state.coord_end);
-                      if (len < close_end_len) {
-                        close_end_gene = i;
-                        close_end_len = len
-                      }    
-                    }
-                    
-                    if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
-                      this.setState({
-                        og_end: this.props.complexity.OGs[close_end_gene],
-                        og_start: this.props.complexity.OGs[close_st_gene]
-                      })
-                      this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
-                      this.props.complexity.OGs[close_st_gene], this.props.complexity.OGs[close_end_gene], this.state.method, this.state.pars, this.state.operons)
-
-                    
+                      
+                      }
                     }
                   }
                 }
@@ -242,11 +255,11 @@ class Selector extends Component {
       }
     }
 
-    if (coord_start == -1) {
+    if (coord_start === -1) {
       alert('Start OG is not in chosed genome!')
     }
 
-    else if (coord_end == -1) {
+    else if (coord_end === -1) {
       alert('Eng OG is not in chosed genome!')
     }
 
@@ -557,6 +570,16 @@ class Selector extends Component {
 
                     <Grid item>
 
+                    <FormControl>
+                      <InputLabel htmlFor="complexity_window">Window</InputLabel>
+                      <Select value={this.state.complexity_window} name='complexity_window' onChange={this.handleChange}>
+                        {this.props.complexity_windows.list.map(complexity_window => <MenuItem key={complexity_window} value={complexity_window}> {complexity_window} </MenuItem>)}
+                      </Select>
+                    </FormControl>
+                    </Grid>
+
+                    <Grid item>
+
                       <Button
                         style={{ margin: 6 }}
                         variant="contained" 
@@ -711,10 +734,11 @@ class Selector extends Component {
 const mapStateToProps = state => ({
   organisms: state.reference.organisms,
   stamms: state.reference.stamms,
+  complexity_windows: state.reference.complexity_windows,
   contigs: state.reference.contigs,
   complexity: state.reference.complexity,
   og_start: state.reference.selection.og_start,
   og_end: state.reference.selection.og_end
 });
 
-export default connect(mapStateToProps, { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity, putSelectedRef })(withStyles(styles)(Selector));
+export default connect(mapStateToProps, { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity, putSelectedRef, fetchWindows })(withStyles(styles)(Selector));

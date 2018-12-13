@@ -1,6 +1,6 @@
 from app import app
 from flask import jsonify, session
-from app.manage_db import get_complexity_from_db, get_coordinates_from_db, get_operons
+from app.manage_db import get_complexity_from_db, get_coordinates_from_db, get_operons, get_windows_from_db
 import os
 import math
 import matplotlib.pyplot as plt
@@ -17,10 +17,10 @@ def index():
 
 data_path = './data/'
 
-methods = {'window complexity (w20)': 'window_complexity 20',
-            'probabilistic window complexity (w20)': 'prob_window_complexity 20',
-            'IO complexity': 'io_complexity 20',
-            'probabilistic IO complexity': 'prob_io_complexity 20'}
+methods = {'window complexity': 'window_complexity',
+            'probabilistic window complexity': 'prob_window_complexity',
+            'IO complexity': 'io_complexity',
+            'probabilistic IO complexity': 'prob_io_complexity'}
 
 
 @app.route('/org/<organism>/strain/<ref_strain>/contig/<contig>/start/<og_start>/end/<og_end>/window/<window>/tails/<tails>/pars/<pars>/operons/<operons>/depth/<depth>/freq_min/<freq_min>')
@@ -62,7 +62,7 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
     for edge in edges:
         edge['data']['opacity'] = '1'
         edge['data']['eweight'] = '1'
-        query = 'SELECT genomes, frequency FROM edges_table WHERE source_id =' + nodes_keys[edge['data']['source']] + ' and target_id =' + nodes_keys[edge['data']['target']]
+        query = 'SELECT genomes, frequency FROM edges_table WHERE source =' + nodes_keys[edge['data']['source']] + ' and target =' + nodes_keys[edge['data']['target']]
         stamms = [og for og in c.execute(query)]
         if (len(stamms) > 0):
             edge['data']['description'] = stamms[0][0]
@@ -177,11 +177,20 @@ def get_contig_list(org, stamm):
     connect.close()
     return jsonify(contigs)
 
-@app.route('/org/<org>/stamms/<stamm>/contigs/<contig>/methods/<method>/pars/<pars>/complexity/')
-def get_complexity(org, stamm, contig, pars, method):
+@app.route('/org/<org>/stamms/<stamm>/contigs/<contig>/methods/<method>/pars/<pars>/complexity/window/<window>/')
+def get_complexity(org, stamm, contig, pars, method, window):
     
-    complexity = get_complexity_from_db(data_path, org, stamm, contig, int(pars), methods[method])
+    complexity = get_complexity_from_db(data_path, org, stamm, contig, int(pars), methods[method], window)
     return jsonify(complexity)
+
+
+@app.route('/org/<org>/stamms/<stamm>/complexity_windows/pars/<pars>/')
+def get_complexity_windows(org, stamm, pars):
+
+    windows = get_windows_from_db(data_path, org, stamm, int(pars))
+
+    print(windows)
+    return jsonify(windows)
 
 
 @app.route('/search/org/<org>/strain/<stamm>/pars/<pars>/input/<input>/')
@@ -200,7 +209,7 @@ def search(org, stamm, pars, input):
 
     table = []
     for contig in contigs:
-        query = 'SELECT node_name, description, (start_coord+end_coord)/2 FROM nodes_table WHERE contig=' + str(contig[0])
+        query = 'SELECT node_name, description, (start_coord+end_coord)/2 FROM nodes_table WHERE contig_id=' + str(contig[0])
         table += [list(q) + [contig[1]] for q in c.execute(query) if input.lower() in q[1].lower()]
 
     return jsonify(table)

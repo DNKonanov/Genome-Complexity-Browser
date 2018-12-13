@@ -71,12 +71,12 @@ class GraphContainer extends Component {
   }
 
   checkOG = () => {
-    if (this.props.complexity.OGs.indexOf(this.props.selection.og_start) ==-1) {
+    if (this.props.complexity.OGs.indexOf(this.props.selection.og_start) ===-1) {
       alert('Start OG is not in chosen genome')
       return true
     }
     
-    if (this.props.complexity.OGs.indexOf(this.props.selection.og_end) ==-1) {
+    if (this.props.complexity.OGs.indexOf(this.props.selection.og_end) ===-1) {
       alert('End OG is not in chosen genome')
       return true
     }
