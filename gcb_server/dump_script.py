@@ -8,6 +8,8 @@ for o in orgs:
 	try:
 		files = os.listdir('data/' + o + '/')
 		if '.dump' not in ' '.join(files):
+			print(o, end=' ')
+			print('dumping...')
 			g = GenomeGraph()
 			g.read_graph('data/' + o + '/' + o + '.sif')
 			dump_file = open('data/' + o + '/' + o + '.dump', 'wb')

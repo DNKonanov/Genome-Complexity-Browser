@@ -495,15 +495,15 @@ class Selector extends Component {
 
                   </Grid>
 
-                  <Grid item>
+                  {/*<Grid item>
                     <FormControlLabel
-                      control={<Switch name='pars' value="checkedB" color="primary" checked={this.state.pars} onChange={this.checkPars} />}
+                      control={<Switch name='pars' value="checked" color="primary" checked={this.state.pars} onChange={this.checkPars} />}
                       label="Draw paralogous" />
-                  </Grid>
+                  </Grid>*/}
 
                   <Grid item>
                     <FormControlLabel
-                      control={<Switch name='pars' checked={this.state.operons} onChange={this.checkOperons} value="checkedB" color="primary" />}
+                      control={<Switch name='pars' checked={this.state.operons} onChange={this.checkOperons} value="pars" color="primary" />}
                       label="Draw operons" />
                   </Grid>
                 </Grid>
