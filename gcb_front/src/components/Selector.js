@@ -18,7 +18,8 @@ import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import {
-  SERVER_URL
+  SERVER_URL,
+  SERVER_PORT
 } from "../redux/constants/urls";
 import { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity, putSelectedRef, fetchWindows } from '../redux/actions/referenceActions'
 import { connect } from 'react-redux';
@@ -75,9 +76,9 @@ const styles = theme => ({
 class Selector extends Component {
 
   state = {
-    org: 'Campylobacter_coli',
-    stamm: 'GCF_000253555.1_ASM25355v2_genomic',
-    contig: 'NZ_AIMP01000001.1',
+    org: 'Escherichia_coli',
+    stamm: 'GCF_000007445.1_ASM744v1',
+    contig: 'NC_004431.1',
 
     og_start: 'OG0001707',
     og_end: 'OG0001707',
@@ -358,7 +359,7 @@ class Selector extends Component {
   }
 
   search = (e) => {
-    let url = SERVER_URL + '/search/org/' + this.state.org + '/strain/' + this.state.stamm + '/pars/' + this.state.pars + '/input/' + this.state.search_query + '/'
+    let url = SERVER_URL + SERVER_PORT + '/search/org/' + this.state.org + '/strain/' + this.state.stamm + '/pars/' + this.state.pars + '/input/' + this.state.search_query + '/'
     fetch(url)
       .then(response => response.json())
       .then(data => {this.setState({search_results: data})})

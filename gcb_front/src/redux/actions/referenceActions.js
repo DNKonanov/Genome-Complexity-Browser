@@ -8,14 +8,15 @@ import {
 } from "../constants/action-types";
 
 import {
-  SERVER_URL
+  SERVER_URL,
+  SERVER_PORT
 } from "../constants/urls";
 
 
 
 export function fetchOrganisms() {
   return function (dispatch) {
-    fetch(SERVER_URL + '/org/')
+    fetch(SERVER_URL + SERVER_PORT + '/org/')
       .then(response => response.json())
       .then(organisms => dispatch({
         type: FETCH_ORGANISMS,
@@ -26,7 +27,7 @@ export function fetchOrganisms() {
 
 export function fetchStammsForOrg(org) {
   return function (dispatch) {
-    fetch(SERVER_URL + '/org/' + org + '/stamms/')
+    fetch(SERVER_URL + SERVER_PORT + '/org/' + org + '/stamms/')
       .then(response => response.json())
       .then(stamms => dispatch({
         type: FETCH_STAMMS,
@@ -42,7 +43,7 @@ export function fetchWindows(org, stamm, pars) {
     if (pars === true) {
       pars_int = 1
     }
-    fetch(SERVER_URL + '/org/' + org + '/stamms/' + stamm + '/complexity_windows/pars/' + pars_int)
+    fetch(SERVER_URL + SERVER_PORT + '/org/' + org + '/stamms/' + stamm + '/complexity_windows/pars/' + pars_int)
     .then(response => response.json())
     .then(complexity_windows => dispatch({
       type: FETCH_WINDOWS,
@@ -55,7 +56,7 @@ export function fetchWindows(org, stamm, pars) {
 
 export function fetchContigs(org, stamm) {
   return function (dispatch) {
-    fetch(SERVER_URL + '/org/' + org + '/stamms/' + stamm + '/contigs/')
+    fetch(SERVER_URL + SERVER_PORT + '/org/' + org + '/stamms/' + stamm + '/contigs/')
       .then(response => response.json())
       .then(contigs => dispatch({
         type: FETCH_CONTIGS,
@@ -73,7 +74,7 @@ export function fetchComplexity(org, stamm, contig, method, pars, complexity_win
     if (pars === true) {
       pars_int = 1
     }
-    let url = SERVER_URL + '/org/' + org + '/stamms/' + stamm + '/contigs/' + contig + '/methods/' + method + '/pars/' + pars_int + '/complexity/window/' + complexity_window + '/'
+    let url = SERVER_URL + SERVER_PORT + '/org/' + org + '/stamms/' + stamm + '/contigs/' + contig + '/methods/' + method + '/pars/' + pars_int + '/complexity/window/' + complexity_window + '/'
 
     fetch(url)
       .then(response => response.json())
