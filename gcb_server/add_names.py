@@ -13,7 +13,7 @@ f = open('strains_decode.txt')
 codes = {}
 
 for line in f:
-    code = line.split(' ')[-1][:-2]
+    code = line.split(' ')[-1][:-3]
     name = ''.join(line.split(' ')[:-1])
     codes[code] = name
 
