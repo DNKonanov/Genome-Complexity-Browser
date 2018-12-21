@@ -59,13 +59,21 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
 
     print('adding edges...')
     added_nodes = set([])
+
+    genomes_names = {g[0]: g[1] for g in c.execute('select genome_code, genome_name from genomes_table')}
+
     for edge in edges:
         edge['data']['opacity'] = '1'
         edge['data']['eweight'] = '1'
         query = 'SELECT genomes, frequency FROM edges_table WHERE source =' + nodes_keys[edge['data']['source']] + ' and target =' + nodes_keys[edge['data']['target']]
         stamms = [og for og in c.execute(query)]
+
+        genomes_list = ''
+        for st in stamms.split('\n'):
+            genomes_list += st + '\t' + genomes_names
+
         if (len(stamms) > 0):
-            edge['data']['description'] = stamms[0][0]
+            edge['data']['description'] = genomes_list
 
             edge['data']['penwidth'] = str(10*math.sqrt(stamms[0][1]/max_width))
 
