@@ -8,12 +8,8 @@ from gene_graph_lib.compute_complexity import GenomeGraph
 from gene_graph_lib.generate_subgraph import get_subgraph
 from gene_graph_lib.draw_graph import get_json_graph
 import sqlite3
+from flask import render_template
 
-
-@app.route('/')
-@app.route('/index')
-def index():
-    return "Hello, World!"
 
 data_path = './data/'
 
@@ -155,6 +151,11 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
 
     
     return jsonify(graph_json)
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/org/')
 def get_org_list():

@@ -29,7 +29,7 @@ for org in orgs:
     for code in genome_codes:
     	for ref_code in codes:
     		if ref_code in code[1]:
-    			c.execute('update genome_table set genome_name="' + codes[ref_code] + '" where genome_id="' + str(code[0]))
+    			c.execute('update genomes_table set genome_name="' + codes[ref_code] + '" where genome_id=' + str(code[0]))
 
     
     connect.commit()
@@ -44,7 +44,7 @@ for org in orgs:
     for code in genome_codes:
     	for ref_code in codes:
     		if ref_code in code[1]:
-    			c.execute('update genome_table set genome_name="' + codes[ref_code] + '" where genome_id="' + str(code[0]))
+    			c.execute('update genomes_table set genome_name="' + codes[ref_code] + '" where genome_id=' + str(code[0]))
 
     connect.commit()
     connect.close()
