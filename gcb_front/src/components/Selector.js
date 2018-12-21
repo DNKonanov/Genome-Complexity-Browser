@@ -105,6 +105,7 @@ class Selector extends Component {
     complexity_window: 20,
     search_query: '',
     search_results: [],
+    max_user_value: 1
   };
 
 
@@ -300,16 +301,23 @@ class Selector extends Component {
       this.setState({ user_coordinates: [] })
       let coord = []
       let values = []
+
+      let max_coord = -1000000000
+
       for (let i = 0; i < lines.length; i++) {
         let line = lines[i].split(':');
         coord.push(parseInt(line[0], 10));
-        values.push(parseFloat(line[1]))
+        
+        let v = parseFloat(line[1])
+        if (v > max_coord) { max_coord = v}
+        values.push(-v)
       }
+
       this.setState({
         user_coordinates: coord,
-        user_values: values
+        user_values: values,
+        max_user_value: max_coord
       })
-
     }
     e.preventDefault()
   }
@@ -683,11 +691,13 @@ class Selector extends Component {
                         },
 
                         yaxis: {
+                          range:[-data.max_complexity, data.max_complexity],
                           title: 'complexity',
                           overlaying: 'y2'
                         },
 
                         yaxis2: {
+                          range: [-this.state.max_user_value, this.state.max_user_value],
                           title: 'user values',
                           side: 'right'
                         }
