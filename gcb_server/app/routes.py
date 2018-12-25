@@ -147,9 +147,7 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
 
 
     print('adding nodes complete')
-    
-
-    
+       
     return jsonify(graph_json)
 
 

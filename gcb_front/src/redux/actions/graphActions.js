@@ -15,12 +15,12 @@ export function fetchGraph(params) {
 
     fetch(url)
       .then(response => response.json())
-      .then(data => dispatch({
+      .then(data => {console.log(data); dispatch({
         type: FETCH_GRAPH,
         payload: data,
         params: params,
         result: 'SUCCESS'
-      }))
+      })})
       .catch(error => dispatch({
         type: FETCH_GRAPH,
         payload: {},

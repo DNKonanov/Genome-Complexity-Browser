@@ -504,11 +504,11 @@ class Selector extends Component {
 
                   </Grid>
 
-                  {/*<Grid item>
+                  <Grid item>
                     <FormControlLabel
                       control={<Switch name='pars' value="checked" color="primary" checked={this.state.pars} onChange={this.checkPars} />}
                       label="Draw paralogous" />
-                  </Grid>*/}
+                  </Grid>
 
                   <Grid item>
                     <FormControlLabel
