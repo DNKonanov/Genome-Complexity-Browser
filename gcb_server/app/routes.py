@@ -65,8 +65,10 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
         stamms = [og for og in c.execute(query)]
 
         genomes_list = ''
-        for st in stamms[0][0].split('\n'):
-            genomes_list += st + '\t' + genomes_names[st] + '\n'
+
+        if len(stamms) != 0:
+            for st in stamms[0][0].split('\n'):
+                genomes_list += st + '\t' + genomes_names[st] + '\n'
 
         if (len(stamms) > 0):
             edge['data']['description'] = genomes_list
@@ -89,7 +91,6 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
         else:
             print(edge)
             edge['data']['description'] = 'null'
-
     
     print('adding nodes...')
     
