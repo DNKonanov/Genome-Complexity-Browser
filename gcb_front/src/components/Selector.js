@@ -78,6 +78,7 @@ class Selector extends Component {
   state = {
     org: 'Escherichia_coli',
     stamm: 'GCF_000007445.1_ASM744v1',
+    genome_name : '',
     contig: 'NC_004431.1',
 
     og_start: 'OG0001707',
@@ -132,7 +133,8 @@ class Selector extends Component {
       }
       else { // stamms loaded
         if (!this.isInArray(this.props.stamms.list, this.state.stamm)) { //selected stamm is not from list
-          this.setState({ stamm: this.props.stamms.list[0] })
+          this.setState({ stamm: this.props.stamms.list[0]})
+          this.setState({ genome_name: this.props.stamms.names[0]})
         }
         else { //selected stamm is from current list
           if (this.props.contigs.stamm !== this.state.stamm) { //contigs for stamm not loaded
@@ -460,7 +462,7 @@ class Selector extends Component {
                     <FormControl>
                       <InputLabel htmlFor="stamm">Reference</InputLabel>
                       <Select value={this.state.stamm} name='stamm' onChange={this.handleChange}>
-                        {this.props.stamms.list.map(stamm => <MenuItem key={stamm} value={stamm}> {stamm} </MenuItem>)}
+                        {this.props.stamms.list.map(stamm => <MenuItem key={stamm} value={stamm}> {stamm + ' (' + this.props.stamms.names[this.props.stamms.list.indexOf(stamm)] + ')'} </MenuItem>)}
                       </Select>
                     </FormControl>
                   </Grid>

@@ -107,4 +107,4 @@ venv.bak/
 gcb_server/data
 gcb_front/node_modules
 gcb_server/app/__pycache__
-gcb_front/src/redux/constants/urls.js
+gcb_front/src/redux/constants

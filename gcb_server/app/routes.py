@@ -169,11 +169,12 @@ def get_stamm_list(org):
     connect = sqlite3.connect(data_path + org + '/' + org + '.db')
     c = connect.cursor()
     
-    stamms = [row for row in c.execute('SELECT genome_code FROM genomes_table')]
-    stamms.sort()
+    stamms = [row for row in c.execute('SELECT genome_code, genome_name FROM genomes_table')]
+    answer = [[s[0] for s in stamms], [s[1] for s in stamms]]
+    answer.sort()
     print(org)
     connect.close()
-    return jsonify(stamms)
+    return jsonify(answer)
 
 @app.route('/org/<org>/stamms/<stamm>/contigs/')
 def get_contig_list(org, stamm):

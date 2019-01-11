@@ -14,6 +14,7 @@ const initialState = {
   organisms: [],
   stamms: {
     list: [],
+    names: [],
     org: 'None'
   },
   contigs: {
@@ -55,7 +56,8 @@ export default function (state = initialState, action) {
       return {
         ...state,
         stamms: {
-          list: action.payload,
+          list: action.payload[1],
+          names: action.payload[0],
           org: action.org
         }
       };

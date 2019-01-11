@@ -31,7 +31,7 @@ export function fetchStammsForOrg(org) {
       .then(response => response.json())
       .then(stamms => dispatch({
         type: FETCH_STAMMS,
-        payload: stamms.sort(),
+        payload: stamms,
         org: org
       }));
   }
