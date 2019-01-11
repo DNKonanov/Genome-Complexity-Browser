@@ -170,8 +170,8 @@ def get_stamm_list(org):
     c = connect.cursor()
     
     stamms = [row for row in c.execute('SELECT genome_code, genome_name FROM genomes_table')]
+    stamms.sort()
     answer = [[s[0] for s in stamms], [s[1] for s in stamms]]
-    answer.sort()
     print(org)
     connect.close()
     return jsonify(answer)

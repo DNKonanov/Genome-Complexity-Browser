@@ -56,8 +56,8 @@ export default function (state = initialState, action) {
       return {
         ...state,
         stamms: {
-          list: action.payload[1],
-          names: action.payload[0],
+          list: action.payload[0],
+          names: action.payload[1],
           org: action.org
         }
       };
