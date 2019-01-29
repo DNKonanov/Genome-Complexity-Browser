@@ -1,0 +1,58 @@
+example:
+'1' -> '2' -> '3'; 
+'1' -> */ -> '2'; 
+'1' -> *(!n['2'])/ -> '3'
+
+
+{...} - parameters brackets
+(x,y) - spacing brackets
+[x, y] - list brackets
+
+Parameters:
+--reference REFERENCE, string, optional, default 'all'
+--method METHOD, 'st' or 'prob', default 'st'
+
+! - not, common operator
+
+	'node' :
+
+	-> :	w - weight of edge, integer or 'max', default (1,max)
+
+	*/ :	l - length of path, integer or 'max', default (0,max)
+			u - number of paths integer of 'max', default (0,max)
+			w - weigth of all edges in path, integer or 'max', default(1,max)
+			n - list of nodes, which must be located in path, default empty list
+			nr - boolean, works only when reference us chosen, all nodes in path or paths dont content in reference (?хуже производительность?), default off
+
+
+'NODE' is some node
+
+'1' -> '2' 
+is edge with any weight from node '1' to '2'
+
+'1' -{w(2,2)}> '2' (or
+'1' *{l(0,0):w(2,2)}/ '2')
+is edge with weight = 2 between '1' and '2'
+
+-{w(2,10)}> 
+is edge with weigth in (2, 10)
+
+'1' */ '3' 
+is any path between '1' and '3' (* can content 0 nodes)
+
+'1' *{!n['2']}/ '3' 
+is path or paths between '1' and '3' which dont content node '2'
+
+'1' *{l(20,50)}/ '3' 
+is path or paths between '1' and '3' with length in (20, 50)
+
+'1' *{l(20,50):!l(30,40):u(2, max):w(2,max)}/ '3';'1' -> '3' 
+this template describes graph structure with edge between '1' and '3' and at least 2 different paths between '1' and '3' with length in (20, 50) but not in (30,40) with weight more than 2
+
+*{l(100,320):u(2,50):nr()}/ '1' -{w(50,400)}> '2' *{l(100,320):u(2,50):nr()}/; '1' *{l(2,max)}/ '2'
+Insertion template
+
+NOT WORKING:
+-'max' key word
+-n() and nr() options
+-!x doesnt work correctly without x options
