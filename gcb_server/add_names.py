@@ -21,31 +21,39 @@ for line in f:
 for org in orgs:
     print(org)
     #non-pars table
-    connect = sqlite3.connect(data_path + org + '/' + org + '.db')
-    c = connect.cursor()
-    
-    genome_codes = [q for q in c.execute('select genome_id,genome_code from genomes_table')]
 
-    for code in genome_codes:
-    	for ref_code in codes:
-    		if ref_code in code[1]:
-    			c.execute('update genomes_table set genome_name="' + codes[ref_code] + '" where genome_id=' + str(code[0]))
+    skip = os.path.isfile(data_path + org + '/' + org + '.db')
 
-    
-    connect.commit()
-    connect.close()
+    if skip == True:
+        connect = sqlite3.connect(data_path + org + '/' + org + '.db')
+        c = connect.cursor()
+        
+        genome_codes = [q for q in c.execute('select genome_id,genome_code from genomes_table')]
+
+        for code in genome_codes:
+            for ref_code in codes:
+                if ref_code in code[1]:
+                    c.execute('update genomes_table set genome_name="' + codes[ref_code] + '" where genome_id=' + str(code[0]))
+
+        
+        connect.commit()
+        connect.close()
 
     #pars table
-    connect = sqlite3.connect(data_path + org + '/' + org + '_pars.db')
-    c = connect.cursor()
-    
-    genome_codes = [q for q in c.execute('select genome_id,genome_code from genomes_table')]
+    skip = os.path.isfile(data_path + org + '/' + org + '_pars.db')
 
-    for code in genome_codes:
-    	for ref_code in codes:
-    		if ref_code in code[1]:
-    			c.execute('update genomes_table set genome_name="' + codes[ref_code] + '" where genome_id=' + str(code[0]))
+    if skip == True:
+            
+        connect = sqlite3.connect(data_path + org + '/' + org + '_pars.db')
+        c = connect.cursor()
+        
+        genome_codes = [q for q in c.execute('select genome_id,genome_code from genomes_table')]
 
-    connect.commit()
-    connect.close()
+        for code in genome_codes:
+            for ref_code in codes:
+                if ref_code in code[1]:
+                    c.execute('update genomes_table set genome_name="' + codes[ref_code] + '" where genome_id=' + str(code[0]))
+
+        connect.commit()
+        connect.close()
     

@@ -3,7 +3,6 @@ from flask import jsonify, session
 from app.manage_db import get_complexity_from_db, get_coordinates_from_db, get_operons, get_windows_from_db
 import os
 import math
-import matplotlib.pyplot as plt
 from gene_graph_lib.compute_complexity import GenomeGraph
 from gene_graph_lib.generate_subgraph import get_subgraph
 from gene_graph_lib.draw_graph import get_json_graph

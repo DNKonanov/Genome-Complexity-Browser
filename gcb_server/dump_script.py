@@ -10,14 +10,22 @@ for o in orgs:
 		if '.dump' not in ' '.join(files):
 			print(o, end=' ')
 			print('dumping...')
-			g = GenomeGraph()
-			g.read_graph('data/' + o + '/' + o + '.sif')
-			dump_file = open('data/' + o + '/' + o + '.dump', 'wb')
-			dump(g, dump_file)
+			
+			
+			try:
+				g = GenomeGraph()
+				g.read_graph('data/' + o + '/' + o + '.sif')
+				dump_file = open('data/' + o + '/' + o + '.dump', 'wb')
+				dump(g, dump_file)
+			except:
+				pass
 
-			g = GenomeGraph()
-			g.read_graph('data/' + o + '/' + o + '_pars.sif')
-			dump_file = open('data/' + o + '/' + o + '_pars.dump', 'wb')
-			dump(g, dump_file)
+			try:
+				g = GenomeGraph()
+				g.read_graph('data/' + o + '/' + o + '_pars.sif')
+				dump_file = open('data/' + o + '/' + o + '_pars.dump', 'wb')
+				dump(g, dump_file)
+			except:
+				pass
 	except:
 		continue
