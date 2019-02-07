@@ -95,6 +95,7 @@ class CytoscapeDagreGraph extends Component {
     edge_description: 'empty',
     json_format: '',
     selected_nodes: 'empty',
+    user_colors: '',
   };
 
 
@@ -265,12 +266,52 @@ class CytoscapeDagreGraph extends Component {
   }
 
   downloadjpg = () => {
-    console.log(this.state.cy)
     var element = document.createElement("a");
     element.href = this.state.cy.jpg({maxWidth:10000});
     element.download = "subgraph.jpg";
     element.click();
 
+  }
+
+  uploadColors = (e) => {
+    let user_colors
+    if (window.FileReader) {
+      let file = e.target.files[0], reader = new FileReader();
+      reader.readAsText(file);
+
+      reader.onload = function(r) {
+
+        user_colors = reader.result
+        let colors = {};
+        if (user_colors.length !== 0) {
+
+          let lines;
+          lines = user_colors.split('\n');
+          for (let i = 0; i < lines.length; i++) {
+            
+            let line = lines[i].replace(' ', '\t').split('\t');
+            colors[line[0]] = line[1]
+          }
+        }
+
+
+        this.state.cy.nodes().forEach(function (ele) {
+
+          if (ele.data().id in colors) {
+            ele.data().color = colors[ele.data().id]
+          }
+        });
+        this.prepareCy(this.props) 
+      }.bind(this)
+
+    }
+    else {
+      alert('Sorry, your browser does\'nt support for preview');
+    }
+
+    
+
+    e.preventDefault()
   }
 
   downloadJson = () => {
@@ -306,6 +347,20 @@ class CytoscapeDagreGraph extends Component {
           component="label"
           onClick={this.downloadjpg}
         >Download JPG
+        </Button>
+
+        <Button
+          style={{ margin: 6 }}
+          variant="contained" 
+          color="primary"
+          component="label"
+        >
+          Upload colors
+          <input
+            onChange={(e) => {this.uploadColors(e)}}
+            style={{ display: 'none' }}
+            type="file"
+          />
         </Button>
 
 

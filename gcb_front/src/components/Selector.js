@@ -30,7 +30,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper } from '@material-ui/core';
+import { Paper} from '@material-ui/core';
 
 
 function removeAllTips(){
@@ -439,6 +439,42 @@ class Selector extends Component {
 
     return (
       <div className={classes.root}>
+         <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>ABOUT</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+
+            <Grid container direction='column'>
+
+
+              <Typography>User manual(alpha):<br />
+                <a>PDF</a> <br/>
+                <a>HTML</a>
+              </Typography>
+
+              <Typography>Link to github:<br/>
+                <a href='https://github.com/DNKonanov/Genome-Complexity-Browser'>GitHub</a>
+              </Typography>
+
+              <Typography>Command-line tool:<br/>
+                <a href='https://github.com/DNKonanov/geneGraph'>geneGraph</a>
+              </Typography>
+
+              <Typography>Stand-alone version of this service:<br/>
+                <a href='https://github.com/DNKonanov/geneGraph'>GCB_package</a>
+              </Typography>
+
+            </Grid>
+
+
+            
+            
+
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+        
+
         <ExpansionPanel defaultExpanded={true}>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>SELECT PARAMETERS</Typography>

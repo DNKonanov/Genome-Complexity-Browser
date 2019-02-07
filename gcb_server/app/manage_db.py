@@ -73,7 +73,7 @@ def get_coordinates_from_db(data_path, organism, reference, contig, pars):
 
     connect.close()
 
-    return [og_list, coord_list, description_list]
+    return [og_list, coord_list, description_list] , contig_key
 
 
 

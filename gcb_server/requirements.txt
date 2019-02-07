@@ -1,8 +1,4 @@
 flask
-matplotlib
-peewee
 gene-graph-lib
 numpy
-scipy
 flask-cors
-pygraphviz

@@ -94,7 +94,7 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
     print('adding nodes...')
     
     
-    coordinates = get_coordinates_from_db (data_path, organism, ref_strain, contig, int(pars))
+    coordinates, contig_key = get_coordinates_from_db (data_path, organism, ref_strain, contig, int(pars))
     query = 'SELECT node_name, description, end_coord-start_coord FROM nodes_table'
     OGs = [og for og in c.execute(query)]
     og_list = [og[0] for og in OGs]
@@ -107,6 +107,9 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
         else: operons_file = data_path + organism + '/ref_' + ref_strain + '/operons.txt'
             
         operons_list = get_operons(operons_file)
+
+
+    ref = [q[0] for q in c.execute('select node_name from nodes_table where contig_id=' + str(contig_key))]
     
     
     for node in nodes:
@@ -125,7 +128,7 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
             node['data']['description'] = descripton_list[og_index] + ': ' + str(abs(length_list[og_index]))
         else:
             node['data']['description'] = 'null'
-        if node['data']['id'] in added_nodes:
+        if node['data']['id'] in ref:
             try:
                 coord_index = coordinates[0].index(node['data']['id'])
                 node['data']['description'] = coordinates[2][coord_index] + ': ' + str(abs(length_list[og_index])) + ' (' + str(int(coordinates[1][coord_index])) + ')'
