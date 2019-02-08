@@ -39,6 +39,19 @@ class GraphContainer extends Component {
 
 
   handleChange = (event) => {
+
+    if (event.target.name === 'depth') {
+      if (event.target.value < 2) {return}
+    }
+
+    if (event.target.name === 'freq_min') {
+      if (event.target.value < 1) {return}
+    }
+
+    if ((event.target.name === 'window') || (event.target.name === 'tails')) {
+      if (event.target.value < 0) {return}
+    }
+
     this.setState({ [event.target.name]: event.target.value })
   }
 

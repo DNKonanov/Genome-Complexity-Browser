@@ -375,6 +375,7 @@ class Selector extends Component {
       .then(data => {this.setState({search_results: data})})
       .catch(error => console.log('error'));
 
+    e.preventDefault()
   }
 
   clearSearchResults = (e) => {
@@ -567,21 +568,25 @@ class Selector extends Component {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Grid container direction='column'>
-              <Grid container direction="row" alignItems="flex-start" spacing={24}>
+              <form onSubmit={this.search}>
+
+                <Grid container direction="row" alignItems="flex-start" spacing={24}>
+                  <Grid >
+                    <TextField label={'Search'} name='search_query' value={this.state.search_query}  onChange={this.handleChange}/>
+                  </Grid>
+
+                  <Grid item>
+                    <Button color='primary' variant='contained' type="submit" onClick={(e) => {this.search(e)}}>SEARCH</Button>
+                  </Grid>
                 
-                <Grid item>
-                  <TextField label={'Search'} name='search_query' value={this.state.search_query}  onChange={this.handleChange} />
-                </Grid>
+                  <Grid item>
+                    <Button color='primary' variant='contained' onClick={(e) => {this.clearSearchResults(e)}}>CLEAR SEARCH RESULTS</Button>
+                  </Grid>
 
-                <Grid item>
-                  <Button color='primary' variant='contained' onClick={(e) => {this.search(e)}}>SEARCH</Button>
                 </Grid>
-
-                <Grid item>
-                  <Button color='primary' variant='contained' onClick={(e) => {this.clearSearchResults(e)}}>CLEAR SEARCH RESULTS</Button>
-                </Grid>
-
-              </Grid>
+              </form>
+                  
+                
 
               <Grid item>
                 {search_field}
