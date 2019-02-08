@@ -282,6 +282,7 @@ class CytoscapeDagreGraph extends Component {
       reader.onload = function(r) {
 
         user_colors = reader.result
+        
         let colors = {};
         if (user_colors.length !== 0) {
 
@@ -294,17 +295,20 @@ class CytoscapeDagreGraph extends Component {
           }
         }
 
+        this.props.data.nodes.forEach(function (ele) {
 
-        this.state.cy.nodes().forEach(function (ele) {
-
-          if (ele.data().id in colors) {
-            ele.data().color = colors[ele.data().id]
+          if (ele.data.id in colors) {
+            ele.data.color = colors[ele.data.id]
           }
         });
         this.prepareCy(this.props) 
+
       }.bind(this)
 
+      
+      
     }
+
     else {
       alert('Sorry, your browser does\'nt support for preview');
     }
@@ -357,9 +361,12 @@ class CytoscapeDagreGraph extends Component {
         >
           Upload colors
           <input
-            onChange={(e) => {this.uploadColors(e)}}
+            onChange={(e) => {
+              this.uploadColors(e);
+              document.getElementById("input-field").value = ""}}
             style={{ display: 'none' }}
             type="file"
+            id="input-field"
           />
         </Button>
 

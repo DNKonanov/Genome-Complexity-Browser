@@ -199,6 +199,7 @@ class GraphContainer extends Component {
           <Grid item>
             {show_load}
           </Grid>
+          
           <Grid item >
             <Button  onClick={(e) => this.stepOfGraph(e, 'left')}>{'\u27F5'}</Button>
           </Grid>
