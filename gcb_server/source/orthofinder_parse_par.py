@@ -54,8 +54,7 @@ for name in full_graph:
 
 
 
-out = open(args.out_file + '.sif', 'a+')
-out_freq = open(args.out_file + '_freq.sif', 'a+')
+out = open(args.out_file + '.sif', 'w')
 
 
 edges = []
@@ -179,6 +178,14 @@ for name in graph:
 db_ = sqlite3.connect(args.out_file + '.db')
 c = db_.cursor()
 
+c.execute('drop table if exists genomes_table')
+c.execute('drop table if exists contigs_table')
+c.execute('drop table if exists nodekey')
+c.execute('drop table if exists nodes_table')
+c.execute('drop table if exists complexity_table')
+c.execute('drop table if exists edges_table')
+
+
 c.execute('''
 create table if not exists genomes_table(
 	genome_id integer primary key,
@@ -252,7 +259,7 @@ for node in nodes_set:
 
 db_.commit()
 
-out_coord = open(args.out_file + '_genes.sif', 'a+')
+out_coord = open(args.out_file + '_genes.sif', 'w')
 out_coord.write('genome\tcontig\tgene\tstart\tend\tdescription\n')
 
 genome_key = 0

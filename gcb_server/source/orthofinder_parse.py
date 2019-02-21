@@ -49,14 +49,13 @@ for name in graph:
 		 graph[name][contig].sort()
 		 graph[name][contig] = [graph[name][contig][i][1] for i in range(len(graph[name][contig]))]
 
-out_context = open(args.out_file + '_context.txt', 'a+')
+out_context = open(args.out_file + '_context.txt', 'w')
 og_context = find_context(graph)
 for og in og_context:
 	out_context.write(og + '\t' + str(og_context[og]) + '\n')
 
 
-out = open(args.out_file + '.sif', 'a+')
-out_freq = open(args.out_file + '_freq.sif', 'a+')
+out = open(args.out_file + '.sif', 'w')
 
 
 coord_list = {}
@@ -94,6 +93,13 @@ for stamm in graph:
 
 db_ = sqlite3.connect(args.out_file + '.db')
 c = db_.cursor()
+
+c.execute('drop table if exists genomes_table')
+c.execute('drop table if exists contigs_table')
+c.execute('drop table if exists nodekey')
+c.execute('drop table if exists nodes_table')
+c.execute('drop table if exists complexity_table')
+c.execute('drop table if exists edges_table')
 
 c.execute('''
 create table if not exists genomes_table(
@@ -168,7 +174,7 @@ for node in nodes_set:
 
 db_.commit()
 
-out_coord = open(args.out_file + '_genes.sif', 'a+')
+out_coord = open(args.out_file + '_genes.sif', 'w')
 out_coord.write('genome\tcontig\tgene\tstart\tend\tdescription\n')
 
 genome_key = 0

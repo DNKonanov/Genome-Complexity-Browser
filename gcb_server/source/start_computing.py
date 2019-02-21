@@ -25,7 +25,7 @@ try:
 except FileNotFoundError:
     os.mkdir(args.output_dir)
 
-f_params = open(args.output_dir + '/params.txt', 'a+')
+f_params = open(args.output_dir + '/params.txt', 'w')
 f_params.write('reference: ' + args.reference + '\n')
 f_params.write('window: ' + str(args.window) + '\n')
 f_params.write('iterations: ' + str(args.iterations) + '\n')
