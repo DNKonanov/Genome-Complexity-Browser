@@ -92,8 +92,6 @@ class Selector extends Component {
     methods: [
     'window complexity', 
     'probabilistic window complexity',
-    'IO complexity', 
-    'probabilistic IO complexity',
   ],
     method: 'window complexity',
     user_coordinates_str: '',
