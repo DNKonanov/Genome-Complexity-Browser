@@ -90,10 +90,10 @@ class Selector extends Component {
     operons: true,
     
     methods: [
-    'window complexity', 
-    'probabilistic window complexity',
+    'by strains complexity', 
+    'probabilistic complexity',
   ],
-    method: 'window complexity',
+    method: 'probabilistic complexity',
     user_coordinates_str: '',
     user_coordinates: [],
     user_values: [],

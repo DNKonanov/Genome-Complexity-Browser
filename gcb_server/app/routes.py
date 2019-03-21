@@ -12,8 +12,8 @@ from flask import render_template
 
 data_path = './data/'
 
-methods = {'window complexity': 'window_complexity',
-            'probabilistic window complexity': 'prob_window_complexity',
+methods = {'by strains complexity': 'window_complexity',
+            'probabilistic complexity': 'prob_window_complexity',
             'IO complexity': 'io_complexity',
             'probabilistic IO complexity': 'prob_io_complexity'}
 
