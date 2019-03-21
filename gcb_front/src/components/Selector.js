@@ -294,18 +294,18 @@ class Selector extends Component {
   drawUserCoordinates = (e) => {
     if (this.state.user_coordinates_str.length !== 0) {
 
-      let string = this.state.user_coordinates_str.replace(' ', '').replace('\t', '').replace('\n', '')
+      let string = this.state.user_coordinates_str
 
       let lines;
-      lines = string.split(',');
+      lines = string.split('\n');
       this.setState({ user_coordinates: [] })
       let coord = []
       let values = []
 
-      let max_coord = -1000000000
+      let max_coord = -Infinity
 
       for (let i = 0; i < lines.length; i++) {
-        let line = lines[i].split(':');
+        let line = lines[i].replace(' ', '\t').split('\t');
         coord.push(parseInt(line[0], 10));
         
         let v = parseFloat(line[1])
