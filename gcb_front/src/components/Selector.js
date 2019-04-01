@@ -76,10 +76,10 @@ const styles = theme => ({
 class Selector extends Component {
 
   state = {
-    org: 'Escherichia_coli',
-    stamm: 'GCF_000007445.1_ASM744v1',
+    org: 'Escherichia_coli_300_genomes',
+    stamm: 'GCF_000284495.1_ASM28449v1',
     genome_name : '',
-    contig: 'NC_004431.1',
+    contig: 'NC_011993.1',
 
     og_start: 'OG0001707',
     og_end: 'OG0001707',
