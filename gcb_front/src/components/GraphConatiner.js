@@ -28,10 +28,10 @@ function removeAllTips(){
 class GraphContainer extends Component {
 
   state = {
-    window: '5',
-    tails: '5',
-    depth: '30',
-    freq_min: '2',
+    window: 1,
+    tails: 0,
+    depth: 30,
+    freq_min: 2,
     layout: 'graphviz',
     loading: false,
     step: 1
