@@ -8,7 +8,7 @@ from gene_graph_lib.generate_subgraph import get_subgraph
 from gene_graph_lib.draw_graph import get_json_graph
 import sqlite3
 from flask import render_template
-
+from app.process_graph import delete_double_edges 
 
 data_path = './data/'
 
@@ -18,9 +18,9 @@ methods = {'by strains complexity': 'window_complexity',
             'probabilistic IO complexity': 'prob_io_complexity'}
 
 
-@app.route('/org/<organism>/strain/<ref_strain>/contig/<contig>/start/<og_start>/end/<og_end>/window/<window>/tails/<tails>/pars/<pars>/operons/<operons>/depth/<depth>/freq_min/<freq_min>')
-def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars, operons, depth, freq_min):
-
+@app.route('/org/<organism>/strain/<ref_strain>/contig/<contig>/start/<og_start>/end/<og_end>/window/<window>/tails/<tails>/pars/<pars>/operons/<operons>/depth/<depth>/freq_min/<freq_min>/hide_edges/<hide>')
+def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars, operons, depth, freq_min, hide):
+    print(hide)
     if int(pars) == 0:
         paths = organism + '.dump'
     else:
@@ -30,8 +30,11 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
     
     subgr = get_subgraph(graph_file, organism, ref_strain, window=int(window), start=og_start, end=og_end, tails=int(tails), depth=int(depth))
     
-    graph_json = get_json_graph(subgr, int(freq_min))
 
+
+    graph_json = get_json_graph(subgr, int(freq_min))
+    if hide == 'true':
+        graph_json = delete_double_edges(graph_json)
     
     if int(pars) == 1:
         db = data_path + organism + '/' + organism + '_pars.db'

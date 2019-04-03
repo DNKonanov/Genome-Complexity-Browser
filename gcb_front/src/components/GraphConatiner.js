@@ -11,11 +11,10 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {putSelectedRef } from '../redux/actions/referenceActions'
-
+import {putSelectedRef } from '../redux/actions/referenceActions';
 import { fetchGraph } from '../redux/actions/graphActions'
 import { connect } from 'react-redux';
-
+import Switch from '@material-ui/core/Switch'
 
 
 function removeAllTips(){
@@ -34,7 +33,8 @@ class GraphContainer extends Component {
     freq_min: 2,
     layout: 'graphviz',
     loading: false,
-    step: 1
+    step: 1,
+    hide_edges: true,
   }
 
 
@@ -44,12 +44,23 @@ class GraphContainer extends Component {
       if (event.target.value < 2) {return}
     }
 
-    if (event.target.name === 'freq_min') {
+    if ((event.target.name === 'freq_min') || (event.target.name === 'window')) {
       if (event.target.value < 1) {return}
     }
 
-    if ((event.target.name === 'window') || (event.target.name === 'tails')) {
+    if (event.target.name === 'tails') {
       if (event.target.value < 0) {return}
+    }
+
+    if (event.target.name === 'hide_edges') {
+      console.log('---')
+      console.log(event.target.checked)
+      this.setState({
+        hide_edges: event.target.checked,
+      })
+      
+      console.log(this.state.hide_edges)
+      return
     }
 
     this.setState({ [event.target.name]: event.target.value })
@@ -73,6 +84,7 @@ class GraphContainer extends Component {
       og_end: sel.og_end,
       window: this.state.window,
       tails: this.state.tails,
+      hide_edges: this.state.hide_edges.toString(),
       pars_int: sel.pars_int.toString(),
       operons_int: sel.operons_int.toString(),
       depth: this.state.depth,
@@ -144,6 +156,7 @@ class GraphContainer extends Component {
       og_start: start,
       og_end: end,
       window: this.state.window,
+      hide_edges: this.state.hide_edges.toString(),
       tails: this.state.tails,
       pars_int: sel.pars_int.toString(),
       operons_int: sel.operons_int.toString(),
@@ -190,6 +203,13 @@ class GraphContainer extends Component {
             </FormControl>
           </Grid>
           <Grid item style={{ maxWidth: 100, margin: 12 }}>
+            <FormControlLabel
+              control={<Switch name='hide_edges' value="checked" color="primary" checked={this.state.hide_edges} onChange={e => this.handleChange(e)} />}
+              label="Hide reversed" />
+            
+          </Grid>
+
+          <Grid item style={{ maxWidth: 100, margin: 12 }}>
             <TextField type="number" margin="normal" label={'Tails'} name='tails' value={this.state.tails} onChange={this.handleChange} />
           </Grid>
 
@@ -212,7 +232,6 @@ class GraphContainer extends Component {
           <Grid item>
             {show_load}
           </Grid>
-          
           <Grid item >
             <Button  onClick={(e) => this.stepOfGraph(e, 'left')}>{'\u27F5'}</Button>
           </Grid>
