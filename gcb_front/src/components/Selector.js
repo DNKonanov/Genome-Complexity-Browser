@@ -122,7 +122,6 @@ class Selector extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    
     removeAllTips()
     if (this.props.organisms.length > 0) {// This means we succesfully loaded list of organisms
       if (this.props.stamms.org !== this.state.org) { //Stamms for selected organims are not loaded

@@ -89,7 +89,8 @@ class GraphContainer extends Component {
       operons_int: sel.operons_int.toString(),
       depth: this.state.depth,
       freq_min: this.state.freq_min,
-      layout: this.state.layout
+      layout: this.state.layout,
+      complexity_window: sel.complexity_window
     }
 
     return graph_params
@@ -124,8 +125,9 @@ class GraphContainer extends Component {
   componentDidUpdate(prevProps, prevState) {
     removeAllTips()
     if (this.props.graph.result === 'SUCCESS' && this.state.loading === true) {
-      if(JSON.stringify(this.props.graph.params) === JSON.stringify(this.getGraphParams()))
+      if(JSON.stringify(this.props.graph.params) === JSON.stringify(this.getGraphParams())) {
         this.setState({ loading: false })
+      }  
     }
   }
 
@@ -162,11 +164,14 @@ class GraphContainer extends Component {
       operons_int: sel.operons_int.toString(),
       depth: this.state.depth,
       freq_min: this.state.freq_min,
-      layout: this.state.layout
+      layout: this.state.layout,
+      complexity_window: sel.complexity_window
     }
-    this.props.putSelectedRef(sel.org, sel.stamm, sel.contig, start, end, sel.method, sel.pars, sel.operons)
-    this.props.fetchGraph(params)
+
+
     this.setState({ loading: true })
+    this.props.putSelectedRef(sel.org, sel.stamm, sel.contig, start, end, sel.method, sel.pars, sel.operons, sel.complexity_window)
+    this.props.fetchGraph(params)
   }
 
   render() {
@@ -232,6 +237,7 @@ class GraphContainer extends Component {
           <Grid item>
             {show_load}
           </Grid>
+          {/*
           <Grid item >
             <Button  onClick={(e) => this.stepOfGraph(e, 'left')}>{'\u27F5'}</Button>
           </Grid>
@@ -243,6 +249,8 @@ class GraphContainer extends Component {
           <Grid item style={{ maxWidth: 150, margin: 12 }}>
             <TextField type="number" label={'Step'} name='step' value={this.state.step} onChange={this.handleChange} />
           </Grid>
+          */}
+          
 
         </Grid>
 

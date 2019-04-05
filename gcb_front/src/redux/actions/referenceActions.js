@@ -101,6 +101,7 @@ export function putSelectedRef(org, stamm, contig, og_start, og_end, method, par
 
     let operons_int = 0
     if (operons === true) operons_int = 1
+
     dispatch({
       type: PUT_SELECTION,
       payload: {
