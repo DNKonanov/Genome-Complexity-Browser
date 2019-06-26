@@ -104,9 +104,12 @@ venv.bak/
 
 # data
 gcb_server/data
+gcb_server/build
+gcb_front/build
 gcb_front/node_modules
 gcb_server/app/__pycache__
 gcb_front/src/redux/constants
+gcb_server/build/index.html
 
 # vscode
 .vscode/
