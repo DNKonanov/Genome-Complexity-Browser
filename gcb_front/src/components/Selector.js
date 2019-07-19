@@ -446,9 +446,8 @@ class Selector extends Component {
             <Grid container direction='column'>
 
 
-              <Typography>User manual(alpha):<br />
-                <a>PDF</a> <br/>
-                <a>HTML</a>
+              <Typography>User manual(alpha):
+                <a href='https://github.com/DNKonanov/Genome-Complexity-Browser/blob/master/GCB_manual.pdf'>PDF</a> <br/>
               </Typography>
 
               <Typography>Link to github:<br/>
@@ -460,7 +459,7 @@ class Selector extends Component {
               </Typography>
 
               <Typography>Stand-alone version of this service:<br/>
-                <a href='https://github.com/DNKonanov/geneGraph'>GCB_package</a>
+                <a href='https://github.com/DNKonanov/GCB'>GCB_package</a>
               </Typography>
 
             </Grid>
