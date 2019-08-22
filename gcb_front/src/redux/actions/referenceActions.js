@@ -26,14 +26,15 @@ export function fetchOrganisms() {
 }
 
 export function fetchStammsForOrg(org) {
+
   return function (dispatch) {
     fetch(SERVER_URL + SERVER_PORT + '/org/' + org + '/stamms/')
       .then(response => response.json())
-      .then(stamms => dispatch({
+      .then(stamms => {dispatch({
         type: FETCH_STAMMS,
         payload: stamms,
-        org: org
-      }));
+        org: org,
+      }); console.log(stamms)});
   }
 }
 

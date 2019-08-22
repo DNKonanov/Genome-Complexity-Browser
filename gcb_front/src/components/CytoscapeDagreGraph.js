@@ -15,6 +15,8 @@ import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 
+import Phylocanvas from '../components/HierarchyTree'
+
 cytoscape.use(dagre);
 cytoscape.use(popper);
 
@@ -87,22 +89,44 @@ let cyStyle = {
   display: 'block'
 };
 
-
 class CytoscapeDagreGraph extends Component {
 
-  state = {
-    cy: false,
-    edge_description: 'empty',
-    json_format: '',
-    selected_nodes: 'empty',
-    user_colors: '',
-  };
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      cy: false,
+      edge_description: 'empty',
+      json_format: '',
+      selected_nodes: 'empty',
+      user_colors: '',
+      selected_genomes: [],
+      PhyloTree: null,
+      default_opacities: [],
+    };
+  }
+  
 
   componentDidMount() {
-    this.prepareCy(this.props)
-  }
 
+    let opacities = []
+    console.log(this.props)
+
+    this.props.data.edges.forEach(function(ele) {
+      opacities.push(ele.data.opacity)
+    })
+    
+    this.setState({
+      PhyloTree: <Phylocanvas 
+                  className='PhyloTreeElement' 
+                  data={this.props.data.phylotree} 
+                  treeType="rectangular"
+                />,
+      default_opacities: opacities,
+    })
+    this.prepareCy(this.props)
+    
+  }
 
   prepareCy = (nextProps) => {
 
@@ -232,6 +256,8 @@ class CytoscapeDagreGraph extends Component {
 
     }.bind(this));
 
+    
+
     this.setState({
       cy: cy,
     });
@@ -239,8 +265,24 @@ class CytoscapeDagreGraph extends Component {
 
   componentWillReceiveProps(nextProps) {
 
+    let opacities = []
+
+    nextProps.data.edges.forEach(function(ele) {
+      opacities.push(ele.data.opacity)
+    })
+    
+    this.setState({
+      PhyloTree: <Phylocanvas 
+                  className='PhyloTreeElement' 
+                  data={this.props.data.phylotree} 
+                  treeType="rectangular"
+                />,
+      default_opacities: opacities,
+    })
+
     this.prepareCy(nextProps)
   }
+
 
   componentDidUpdate(prevProps, prevState) {
     //if (this.prevProps === undefined) {this.prepareCy(this.props)}
@@ -263,6 +305,17 @@ class CytoscapeDagreGraph extends Component {
       this.prepareCy(this.props)
     }
 
+  }
+
+  restore_colors = () => {
+
+    for (let i = 0; i < this.state.default_opacities.length; i++ ) {
+
+      this.props.data.edges[i].data.opacity = this.state.default_opacities[i];
+
+    }
+    
+    this.componentWillReceiveProps(this.props);
   }
 
   downloadjpg = () => {
@@ -318,6 +371,33 @@ class CytoscapeDagreGraph extends Component {
     e.preventDefault()
   }
 
+  filterGenomes = (e) => {
+
+      let genomes = document.getElementsByClassName("PhyloTreeElement pc-container")[0].attributes.selected_genomes.value
+      genomes = genomes.substring(1,genomes.length-1).split("','")
+      this.setState({
+        selected_genomes: genomes
+      })
+
+      
+
+      if (this.setState.selected_genomes !== []) {
+        this.props.data.edges.forEach(function (ele) {
+          
+
+          //console.log(ele.data.description.split('\t').filter(value => -1 !== genomes.indexOf(value)))
+          if (ele.data.description.split('\t').join('\n').split('\n').filter(value => -1 !== genomes.indexOf(value)).length === 0) {
+            //ele.data.color = '#CCCCCC';
+            //ele.data.color = '#CCCCCC';
+            ele.data.opacity = "0.1";
+          } 
+        });
+      }
+      this.prepareCy(this.props)
+
+      e.preventDefault()
+  }
+
   downloadJson = () => {
     var element = document.createElement("a");
     var file = new Blob([JSON.stringify(this.state.cy.json())], { type: 'text/plain' });
@@ -331,6 +411,26 @@ class CytoscapeDagreGraph extends Component {
     const { classes } = this.props;
     return (
       <div>
+
+        <div>
+         {this.state.PhyloTree}
+         <Button
+            style={{ margin: 12 }}
+            variant="contained" 
+            color="primary"
+            component="label"
+            onClick={(e) => {this.filterGenomes(e)}}
+          >Filter genomes
+          </Button>
+          <Button
+            style={{ margin: 12 }}
+            variant="contained" 
+            color="primary"
+            component="label"
+            onClick={this.restore_colors}
+          >Restore full graph
+          </Button>
+        </div>
 
         <div className="Container" >
           <div style={cyStyle} ref={(cyRef) => { this.cyRef = cyRef; }} />

@@ -23,7 +23,13 @@ class GraphLayout extends Component {
         }
         else {
 
-            what_to_show = < CytoscapeDagreGraph data={this.props.graph.data} layout={this.props.graph.params.layout} />
+            what_to_show = 
+            <div>
+              
+              < CytoscapeDagreGraph data={this.props.graph.data} layout={this.props.graph.params.layout} />
+              
+            </div>
+            
         }
 
         // console.log(what_to_show)

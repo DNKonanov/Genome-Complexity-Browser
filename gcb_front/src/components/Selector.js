@@ -104,7 +104,9 @@ class Selector extends Component {
     complexity_window: 20,
     search_query: '',
     search_results: [],
-    max_user_value: 1
+    max_user_value: 1,
+    custom_genomes_list: [],
+    phylotree: ''
   };
 
 
@@ -126,12 +128,16 @@ class Selector extends Component {
     if (this.props.organisms.length > 0) {// This means we succesfully loaded list of organisms
       if (this.props.stamms.org !== this.state.org) { //Stamms for selected organims are not loaded
         this.props.fetchStammsForOrg(this.state.org);
+        
         return;
       }
       else { // stamms loaded
         if (!this.isInArray(this.props.stamms.list, this.state.stamm)) { //selected stamm is not from list
-          this.setState({ stamm: this.props.stamms.list[0]})
-          this.setState({ genome_name: this.props.stamms.names[0]})
+          this.setState({ 
+            stamm: this.props.stamms.list[0],
+            genome_name: this.props.stamms.names[0],
+          })
+        
         }
         else { //selected stamm is from current list
           if (this.props.contigs.stamm !== this.state.stamm) { //contigs for stamm not loaded
@@ -387,8 +393,7 @@ class Selector extends Component {
   render() {
     const { classes } = this.props;
     const data = this.props.complexity
-
-
+    
     let search_field = this.state.search_results.length === 0 ? <Typography>There are not results to show</Typography> :
       
       <Paper className={classes.paper} style={{margin:12}}>
@@ -551,7 +556,6 @@ class Selector extends Component {
 
           </ExpansionPanelDetails>
         </ExpansionPanel>
-
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>SEARCH</Typography>

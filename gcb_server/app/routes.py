@@ -31,6 +31,14 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
     subgr = get_subgraph(graph_file, organism, ref_strain, window=int(window), start=og_start, end=og_end, tails=int(tails), depth=int(depth))
     
 
+    try:
+        phylotree_f = open(data_path + organism + '/parsnp.tree', 'r')
+    
+        for line in phylotree_f:
+            phylotree = line
+            break
+    except FileNotFoundError:
+        phylotree = ''
 
     graph_json = get_json_graph(subgr, int(freq_min))
     if hide == 'true':
@@ -153,6 +161,8 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
 
 
     print('adding nodes complete')
+    graph_json['phylotree'] = phylotree
+
        
     return jsonify(graph_json)
 
@@ -171,6 +181,7 @@ def get_org_list():
 
 @app.route('/org/<org>/stamms/')
 def get_stamm_list(org):
+
     connect = sqlite3.connect(data_path + org + '/' + org + '.db')
     c = connect.cursor()
     

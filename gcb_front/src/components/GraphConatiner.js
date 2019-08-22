@@ -118,7 +118,9 @@ class GraphContainer extends Component {
     // Make redux request
     let params = this.getGraphParams()
     //console.log(params)
-    this.props.fetchGraph(params)
+    this.props.fetchGraph(params);
+
+    console.log(this.props);
     this.setState({ loading: true })
   }
 
