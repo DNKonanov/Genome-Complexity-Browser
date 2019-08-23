@@ -5,12 +5,6 @@ import {treeTypes} from 'phylocanvas';
 import _keys from 'lodash.keys';
 
 
-
-
-
-
-
-
 export default class Phylocanvas extends React.Component {
   static propTypes = {
     className: PropTypes.string,

@@ -119,8 +119,6 @@ class GraphContainer extends Component {
     let params = this.getGraphParams()
     //console.log(params)
     this.props.fetchGraph(params);
-
-    console.log(this.props);
     this.setState({ loading: true })
   }
 

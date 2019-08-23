@@ -110,18 +110,23 @@ class CytoscapeDagreGraph extends Component {
   componentDidMount() {
 
     let opacities = []
-    console.log(this.props)
 
     this.props.data.edges.forEach(function(ele) {
       opacities.push(ele.data.opacity)
     })
-    
+
+    if (this.props.data.phylotree !== '') {
+      this.setState({
+        PhyloTree: <Phylocanvas 
+        className='PhyloTreeElement' 
+        data={this.props.data.phylotree} 
+        treeType="rectangular"
+        />,
+      })
+    }
+
+
     this.setState({
-      PhyloTree: <Phylocanvas 
-                  className='PhyloTreeElement' 
-                  data={this.props.data.phylotree} 
-                  treeType="rectangular"
-                />,
       default_opacities: opacities,
     })
     this.prepareCy(this.props)
@@ -271,6 +276,8 @@ class CytoscapeDagreGraph extends Component {
       opacities.push(ele.data.opacity)
     })
     
+
+
     this.setState({
       PhyloTree: <Phylocanvas 
                   className='PhyloTreeElement' 
@@ -309,9 +316,15 @@ class CytoscapeDagreGraph extends Component {
 
   restore_colors = () => {
 
+    let json_cy = this.state.cy.json()
+
+    for (let i = 0; i < json_cy.elements.nodes.length; i++) {
+      this.props.data.nodes[i].data.position = json_cy.elements.nodes[i].position
+    }
     for (let i = 0; i < this.state.default_opacities.length; i++ ) {
 
       this.props.data.edges[i].data.opacity = this.state.default_opacities[i];
+
 
     }
     
@@ -378,9 +391,11 @@ class CytoscapeDagreGraph extends Component {
       this.setState({
         selected_genomes: genomes
       })
-
+      let json_cy = this.state.cy.json()
       
-
+      for (let i = 0; i < json_cy.elements.nodes.length; i++) {
+        this.props.data.nodes[i].data.position = json_cy.elements.nodes[i].position
+      }
       if (this.setState.selected_genomes !== []) {
         this.props.data.edges.forEach(function (ele) {
           
@@ -407,12 +422,14 @@ class CytoscapeDagreGraph extends Component {
   }
 
   render() {
+    let treeSection;
+    if (this.props.data.phylotree === '') {
+      treeSection = <div></div>
+    }
+    else {
 
-    const { classes } = this.props;
-    return (
+      treeSection = 
       <div>
-
-        <div>
          {this.state.PhyloTree}
          <Button
             style={{ margin: 12 }}
@@ -431,6 +448,14 @@ class CytoscapeDagreGraph extends Component {
           >Restore full graph
           </Button>
         </div>
+    }
+
+
+    const { classes } = this.props;
+    return (
+      <div>
+
+        {treeSection}
 
         <div className="Container" >
           <div style={cyStyle} ref={(cyRef) => { this.cyRef = cyRef; }} />

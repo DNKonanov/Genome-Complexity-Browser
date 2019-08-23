@@ -34,7 +34,7 @@ export function fetchStammsForOrg(org) {
         type: FETCH_STAMMS,
         payload: stamms,
         org: org,
-      }); console.log(stamms)});
+      })});
   }
 }
 

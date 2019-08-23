@@ -20,7 +20,6 @@ methods = {'by strains complexity': 'window_complexity',
 
 @app.route('/org/<organism>/strain/<ref_strain>/contig/<contig>/start/<og_start>/end/<og_end>/window/<window>/tails/<tails>/pars/<pars>/operons/<operons>/depth/<depth>/freq_min/<freq_min>/hide_edges/<hide>')
 def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars, operons, depth, freq_min, hide):
-    print(hide)
     if int(pars) == 0:
         paths = organism + '.dump'
     else:
@@ -37,6 +36,8 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
         for line in phylotree_f:
             phylotree = line
             break
+
+        phylotree_f.close()
     except FileNotFoundError:
         phylotree = ''
 
@@ -162,7 +163,6 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
 
     print('adding nodes complete')
     graph_json['phylotree'] = phylotree
-
        
     return jsonify(graph_json)
 
