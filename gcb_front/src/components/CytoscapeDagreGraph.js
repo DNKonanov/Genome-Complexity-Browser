@@ -13,8 +13,12 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Typography from '@material-ui/core/Typography';
 
-
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Phylocanvas from '../components/HierarchyTree'
 
 cytoscape.use(dagre);
@@ -118,10 +122,11 @@ class CytoscapeDagreGraph extends Component {
     if (this.props.data.phylotree !== '') {
       this.setState({
         PhyloTree: <Phylocanvas 
-        className='PhyloTreeElement' 
-        data={this.props.data.phylotree} 
-        treeType="rectangular"
-        />,
+                    className='PhyloTreeElement' 
+                    selected_genomes={this.state.selected_genomes}
+                    data={this.props.data.phylotree} 
+                    treeType="rectangular"
+                  />,
       })
     }
 
@@ -205,6 +210,16 @@ class CytoscapeDagreGraph extends Component {
       })
 
       let organisms = evt.target.data().description.split('\n')
+      let selected_genomes = [];
+      for (let i = 0; i < organisms.length; i++ ) {
+        selected_genomes.push("'" + organisms[i].split('\t')[0] +"'")
+      }
+
+      
+
+      this.setState({
+        selected_genomes: selected_genomes
+      })
 
       cy.edges().forEach(function (ele) {
         ele.style({ 'line-color': ele.data().color })
@@ -226,9 +241,12 @@ class CytoscapeDagreGraph extends Component {
         }
       });
 
+      this.sendGenomesToTree()
+
     }.bind(this));
 
     cy.on('click', function (evt) {
+
       if (evt.target.length === undefined) {
         for (let i = 0; i < tips.length; i++) {
           tips[i].tip.hide()
@@ -238,9 +256,17 @@ class CytoscapeDagreGraph extends Component {
           ele.style({ 'line-color': ele.data().color })
           ele.style({ 'target-arrow-color': ele.data().color })
         });
+        this.setState({
+          selected_genomes: [],
+        })
+  
+        this.sendGenomesToTree()
       }
 
-    });
+      
+
+
+    }.bind(this));
 
     cy.on('select', 'node', function () {
 
@@ -268,6 +294,18 @@ class CytoscapeDagreGraph extends Component {
     });
   }
 
+  sendGenomesToTree() {
+    this.setState({
+      PhyloTree: <Phylocanvas 
+                  className='PhyloTreeElement' 
+                  selected_genomes={this.state.selected_genomes}
+                  data={this.props.data.phylotree} 
+                  treeType="rectangular"
+                />,
+    })
+  }
+
+
   componentWillReceiveProps(nextProps) {
 
     let opacities = []
@@ -276,11 +314,10 @@ class CytoscapeDagreGraph extends Component {
       opacities.push(ele.data.opacity)
     })
     
-
-
     this.setState({
       PhyloTree: <Phylocanvas 
                   className='PhyloTreeElement' 
+                  selected_genomes={this.state.selected_genomes}
                   data={this.props.data.phylotree} 
                   treeType="rectangular"
                 />,
@@ -424,7 +461,9 @@ class CytoscapeDagreGraph extends Component {
   render() {
     let treeSection;
     if (this.props.data.phylotree === '') {
-      treeSection = <div></div>
+      treeSection = <div>
+        <Typography>There is no phyloTree for this genomes set</Typography>
+      </div>
     }
     else {
 
@@ -454,8 +493,22 @@ class CytoscapeDagreGraph extends Component {
     const { classes } = this.props;
     return (
       <div>
+        {/*<ExpansionPanel style={{margin:10}}>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>Phylogenetic tree</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+    <Grid>*/}
 
-        {treeSection}
+              {treeSection}
+            {/*</Grid>
+            
+
+
+          </ExpansionPanelDetails>
+            </ExpansionPanel>*/}
+
+        
 
         <div className="Container" >
           <div style={cyStyle} ref={(cyRef) => { this.cyRef = cyRef; }} />

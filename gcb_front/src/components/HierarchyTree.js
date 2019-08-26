@@ -54,6 +54,20 @@ export default class Phylocanvas extends React.Component {
     if (prevProps.treeType !== props.treeType) {
       this.tree.setTreeType(props.treeType);
     }
+    Object.keys(this.tree.branches).forEach(ele => {
+        this.tree.branches[ele].colour = null
+        //this.tree.branches[ele].highlighted = false
+    })
+
+    this.props.selected_genomes.forEach(ele => {
+        try {
+            this.tree.branches[ele].colour = "#FF0000"
+            //this.tree.branches[ele].highlighted = true
+        }
+        catch(e) {
+        }
+    })
+   
   }
 
   render() {

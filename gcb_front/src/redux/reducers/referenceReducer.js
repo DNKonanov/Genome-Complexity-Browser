@@ -79,11 +79,19 @@ export default function (state = initialState, action) {
         }
       };
     case FETCH_COMPLEXITY:
+      let MAX_COMPLEXITY
+      try {
+        MAX_COMPLEXITY = math.max(action.payload[0])
+      }  
+      catch(e) {
+        MAX_COMPLEXITY = 1
+      }
+
       return {
         ...state,
         complexity: {
           complexity: action.payload[0],
-          max_complexity: math.max(action.payload[0]),
+          max_complexity: MAX_COMPLEXITY,
           length_list: action.payload[3],
           OGs: action.payload[1],
           coord_list: action.payload[2],
