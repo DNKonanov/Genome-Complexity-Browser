@@ -154,14 +154,17 @@ class Selector extends Component {
                   this.state.og_start, this.state.og_end, this.state.method, this.state.pars, this.state.operons, this.state.complexity_window
 
                 )
+
+
                 if (comp_par.org !== this.state.org || comp_par.stamm !== this.state.stamm ||
                   comp_par.contig !== this.state.contig || comp_par.method !== this.state.method ||
                   comp_par.pars !== this.state.pars || comp_par.complexity_window !== this.state.complexity_window) {
                   
                   this.props.fetchComplexity(this.state.org, this.state.stamm, this.state.contig, this.state.method, this.state.pars, this.state.complexity_window)
 
-                  
                   }
+                
+
 
                 else {
                   if (this.props.og_start !== this.state.og_start || this.props.og_end !== this.state.og_end) {
@@ -216,6 +219,8 @@ class Selector extends Component {
   }
 
   checkOGs = (event) => {
+
+    console.log('OG checked!')
     let close_st_gene = 0
     let close_end_gene = 0
     let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
@@ -284,6 +289,8 @@ class Selector extends Component {
 
   checkPars = (event) => {
     this.setState({ pars: event.target.checked });
+    setTimeout(this.checkOGs, 500)
+
   }
 
   checkOperons = (event) => {
