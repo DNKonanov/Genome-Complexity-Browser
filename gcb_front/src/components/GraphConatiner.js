@@ -17,6 +17,9 @@ import { connect } from 'react-redux';
 import Switch from '@material-ui/core/Switch'
 
 
+
+// функция для убийства всех объектов тултипов (без нее временами забаговывалиль тултипы после загрузки нового графа)
+
 function removeAllTips(){
   var elements = document.getElementsByClassName('tippy-popper');
   while(elements.length > 0){
@@ -25,6 +28,8 @@ function removeAllTips(){
 }
 
 class GraphContainer extends Component {
+
+  // компонент содержит настройки отрисовки
 
   state = {
     window: 5,
@@ -38,6 +43,7 @@ class GraphContainer extends Component {
   }
 
 
+  // просто меняет стейт но с некоторыми проверками
   handleChange = (event) => {
 
     if (event.target.name === 'depth') {
@@ -66,11 +72,13 @@ class GraphContainer extends Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
+  // грузит новый лэйаут
   handleLayout = event => {
     removeAllTips()
     this.setState({ layout: event.target.value });
   };
 
+  // забирает из пропсов все параметры графа и добавляет свои
   getGraphParams() {
     // Get selector data from redux store
     let sel = this.props.selection
@@ -96,6 +104,7 @@ class GraphContainer extends Component {
     return graph_params
   }
 
+  // проверает наличие нодов из стейта в загруженном списке нодов
   checkOG = () => {
     if (this.props.complexity.OGs.indexOf(this.props.selection.og_start) ===-1) {
       alert('Start OG is not in chosen genome')
@@ -110,6 +119,7 @@ class GraphContainer extends Component {
 
   }
 
+  // рисует. Плюс анимация загрузки
   handleGraphDraw = () => {
 
     if (this.checkOG() === true) return
@@ -122,6 +132,8 @@ class GraphContainer extends Component {
     this.setState({ loading: true })
   }
 
+
+  // заканчивает крутить анимацию по завершении обновления компонента
   componentDidUpdate(prevProps, prevState) {
     removeAllTips()
     if (this.props.graph.result === 'SUCCESS' && this.state.loading === true) {
@@ -130,6 +142,8 @@ class GraphContainer extends Component {
       }  
     }
   }
+
+  // легаси, выпилили эту функцию. Можно было ходить по графу влево и вправо.
 
   stepOfGraph = (e, direction) => {
 

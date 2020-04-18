@@ -106,6 +106,9 @@ class CytoscapeDagreGraph extends Component {
 
   prepareCy = (nextProps) => {
 
+    //создает объект графа и привязывает тултипы
+
+
     if (this.state.cy) {
       this.state.cy.destroy();
     }
@@ -133,7 +136,8 @@ class CytoscapeDagreGraph extends Component {
     };
 
     let tips = []
-
+    
+    //для каждого нода создаем тултипы
     cy.nodes().forEach(function (ele) {
       if (ele.data().id === 'm') {
         tips.push({ 'node': ele.id(), 'tip': makeTippy(ele, 'selected region') })
@@ -143,12 +147,12 @@ class CytoscapeDagreGraph extends Component {
 
     let clicked = []
 
-
+    //предполагалось что-нибудь привязать и по правому клику
     cy.on('cxttap', 'node', function (evt) {
       console.log('Right click')
     })
 
-
+    //выводит тултипу при клике на нод
     cy.on('click', 'node', function (evt) {
       let node_id = evt.target.id()
       let clickedTippy = tips.find(function (ele) {
@@ -166,6 +170,7 @@ class CytoscapeDagreGraph extends Component {
 
     });
 
+    // при клике на ребро подкрашивает синим все ребра которые пересекаются по геномам с кликнутым
     cy.on('click', 'edge', function (evt) {
 
       // console.log(evt.target.controlPoints())
@@ -199,6 +204,7 @@ class CytoscapeDagreGraph extends Component {
 
     }.bind(this));
 
+    // клик по пустому месту возвращает исходный вид
     cy.on('click', function (evt) {
       if (evt.target.length === undefined) {
         for (let i = 0; i < tips.length; i++) {
@@ -213,6 +219,7 @@ class CytoscapeDagreGraph extends Component {
 
     });
 
+    // ноты можно выделять массово. Информация о выделенных передается в дочерний омпонент.
     cy.on('select', 'node', function () {
 
       let nodes_list = ''
@@ -265,6 +272,8 @@ class CytoscapeDagreGraph extends Component {
 
   }
 
+
+  // грузит jpg графа
   downloadjpg = () => {
     var element = document.createElement("a");
     element.href = this.state.cy.jpg({maxWidth:10000});
@@ -273,6 +282,7 @@ class CytoscapeDagreGraph extends Component {
 
   }
 
+  // можно грузить пользовательские цвета для нодов
   uploadColors = (e) => {
     let user_colors
     if (window.FileReader) {
@@ -318,6 +328,7 @@ class CytoscapeDagreGraph extends Component {
     e.preventDefault()
   }
 
+  // грузит граф в json-формате
   downloadJson = () => {
     var element = document.createElement("a");
     var file = new Blob([JSON.stringify(this.state.cy.json())], { type: 'text/plain' });

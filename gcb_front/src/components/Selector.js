@@ -33,6 +33,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { Paper} from '@material-ui/core';
 
 
+
+// функция для убийства всех объектов тултипов (без нее временами забаговывалиль тултипы после загрузки нового графа)
 function removeAllTips(){
   var elements = document.getElementsByClassName('tippy-popper');
   while(elements.length > 0){
@@ -40,7 +42,7 @@ function removeAllTips(){
   }
 }
 
-
+// стиль
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -74,6 +76,8 @@ const styles = theme => ({
 });
 
 class Selector extends Component {
+
+  // компонент SELECT PARAMETERS, много всяких параметров
 
   state = {
     org: 'Escherichia_coli_300_genomes',
@@ -112,6 +116,7 @@ class Selector extends Component {
     this.props.fetchOrganisms();
   }
 
+  // самописная проверка на вхождение элемена, не помню уже зачем
   isInArray = (array, element) => {
     for (let i = 0; i < array.length; i++) {
       if (element === array[i]) {
@@ -121,6 +126,17 @@ class Selector extends Component {
     return false;
   }
 
+
+
+  /* жесткое дерево апдейтов
+
+  основные действия здесь
+  1) fetchStammsForOrg - загрузка штаммов из БД
+  2) fetchContigs - загрузка контигов из БД
+  3) fetchWindows - загрузка препросчитанных размеров окна из БД
+  4) putSelectedRef - загрузка профиля сложности из БД
+
+  */
   componentDidUpdate(prevProps, prevState) {
     removeAllTips()
     if (this.props.organisms.length > 0) {// This means we succesfully loaded list of organisms
@@ -218,6 +234,7 @@ class Selector extends Component {
     }
   }
 
+  // подгоняет ноды под выбранные координаты
   checkOGs = (event) => {
 
     console.log('OG checked!')
@@ -248,6 +265,7 @@ class Selector extends Component {
     }
   }
 
+  // подгоняет координаты под выбранные ноды (если он есть в геноме)
   checkCoord = (event) => {
     let coord_start = -1
     let coord_end = -1
@@ -278,25 +296,31 @@ class Selector extends Component {
     
   }
 
+  // из версии без redux осталось, не юзается
   handleSubmit = (event) => {
     this.props.getDataFromSelector(this.state)
     event.preventDefault();
   }
 
+  // обновление стейта в общем виде
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }
 
+  // меняет в стейте pars и обновляет ноды
   checkPars = (event) => {
     this.setState({ pars: event.target.checked });
     setTimeout(this.checkOGs, 500)
 
   }
 
+  // легаси, выпилено
   checkOperons = (event) => {
     this.setState({ operons: event.target.checked });
   }
 
+
+  // загружает пользовательские координаты
   drawUserCoordinates = (e) => {
     if (this.state.user_coordinates_str.length !== 0) {
 
@@ -328,7 +352,7 @@ class Selector extends Component {
     e.preventDefault()
   }
 
-
+  // удаляет отрисовванные координаты
   deleteUserCoordinates = (e) => {
 
     this.setState({
@@ -338,6 +362,7 @@ class Selector extends Component {
     e.preventDefault()
   }
 
+  // грузит файл с профилем сложности
   downloadData = (e) => {
 
 
@@ -354,6 +379,8 @@ class Selector extends Component {
     element.click();
   }
 
+
+  // открыте файла с клиента
   inputFileChanged = (e) => {
 
     if (window.FileReader) {
@@ -372,6 +399,7 @@ class Selector extends Component {
     e.preventDefault()
   }
 
+  // поиск по описаниям генов в БД
   search = (e) => {
     let url = SERVER_URL + SERVER_PORT + '/search/org/' + this.state.org + '/strain/' + this.state.stamm + '/pars/' + this.state.pars + '/input/' + this.state.search_query + '/'
     fetch(url)
@@ -382,6 +410,7 @@ class Selector extends Component {
     e.preventDefault()
   }
 
+  // удаление результатов поиска из стейта
   clearSearchResults = (e) => {
     this.setState({
       search_results: []
@@ -598,7 +627,7 @@ class Selector extends Component {
         {data.complexity === 'None' ?
           <LinearProgress />
           :
-          <ExpansionPanel>
+          <ExpansionPanel defaultExpanded={true}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>COMPLEXITY PLOT</Typography>
             </ExpansionPanelSummary>
