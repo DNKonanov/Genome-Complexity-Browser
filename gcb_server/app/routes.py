@@ -20,6 +20,9 @@ methods = {'by strains complexity': 'window_complexity',
 
 @app.route('/org/<organism>/strain/<ref_strain>/contig/<contig>/start/<og_start>/end/<og_end>/window/<window>/tails/<tails>/pars/<pars>/operons/<operons>/depth/<depth>/freq_min/<freq_min>/hide_edges/<hide>')
 def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars, operons, depth, freq_min, hide):
+
+    # посредством всякой магии возвращает граф в json-формате
+
     print(hide)
     if int(pars) == 0:
         paths = organism + '.dump'
@@ -29,8 +32,6 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
     graph_file = data_path+organism+'/' + paths
     
     subgr = get_subgraph(graph_file, organism, ref_strain, window=int(window), start=og_start, end=og_end, tails=int(tails), depth=int(depth))
-    
-
 
     graph_json = get_json_graph(subgr, int(freq_min))
     if hide == 'true':
@@ -163,7 +164,7 @@ def index():
 
 @app.route('/org/')
 def get_org_list():
-    global org
+    # опрашивает имеющиеся организмы
     organisms = next(os.walk(data_path))[1]
     org = organisms[0]
     return jsonify(organisms)
@@ -171,6 +172,8 @@ def get_org_list():
 
 @app.route('/org/<org>/stamms/')
 def get_stamm_list(org):
+
+    # опрашивает из БД штаммы для выбранного организма
     connect = sqlite3.connect(data_path + org + '/' + org + '.db')
     c = connect.cursor()
     
@@ -183,6 +186,8 @@ def get_stamm_list(org):
 
 @app.route('/org/<org>/stamms/<stamm>/contigs/')
 def get_contig_list(org, stamm):
+
+    #опрашивает из БД контиги для выбранного штамма
     connect = sqlite3.connect(data_path + org + '/' + org + '.db')
     c = connect.cursor()
     stamm_key = [row for row in c.execute('SELECT genome_id FROM genomes_table WHERE genome_code = "' + stamm + '"')][0][0]
@@ -193,6 +198,8 @@ def get_contig_list(org, stamm):
 
 @app.route('/org/<org>/stamms/<stamm>/contigs/<contig>/methods/<method>/pars/<pars>/complexity/window/<window>/')
 def get_complexity(org, stamm, contig, pars, method, window):
+
+    # возвращает выбранный профиль сложности из БД
     
     complexity = get_complexity_from_db(data_path, org, stamm, contig, int(pars), methods[method], window)
     return jsonify(complexity)
@@ -200,6 +207,8 @@ def get_complexity(org, stamm, contig, pars, method, window):
 
 @app.route('/org/<org>/stamms/<stamm>/complexity_windows/pars/<pars>/')
 def get_complexity_windows(org, stamm, pars):
+
+    # опрашивает имеющиеся в базе размеры окна для выбранного генома
 
     windows = get_windows_from_db(data_path, org, stamm, int(pars))
 
@@ -209,6 +218,8 @@ def get_complexity_windows(org, stamm, pars):
 
 @app.route('/search/org/<org>/strain/<stamm>/pars/<pars>/input/<input>/')
 def search(org, stamm, pars, input):
+
+    # поиск по названиям генов в БД для данного организма
 
     if pars == 'false':
         connect = sqlite3.connect(data_path + org + '/' + org + '.db')
