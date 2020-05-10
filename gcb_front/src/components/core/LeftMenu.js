@@ -17,6 +17,8 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/es";
 import Container from "@material-ui/core/Container";
+import {Card} from "@material-ui/core";
+import CardContent from "@material-ui/core/CardContent";
 
 const mapStateToProps = state => {
 
@@ -43,6 +45,8 @@ class LeftMenu extends React.Component {
         const {classes} = this.props;
         return (
             <div>
+                {/*<SideSheet isOpen={this.state.open} onDismiss={this.handleDrawerClose}/>*/}
+
                 <div className={classes.root}>
                     <CssBaseline/>
                     <AppBar position="absolute"
@@ -67,13 +71,24 @@ class LeftMenu extends React.Component {
                             </IconButton>
                         </Toolbar>
                     </AppBar>
-                    <Drawer
-                        variant="permanent"
-                        classes={{
-                            paper: clsx(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
-                        }}
-                        open={this.state.open}
-                    >
+
+
+
+
+
+                    {/*<Drawer*/}
+                    {/*    variant="permanent"*/}
+                    {/*    classes={{*/}
+                    {/*        paper: clsx(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),*/}
+                    {/*    }}*/}
+                    {/*    open={this.state.open}*/}
+                    {/*>*/}
+
+                        <Drawer className={classes.drawerProps}
+                                anchor={"left"}
+                                open={this.state.open}
+                                onClose={this.handleDrawerClose}
+                        >
                         <div className={classes.toolbarIcon}>
                             <IconButton onClick={this.handleDrawerClose}>
                                 <ChevronLeftIcon/>
@@ -83,7 +98,27 @@ class LeftMenu extends React.Component {
                         {/*<List>{mainListItems}</List>*/}
                         {/*<Divider/>*/}
                         {/*<List>{secondaryListItems}</List>*/}
+                        <Card className={classes.cardInDrawer}>
+                            <CardContent>
+                                <h1>
+                                    dewdew
+                                </h1>
+                                <br/>
+
+                                <h1>
+                                    dewdew
+                                </h1>
+                                <br/>
+
+                            </CardContent>
+                        </Card>
                     </Drawer>
+
+
+
+
+
+
                     <main className={classes.content}>
                         <div className={classes.appBarSpacer}/>
                         <Container maxWidth="lg" className={classes.container}>
@@ -159,6 +194,7 @@ const useStyles = theme => ({
     title: {
         flexGrow: 1,
     },
+
     drawerPaper: {
         position: 'relative',
         whiteSpace: 'nowrap',
@@ -198,6 +234,14 @@ const useStyles = theme => ({
     fixedHeight: {
         height: 240,
     },
+
+    //--------------------------
+    drawerProps:{
+        width: 1000,
+    },
+    cardInDrawer:{
+        width:500
+    }
 });
 
 const connectSettingsLocation = connect(mapStateToProps)(LeftMenu);

@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.9.13",
+    "@babel/core": "^7.9.6",
+    "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.9.1",
     "ajv": "^6.12.2",
     "cytoscape": "^3.14.2",
@@ -13,6 +14,7 @@
     "dagre": "^0.8.5",
     "dagre-d3": "^0.6.4",
     "file-saver": "^1.3.8",
+    "material-components-web": "^6.0.0",
     "mathjs": "^5.10.3",
     "plotly.js": "^1.54.1",
     "pondjs": "^0.8.10",
@@ -22,6 +24,7 @@
     "react-plotly.js": "^2.4.0",
     "react-redux": "^5.1.2",
     "react-scripts": "1.1.4",
+    "react-side-sheet": "^0.1.19",
     "react-timeseries-charts": "^0.15.5",
     "react-vis": "^1.11.7",
     "redux": "^4.0.5",
@@ -33,5 +36,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.9.4"
   }
 }
