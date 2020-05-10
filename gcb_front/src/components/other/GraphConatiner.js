@@ -11,8 +11,8 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {putSelectedRef } from '../redux/actions/referenceActions';
-import { fetchGraph } from '../redux/actions/graphActions'
+import {putSelectedRef } from '../../redux/actions/referenceActions';
+import { fetchGraph } from '../../redux/actions/graphActions'
 import { connect } from 'react-redux';
 import Switch from '@material-ui/core/Switch'
 

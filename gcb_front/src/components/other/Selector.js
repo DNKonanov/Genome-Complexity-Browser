@@ -1,7 +1,7 @@
 import React, {
   Component
 } from 'react';
-import Plot from 'react-plotly.js';
+import Plot from '../../../node_modules/react-plotly.js/react-plotly';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -20,8 +20,8 @@ import Grid from '@material-ui/core/Grid';
 import {
   SERVER_URL,
   SERVER_PORT
-} from "../redux/constants/urls";
-import { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity, putSelectedRef, fetchWindows } from '../redux/actions/referenceActions'
+} from "../../redux/constants/urls";
+import { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity, putSelectedRef, fetchWindows } from '../../redux/actions/referenceActions'
 import { connect } from 'react-redux';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Table from '@material-ui/core/Table';

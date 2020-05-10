@@ -1,7 +1,7 @@
 import React, {
     Component
 } from 'react';
-import '../App.css';
+import '../../App.css';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';

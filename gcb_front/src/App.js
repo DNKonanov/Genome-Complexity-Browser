@@ -4,30 +4,14 @@ import React, {
 import { Provider } from "react-redux";
 import store from "./redux/store/index"
 import './App.css';
-import Selector from './components/Selector'
+import Selector from './components/other/Selector'
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
-import GraphContainer from './components/GraphConatiner'
-import GraphLayout from './components/GraphLayout'
+import GraphContainer from './components/other/GraphConatiner'
+import GraphLayout from './components/other/GraphLayout'
+import LeftMenu from "./components/core/LeftMenu";
 
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-  content: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: theme.spacing.unit * 3,
-  },
-});
 
 
 class App extends Component {
@@ -39,10 +23,8 @@ class App extends Component {
     success: 'Selecting',
     edge_description: '',
     selected_nodes: '',
-  }
+  };
 
-
-  
   toggleDrawer = (side, open) => () => {
     this.setState({
       [side]: open,
@@ -63,7 +45,7 @@ class App extends Component {
               <GraphContainer data={this.state.data}/>
               <GraphLayout  />
             </Paper>
-
+{/*<LeftMenu/>*/}
           </div>
         </div>
       </Provider>
@@ -75,5 +57,22 @@ class App extends Component {
 App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
+  },
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit * 3,
+  },
+});
 
 export default withStyles(styles)(App);
