@@ -1,6 +1,4 @@
-import React, {
-    Component
-} from 'react';
+import React, {Component} from 'react';
 import '../../App.css';
 
 import Table from '@material-ui/core/Table';
@@ -8,7 +6,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Grid, Typography } from '@material-ui/core';
+import {Grid, Typography} from '@material-ui/core';
 
 
 class SelectedNodes extends Component {
@@ -42,7 +40,7 @@ class SelectedNodes extends Component {
                     </TableBody>
                 </Table>
             </Grid>
-                
+
         )
     }
 }

@@ -2,27 +2,36 @@ import React from 'react';
 import clsx from 'clsx';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
-import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/es";
 import Container from "@material-ui/core/Container";
-import {Card} from "@material-ui/core";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import TabPanel from "./tabs/TabPanel";
+import GraphContainer from "../graph/GraphConatiner";
+import GraphLayout from "../graph/GraphLayout";
+import ComplexityPlot from "../plot/ComplexityPlot";
+import {Card, CardHeader} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
+import SettingsIcon from '@material-ui/icons/Settings';
 
 const mapStateToProps = state => {
 
 };
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
 
 class LeftMenu extends React.Component {
     constructor(props) {
@@ -31,6 +40,7 @@ class LeftMenu extends React.Component {
             open: false,
             // fixedHeightPaper: clsx(classes.paper, classes.fixedHeight),
             fixedHeightPaper: clsx(this.props.classes.paper, this.props.classes.fixedHeight),
+            value: 0,
         };
     }
 
@@ -39,6 +49,10 @@ class LeftMenu extends React.Component {
     };
     handleDrawerClose = () => {
         this.setState({open: false});
+    };
+    handleChange = (event, newValue) => {
+        this.setState({value: newValue});
+        console.log('newValue', newValue);
     };
 
     render() {
@@ -59,92 +73,67 @@ class LeftMenu extends React.Component {
                                 onClick={this.handleDrawerOpen}
                                 className={clsx(classes.menuButton, this.state.open && classes.menuButtonHidden)}
                             >
-                                <MenuIcon/>
+                                <SettingsIcon/>
                             </IconButton>
                             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                                Dashboard
+                                Genome Complexity Browser
                             </Typography>
-                            <IconButton color="inherit">
-                                <Badge badgeContent={4} color="secondary">
-                                    <NotificationsIcon/>
-                                </Badge>
-                            </IconButton>
                         </Toolbar>
                     </AppBar>
 
+                    <Drawer className={classes.drawerProps}
+                            anchor={"left"}
+                            open={this.state.open}
+                            onClose={this.handleDrawerClose}
+                    >
 
+                        <div className={classes.tabsProps}>
+                            <AppBar position="static">
+                                <Tabs value={this.state.value} onChange={this.handleChange}
+                                      aria-label="simple tabs example">
+                                    <Tab label="Select parameters" {...a11yProps(0)} />
+                                    <Tab label="Search" {...a11yProps(1)} />
+                                    <Tab label="About" {...a11yProps(2)} />
+                                </Tabs>
+                            </AppBar>
 
-
-
-                    {/*<Drawer*/}
-                    {/*    variant="permanent"*/}
-                    {/*    classes={{*/}
-                    {/*        paper: clsx(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),*/}
-                    {/*    }}*/}
-                    {/*    open={this.state.open}*/}
-                    {/*>*/}
-
-                        <Drawer className={classes.drawerProps}
-                                anchor={"left"}
-                                open={this.state.open}
-                                onClose={this.handleDrawerClose}
-                        >
-                        <div className={classes.toolbarIcon}>
-                            <IconButton onClick={this.handleDrawerClose}>
-                                <ChevronLeftIcon/>
-                            </IconButton>
+                            <TabPanel value={this.state.value} index={0}>
+                                Select parameters
+                            </TabPanel>
+                            <TabPanel value={this.state.value} index={1}>
+                                Search
+                            </TabPanel>
+                            <TabPanel value={this.state.value} index={2}>
+                                About
+                            </TabPanel>
                         </div>
-                        {/*<Divider/>*/}
-                        {/*<List>{mainListItems}</List>*/}
-                        {/*<Divider/>*/}
-                        {/*<List>{secondaryListItems}</List>*/}
-                        <Card className={classes.cardInDrawer}>
-                            <CardContent>
-                                <h1>
-                                    dewdew
-                                </h1>
-                                <br/>
-
-                                <h1>
-                                    dewdew
-                                </h1>
-                                <br/>
-
-                            </CardContent>
-                        </Card>
                     </Drawer>
-
-
-
-
 
 
                     <main className={classes.content}>
                         <div className={classes.appBarSpacer}/>
                         <Container maxWidth="lg" className={classes.container}>
                             <Grid container spacing={3}>
-                                {/* Chart */}
-                                <Grid item xs={12} md={8} lg={9}>
-                                    <Paper className={this.state.fixedHeightPaper}>
-                                        {/*<Chart />*/}
-                                    </Paper>
-                                </Grid>
-                                {/* Recent Deposits */}
-                                <Grid item xs={12} md={4} lg={3}>
-                                    <Paper className={this.state.fixedHeightPaper}>
-                                        {/*<Deposits />*/}
-                                    </Paper>
-                                </Grid>
-                                {/* Recent Orders */}
+
                                 <Grid item xs={12}>
-                                    <Paper className={classes.paper}>
-                                        {/*<Orders />*/}
-                                    </Paper>
+                                    <Card>
+                                        <CardHeader title={'Complexity Plot'}/>
+                                        <CardContent>
+                                            <ComplexityPlot/>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+
+                                <Grid item xs={12}>
+                                    <Card>
+                                        <CardHeader title={'Graph'}/>
+                                        <CardContent>
+                                            <GraphContainer data={this.state.data}/>
+                                            <GraphLayout/>
+                                        </CardContent>
+                                    </Card>
                                 </Grid>
                             </Grid>
-                            <Box pt={4}>
-                                {/*<Copyright />*/}
-                            </Box>
                         </Container>
                     </main>
                 </div>
@@ -216,6 +205,7 @@ const useStyles = theme => ({
         },
     },
     appBarSpacer: theme.mixins.toolbar,
+
     content: {
         flexGrow: 1,
         height: '100vh',
@@ -236,11 +226,16 @@ const useStyles = theme => ({
     },
 
     //--------------------------
-    drawerProps:{
+    drawerProps: {
         width: 1000,
     },
-    cardInDrawer:{
-        width:500
+    cardInDrawer: {
+        width: 500,
+        padding: 50,
+    },
+    tabsProps: {
+        flexGrow: 1,
+        backgroundColor: theme.palette.background.paper,
     }
 });
 

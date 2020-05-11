@@ -29,7 +29,8 @@
     "react-vis": "^1.11.7",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "tippy.js": "^2.5.4"
+    "tippy.js": "^2.5.4",
+    "prop-types": "latest"
   },
   "scripts": {
     "start": "react-scripts start",

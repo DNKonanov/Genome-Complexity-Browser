@@ -6,8 +6,8 @@ import tippy from 'tippy.js'
 import cytoscape from 'cytoscape';
 import popper from 'cytoscape-popper';
 import dagre from 'cytoscape-dagre';
-import EdgeDescription from './EdgeDescription';
-import SelectedNodes from './SelectedNodes';
+import EdgeDescription from '../other/EdgeDescription';
+import SelectedNodes from '../other/SelectedNodes';
 import '../../App.css';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
