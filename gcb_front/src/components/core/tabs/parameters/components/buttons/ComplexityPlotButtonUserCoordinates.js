@@ -15,12 +15,15 @@ import {
     setUserCoordinates,
     setUserValues,
     setMaxUserValue,
-    setUserCoordinatesStr
+    setUserCoordinatesStr, setEnabled_Show_Delete_User_Coordinates
 }
     from "../../../../../../redux/actions/file/readFile";
 
 const mapStateToProps = state => ({
     userCoordinatesStr: state.file.userCoordinatesStr,
+
+    is_Load_User_Coordinates:state.file.is_Load_User_Coordinates,
+    enabled_Show_Delete_User_Coordinates:state.file.enabled_Show_Delete_User_Coordinates,
 });
 
 const actionsCreator = {
@@ -29,6 +32,7 @@ const actionsCreator = {
     setMaxUserValue:setMaxUserValue,
     setUserCoordinatesStr:setUserCoordinatesStr,
 
+    setEnabled_Show_Delete_User_Coordinates:setEnabled_Show_Delete_User_Coordinates
 };
 
 class ComplexityPlotButtonUserCoordinates extends React.Component {
@@ -67,9 +71,10 @@ class ComplexityPlotButtonUserCoordinates extends React.Component {
 
     // удаляет отрисовванные координаты
     deleteUserCoordinates = (e) => {
+        e.preventDefault();
+        this.props.setEnabled_Show_Delete_User_Coordinates( false);
         this.props.setUserCoordinates([]);
         this.props.setUserCoordinatesStr('');
-        e.preventDefault()
     };
 
     render() {
@@ -79,23 +84,25 @@ class ComplexityPlotButtonUserCoordinates extends React.Component {
                 <Container fixed className={classes.boxButtons}>
                     <Card>
                         <CardContent>
-                            <Grid container spacing={3} justify="flex-end" alignItems="stretch">
+                            <Grid container spacing={1} justify="flex-end" alignItems="stretch">
                                 <Grid item xs={12}>
                                     <ButtonGroup
                                         variant="contained"
                                         color="primary"
                                         aria-label="contained primary button group"
-                                        fullWidth
+                                        disabled={!this.props.enabled_Show_Delete_User_Coordinates}
                                     >
                                         <Button
                                             startIcon={<VisibilityIcon/>}
                                             onClick={this.drawUserCoordinates}
+                                            // disabled={}
                                         >
                                             Show user coordinates
                                         </Button>
                                         <Button
                                             startIcon={<DeleteForeverRoundedIcon/>}
                                             onClick={this.deleteUserCoordinates}
+                                            disabled={!this.props.enabled_Show_Delete_User_Coordinates}
                                         >
                                             Delete user coordinates
                                         </Button>

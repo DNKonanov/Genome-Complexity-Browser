@@ -10,7 +10,6 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Typography from "@material-ui/core/Typography";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Box from "@material-ui/core/Box";
-import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
@@ -18,7 +17,10 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import Switch from "@material-ui/core/Switch";
-
+import removeAllTips from "../../../../../../../../sctipts/helper/functions/removeAllTips";
+import RefTextFields from "../components/RefTextFields";
+import {LAYOUT} from "../../../../../../../../redux/constants/graph/container/constants";
+import {setContainerGraph} from "../../../../../../../../redux/actions/graph/container/actions";
 
 const mapStateToProps = state => ({
     organisms: state.reference.organisms,
@@ -27,43 +29,41 @@ const mapStateToProps = state => ({
 
     complexity_windows: state.reference.complexity_windows,
     complexity: state.reference.complexity,
-});
+    // requisite
+    og_start_s: state.requisite.og_start_s,
+    og_end_s: state.requisite.og_start_s,
+    // container
+    layout: state.container.layout,
+    hide_edges: state.container.hide_edges,
 
-function removeAllTips() {
-    let elements = document.getElementsByClassName('tippy-popper');
-    while (elements.length > 0) {
-        elements[0].parentNode.removeChild(elements[0]);
-    }
-}
+    window: state.container.window,
+    tails: state.container.tails,
+    depth: state.container.depth,
+    freq_min: state.container.freq_min,
+    loading: state.container.loading,
+    step: state.container.step,
+    cy: state.container.cy,
+    edge_description: state.container.edge_description,
+    json_format: state.container.json_format,
+    selected_nodes: state.container.selected_nodes,
+    user_colors: state.container.user_colors,
+});
+const actionCreators = {
+    //requisite
+    setContainerGraph: setContainerGraph,
+};
 
 class OtherSettingsExpansionPanel extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            complexity_window: 0,
-            search_query: '',
-            search_results: [],
-            methods: [
-                'by strains complexity',
-                'probabilistic complexity',
-            ],
-            hide_edges: true,
-            tails: 1,
-            depth: 30,
-            freq_min: 2,
-            window: 5,
-        };
-    }
-
-    // обновление стейта в общем виде
-    handleChange = (event) => {
-        this.setState({[event.target.name]: event.target.value})
+    handleChange = (e) => {
+        e.preventDefault();
+        this.props.setContainerGraph(e.target.name.toUpperCase(), !this.props.hide_edges);
     };
 
     handleLayout = event => {
+        event.preventDefault();
         removeAllTips();
-        this.setState({layout: event.target.value});
+        this.props.setContainerGraph(event.target.name.toUpperCase() ,event.target.value);
     };
 
     render() {
@@ -80,8 +80,6 @@ class OtherSettingsExpansionPanel extends React.Component {
                                 <ExpansionPanelDetails>
 
                                     <Box>
-                                        {/*<Card>*/}
-                                        {/*    <CardContent>*/}
                                         <Grid container spacing={3} justify="center">
                                             <Grid item xs={6}>
                                                 <Typography variant="h5"
@@ -95,19 +93,18 @@ class OtherSettingsExpansionPanel extends React.Component {
 
                                         <Grid container spacing={3}>
                                             <Grid item xs={6}>
-                                                <TextField label={'Start OG'}
-                                                           name='og_start'
-                                                           value={this.state.og_start}
-                                                           onChange={this.handleChange}
+                                                <RefTextFields
+                                                    labelTF={'Start OG'}
+                                                    nameTF={'og_start_s'}
+                                                    valueTF={this.props.og_start_s}
                                                 />
                                             </Grid>
 
                                             <Grid item xs={6}>
-                                                <TextField
-                                                    label={'End OG'}
-                                                    name='og_end'
-                                                    value={this.state.og_end}
-                                                    onChange={this.handleChange}
+                                                <RefTextFields
+                                                    labelTF={'End OG'}
+                                                    nameTF={'og_end_s'}
+                                                    valueTF={this.props.og_end_s}
                                                 />
                                             </Grid>
                                         </Grid>
@@ -126,95 +123,84 @@ class OtherSettingsExpansionPanel extends React.Component {
                                         </Grid>
 
                                         <Grid container spacing={6}>
-                                            {/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
                                             <Grid item xs={6}>
                                                 <FormControl component="fieldset">
                                                     <FormLabel component="legend">Layouter</FormLabel>
                                                     <RadioGroup
-                                                        aria-label="layouter"
-                                                        name="layouter"
-
-                                                        value={this.state.layout}
+                                                        name="layout"
+                                                        value={this.props.layout}
                                                         onChange={this.handleLayout}
+
+                                                        aria-label="layouter"
                                                         style={{display: 'inline'}}
                                                     >
-                                                        <FormControlLabel value="dagre" control={<Radio/>}
-                                                                          label="Dagre"/>
-                                                        <FormControlLabel value="graphviz" control={<Radio/>}
-                                                                          label="Graphviz"/>
+                                                        <FormControlLabel value="dagre"
+                                                                          control={<Radio/>}
+                                                                          label="Dagre"
+                                                        />
+                                                        <FormControlLabel value="graphviz"
+                                                                          control={<Radio/>}
+                                                                          label="Graphviz"
+                                                        />
                                                     </RadioGroup>
                                                 </FormControl>
                                             </Grid>
+
                                             <Grid item xs={6}>
                                                 <FormControlLabel
                                                     control={
                                                         <Switch name='hide_edges'
-                                                                value="checked"
+                                                                // value="checked"
+                                                                checked={this.props.hide_edges}
                                                                 color="primary"
-                                                                checked={this.state.hide_edges}
-                                                                onChange={e => this.handleChange(e)}/>}
+                                                                onChange={this.handleChange}/>}
                                                     label="Hide reversed"
                                                 />
                                             </Grid>
-                                        </Grid>
-                                        {/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
-                                        <Grid container spacing={3}>
-                                            <Grid item xs={6}>
-                                                <TextField type="number"
-                                                           margin="normal"
-                                                           label={'Tails'}
-                                                           name='tails'
-                                                           value={this.state.tails}
-                                                           onChange={this.handleChange}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <TextField type="number"
-                                                           margin="normal"
-                                                           label={'Depth'}
-                                                           name='depth'
-                                                           value={this.state.depth}
-                                                           onChange={this.handleChange}
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                        {/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
-                                        <Grid container spacing={3}>
-                                            <Grid item xs={6}>
-                                                <TextField type="number"
-                                                           margin="normal"
-                                                           label={'Minimal edge weight'}
-                                                           name='freq_min'
-                                                           value={this.state.freq_min}
-                                                           onChange={this.handleChange}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                {/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
-                                                <TextField type="number"
-                                                           margin="normal"
-                                                           label={'Minimal edge weight'}
-                                                           name='freq_min'
-                                                           value={this.state.freq_min}
-                                                           onChange={this.handleChange}
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                        {/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
 
+                                        </Grid>
+                                        {/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
                                         <Grid container spacing={3}>
                                             <Grid item xs={6}>
-                                                <TextField type="number"
-                                                           margin="normal"
-                                                           label={'Window'}
-                                                           name='window'
-                                                           value={this.state.window}
-                                                           onChange={this.handleChange}
+                                                <RefTextFields
+                                                    labelTF={'Tails OG'}
+                                                    nameTF={'tails'}
+                                                    valueTF={this.props.tails}
+                                                    typeTF={"number"}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                <RefTextFields
+                                                    labelTF={'Depth'}
+                                                    nameTF={'depth'}
+                                                    valueTF={this.props.depth}
+                                                    typeTF={"number"}
                                                 />
                                             </Grid>
                                         </Grid>
-                                        {/*    </CardContent>*/}
-                                        {/*</Card>*/}
+                                        {/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
+                                        <Grid container spacing={3}>
+                                            <Grid item xs={6}>
+                                                <RefTextFields
+                                                    labelTF={'Minimal edge weight'}
+                                                    nameTF={'freq_min'}
+                                                    valueTF={this.props.freq_min}
+                                                    typeTF={"number"}
+                                                />
+                                            </Grid>
+
+                                        </Grid>
+                                        {/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
+                                        <Grid container spacing={3}>
+                                            <Grid item xs={6}>
+                                                <RefTextFields
+                                                    labelTF={'Window'}
+                                                    nameTF={'window'}
+                                                    valueTF={this.props.window}
+                                                    typeTF={"number"}
+                                                />
+                                            </Grid>
+                                        </Grid>
                                     </Box>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
@@ -226,6 +212,6 @@ class OtherSettingsExpansionPanel extends React.Component {
     }
 }
 
-const connectOther = connect(mapStateToProps)(OtherSettingsExpansionPanel);
+const connectOther = connect(mapStateToProps, actionCreators)(OtherSettingsExpansionPanel);
 
 export default withStyles(useStyles)(connectOther);

@@ -10,7 +10,11 @@ import CloudDownloadRoundedIcon from "@material-ui/icons/CloudDownloadRounded";
 import BackupRoundedIcon from "@material-ui/icons/BackupRounded";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
-import {setUserCoordinatesStr} from "../../../../../../redux/actions/file/readFile";
+import {
+    setEnabled_Show_Delete_User_Coordinates,
+    setUserCoordinatesStr
+} from "../../../../../../redux/actions/file/readFile";
+import {ENABLED_SHOW_DELETE_USER_COORDINATES} from "../../../../../../redux/constants/file/constants";
 
 
 const mapStateToProps = state => ({
@@ -25,6 +29,7 @@ const mapStateToProps = state => ({
 
 const actionCreator = {
     setUserCoordinatesStr: setUserCoordinatesStr,
+    setEnabled_Show_Delete_User_Coordinates: setEnabled_Show_Delete_User_Coordinates
 };
 
 class ComplexityPlotButtonFile extends React.Component {
@@ -32,9 +37,9 @@ class ComplexityPlotButtonFile extends React.Component {
     inputFileChanged = (e) => {
         if (window.FileReader) {
             let file = e.target.files[0], reader = new FileReader();
-
             reader.onload = function (r) {
                 this.props.setUserCoordinatesStr(r.target.result);
+                this.props.setEnabled_Show_Delete_User_Coordinates( true);
             }.bind(this);
             reader.readAsText(file);
         } else {
@@ -76,42 +81,21 @@ class ComplexityPlotButtonFile extends React.Component {
                         <CardContent>
                             <Grid container spacing={3}>
                                 <Grid item xs={6}>
-                                    <Button size="large" variant="contained" color="secondary">
+                                    <Button size="large"
+                                            variant="contained"
+                                            color="secondary"
+                                    >
                                         DRAW GRAPH
                                     </Button>
                                 </Grid>
                             </Grid>
-                            <Grid container spacing={3} justify="flex-end" alignItems="stretch">
-                                <Grid item xs={12}>
-                                    {/*<ButtonGroup color="primary"*/}
-                                    {/*             aria-label="large outlined primary button group"*/}
-                                    {/*             fullWidth*/}
-                                    {/*>*/}
-                                    {/*    <Button*/}
-                                    {/*        startIcon={<BackupRoundedIcon/>}*/}
-                                    {/*    >*/}
-                                    {/*        Load file*/}
-                                    {/*        <input*/}
-                                    {/*            style={{display: 'none'}}*/}
-                                    {/*            type="file"*/}
-                                    {/*            onChange={(e) => {*/}
-                                    {/*                this.handleInputFileChanged(e)*/}
-                                    {/*            }}*/}
-                                    {/*        />*/}
-                                    {/*    </Button>*/}
-                                    {/*    /!*---------------------------------------*!/*/}
-                                    {/*    <Button*/}
-                                    {/*        startIcon={<CloudDownloadRoundedIcon/>}*/}
-                                    {/*    >*/}
-                                    {/*        Download data*/}
-                                    {/*    </Button>*/}
-                                    {/*</ButtonGroup>*/}
-
+                            <Grid container spacing={1} justify="flex-end" alignItems="stretch">
+                                <Grid item xs={6}>
                                     <Button
-                                        style={{margin: 6}}
                                         variant="contained"
                                         color="primary"
                                         component="label"
+                                        fullWidth
                                         startIcon={<BackupRoundedIcon/>}
                                     >
                                         Load file
@@ -123,12 +107,14 @@ class ComplexityPlotButtonFile extends React.Component {
                                             type="file"
                                         />
                                     </Button>
+                                </Grid>
 
+                                <Grid item xs={6}>
                                     <Button
-                                        style={{margin: 6}}
                                         variant="contained"
                                         color="primary"
                                         component="label"
+                                        fullWidth
                                         startIcon={<CloudDownloadRoundedIcon/>}
                                         onClick={(e) => {
                                             this.downloadData(e)

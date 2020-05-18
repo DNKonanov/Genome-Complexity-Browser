@@ -1,6 +1,6 @@
 import {
   FETCH_GRAPH
-} from "../constants/action-types";
+} from "../../constants/action-types";
 
 const initialState = {
   graph: {

@@ -9,19 +9,19 @@ const actionsCreator = {
     setRequisite: setRequisite,
 };
 
-class Class extends React.Component {
+class RefTextFields extends React.Component {
     handleChange = (e) => {
         e.preventDefault();
         this.props.setRequisite(e.target.name.toUpperCase(), e.target.value);
     };
 
     render() {
-        const {classes} = this.props;
         return (
             <div>
                 <TextField label={this.props.labelTF}
                            name={this.props.nameTF}
                            value={this.props.valueTF}
+                           type={this.props.typeTF}
                            onChange={this.handleChange}
                 />
             </div>
@@ -29,5 +29,9 @@ class Class extends React.Component {
     }
 }
 
-const connectClass = connect(null, actionsCreator)(Class);
+RefTextFields.defaultProps = {
+    typeTF: 'text',
+};
+
+const connectClass = connect(null, actionsCreator)(RefTextFields);
 export default withStyles(useStyles)(connectClass);

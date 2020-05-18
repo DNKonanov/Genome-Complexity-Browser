@@ -8,23 +8,27 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import PropTypes from 'prop-types';
+import {setDisabled_select_reference} from "../../../../../../../../redux/actions/components/actions";
+
+const mapStateToProps = (state)=>({
+    disabled_select_reference: state.components.select.disabled_select_reference,
+});
 
 const actionsCreator = {
     setRequisite: setRequisite,
+    setDisabled_select_reference:setDisabled_select_reference,
 };
 
-
 class RefSelect extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            opts: props.selectOptions
-        }
-    }
-
-    handleChange = (e) => {
+    handleChange = async (e) => {
         e.preventDefault();
-        this.props.setRequisite(e.target.name.toUpperCase(), e.target.value);
+        console.log(this.props.disabled_select_reference);
+        if(e.target.name === 'org')
+            this.props.setDisabled_select_reference(false) ;
+
+        await this.props.setRequisite(e.target.name.toUpperCase(), e.target.value);
+
+        console.log(this.props.disabled_select_reference);
     };
 
     render() {
@@ -33,8 +37,9 @@ class RefSelect extends React.Component {
             <div>
                 <FormControl
                     className={classes.formControl}
-                    disabled={false}
                     fullWidth
+                    disabled={this.props.disabledSelect}
+                    focused={this.props.focusedSelect}
                 >
                     <InputLabel id={this.props.selectNameId}>{this.props.inputLabel}</InputLabel>
 
@@ -43,6 +48,7 @@ class RefSelect extends React.Component {
                             value={this.props.selectValue}
                             onChange={this.handleChange}
                             autoWidth={false}
+
                     >
                         {
                             this.props.selectOptions.map(opt => (
@@ -59,11 +65,15 @@ class RefSelect extends React.Component {
     }
 }
 
-RefSelect.defaultProps = {selectOptions: []};
+RefSelect.defaultProps = {
+    selectOptions: [],
+    disabledSelect: true,
+    focusedSelect: false
+};
 
 RefSelect.propTypes = {
     selectOptions: PropTypes.array.isRequired,
 };
 
-const connectClass = connect(null, actionsCreator)(RefSelect);
+const connectClass = connect(mapStateToProps, actionsCreator)(RefSelect);
 export default withStyles(useStyles)(connectClass);

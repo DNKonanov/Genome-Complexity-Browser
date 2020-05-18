@@ -3,38 +3,37 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {putSelectedRef} from '../../redux/actions/referenceActions';
-import {fetchGraph} from '../../redux/actions/graphActions'
+import {fetchGraph} from '../../redux/actions/graph/graphActions'
 import {connect} from 'react-redux';
+import {setContainerGraph} from "../../redux/actions/graph/container/actions";
+import removeAllTips from "../../sctipts/helper/functions/removeAllTips";
+import {LOADING} from "../../redux/constants/graph/container/constants";
 
+const mapStateToProps = state => ({
+    graph: state.graph.graph,
+    selection: state.reference.selection,
+    complexity: state.reference.complexity,
+    // container
+    window: state.container.window,
+    tails: state.container.tails,
+    depth: state.container.depth,
+    freq_min: state.container.freq_min,
+    layout: state.container.layout,
+    loading: state.container.loading,
+    step: state.container.step,
+    hide_edges: state.container.hide_edges,
+});
 
-// функция для убийства всех объектов тултипов (без нее временами забаговывалиль тултипы после загрузки нового графа)
+const actionsCreator = {
+    setContainerGraph: setContainerGraph,
 
-function removeAllTips() {
-    var elements = document.getElementsByClassName('tippy-popper');
-    while (elements.length > 0) {
-        elements[0].parentNode.removeChild(elements[0]);
-    }
-}
+    fetchGraph: fetchGraph,
+    putSelectedRef: putSelectedRef,
+};
 
 class GraphContainer extends Component {
-
-    // компонент содержит настройки отрисовки
-
-    state = {
-        window: 5,
-        tails: 1,
-        depth: 30,
-        freq_min: 2,
-        layout: 'graphviz',
-        loading: false,
-        step: 1,
-        hide_edges: true,
-    }
-
-
     // просто меняет стейт но с некоторыми проверками
     handleChange = (event) => {
-
         if (event.target.name === 'depth') {
             if (event.target.value < 2) {
                 return
@@ -54,29 +53,23 @@ class GraphContainer extends Component {
         }
 
         if (event.target.name === 'hide_edges') {
-            console.log('---')
-            console.log(event.target.checked)
+            console.log('---');
+            console.log(event.target.checked);
             this.setState({
                 hide_edges: event.target.checked,
-            })
+            });
 
-            console.log(this.state.hide_edges)
+            console.log(this.state.hide_edges);
             return
         }
-
-        this.setState({[event.target.name]: event.target.value})
-    }
-
-    // грузит новый лэйаут
-    handleLayout = event => {
-        removeAllTips()
-        this.setState({layout: event.target.value});
+        // this.setState({[event.target.name]: event.target.value});
+        this.props.setContainerGraph(event.target.name.toUpperCase(),event.target.value);
     };
 
     // забирает из пропсов все параметры графа и добавляет свои
     getGraphParams() {
         // Get selector data from redux store
-        let sel = this.props.selection
+        let sel = this.props.selection;
 
         // Get data from current component
         let graph_params = {
@@ -85,123 +78,83 @@ class GraphContainer extends Component {
             contig: sel.contig,
             og_start: sel.og_start,
             og_end: sel.og_end,
-            window: this.state.window,
-            tails: this.state.tails,
-            hide_edges: this.state.hide_edges.toString(),
             pars_int: sel.pars_int.toString(),
             operons_int: sel.operons_int.toString(),
-            depth: this.state.depth,
-            freq_min: this.state.freq_min,
-            layout: this.state.layout,
-            complexity_window: sel.complexity_window
-        }
+            complexity_window: sel.complexity_window,
+
+            window: this.props.window,
+            tails: this.props.tails,
+            hide_edges: this.props.hide_edges.toString(),
+            depth: this.props.depth,
+            freq_min: this.props.freq_min,
+            layout: this.props.layout,
+        };
 
         return graph_params
     }
 
     // проверает наличие нодов из стейта в загруженном списке нодов
-    checkOG = () => {
-        if (this.props.complexity.OGs.indexOf(this.props.selection.og_start) === -1) {
-            alert('Start OG is not in chosen genome')
-            return true
-        }
-
-        if (this.props.complexity.OGs.indexOf(this.props.selection.og_end) === -1) {
-            alert('End OG is not in chosen genome')
-            return true
-        }
-        return false
-
+     checkOG = () => {
+    if (this.props.complexity.OGs.indexOf(this.props.selection.og_start) ===-1) {
+      alert('Start OG is not in chosen genome');
+      return true
     }
+
+    if (this.props.complexity.OGs.indexOf(this.props.selection.og_end) ===-1) {
+      alert('End OG is not in chosen genome');
+      return true
+    }
+    return false
+  };
 
     // рисует. Плюс анимация загрузки
     handleGraphDraw = () => {
-
-        if (this.checkOG() === true) return
-
-
+        if (this.checkOG() === true)
+            return;
         // Make redux request
-        let params = this.getGraphParams()
-        //console.log(params)
-        this.props.fetchGraph(params)
-        this.setState({loading: true})
-    }
+        let params = this.getGraphParams();
+        this.props.fetchGraph(params);
+
+        this.props.setContainerGraph(LOADING,true);
+    };
 
 
     // заканчивает крутить анимацию по завершении обновления компонента
     componentDidUpdate(prevProps, prevState) {
-        removeAllTips()
-        if (this.props.graph.result === 'SUCCESS' && this.state.loading === true) {
+        removeAllTips();
+        if (this.props.graph.result === 'SUCCESS' && this.props.loading === true) {
             if (JSON.stringify(this.props.graph.params) === JSON.stringify(this.getGraphParams())) {
-                this.setState({loading: false})
+                this.props.setContainerGraph(LOADING,false);
             }
         }
     }
 
-    // легаси, выпилили эту функцию. Можно было ходить по графу влево и вправо.
-
-    stepOfGraph = (e, direction) => {
-
-        let sel = this.props.selection;
-        let n;
-        if (direction === 'right') n = parseInt(this.state.step, 10);
-        else if (direction === 'left') n = -parseInt(this.state.step, 10);
-
-        let newStartIndex = this.props.complexity.OGs.indexOf(sel.og_start) + n;
-        let newEndIndex = this.props.complexity.OGs.indexOf(sel.og_end) + n;
-
-        newStartIndex = newStartIndex >= 0 ? newStartIndex : 0;
-        newEndIndex = newEndIndex >= 0 ? newEndIndex : 0;
-
-        newStartIndex = newStartIndex < this.props.complexity.OGs.length ? newStartIndex : this.props.complexity.OGs.length - 1
-        newEndIndex = newEndIndex < this.props.complexity.OGs.length ? newEndIndex : this.props.complexity.OGs.length - 1
-
-        let start = this.props.complexity.OGs[newStartIndex];
-        let end = this.props.complexity.OGs[newEndIndex];
-
-        // Get data from current component
-        let params = {
-            org: sel.org,
-            stamm: sel.stamm,
-            contig: sel.contig,
-            og_start: start,
-            og_end: end,
-            window: this.state.window,
-            hide_edges: this.state.hide_edges.toString(),
-            tails: this.state.tails,
-            pars_int: sel.pars_int.toString(),
-            operons_int: sel.operons_int.toString(),
-            depth: this.state.depth,
-            freq_min: this.state.freq_min,
-            layout: this.state.layout,
-            complexity_window: sel.complexity_window
-        };
-
-
-        this.setState({loading: true});
-        this.props.putSelectedRef(sel.org, sel.stamm, sel.contig, start, end, sel.method, sel.pars, sel.operons, sel.complexity_window)
-        this.props.fetchGraph(params)
-    }
-
     render() {
         let show_load;
-        if (this.state.loading) {
+        if (this.props.loading) {
             show_load =
                 <CircularProgress style={{margin: 'auto'}}
-                    //className={classes.progress}
-                                  size={40}/>
+                                  size={40}
+                />
         } else {
             show_load = <CircularProgress style={{margin: 'auto'}}
                                           variant='static'
-                                          size={40}/>
+                                          size={40}
+            />
         }
-        // console.log(what_to_show)
+
         return (
             <div>
                 <Grid container direction="row" justify="flex-start" alignItems="center">
                     <Grid item>
-                        <Button variant="contained" size="large" color="primary" onClick={this.handleGraphDraw}
-                                style={{margin: 12}}>Draw</Button>
+                        <Button variant="contained"
+                                size="large"
+                                color="primary"
+                                onClick={this.handleGraphDraw}
+                                style={{margin: 12}}
+                        >
+                            Draw
+                        </Button>
                     </Grid>
 
                     <Grid item>
@@ -214,10 +167,5 @@ class GraphContainer extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    graph: state.graph.graph,
-    selection: state.reference.selection,
-    complexity: state.reference.complexity
-});
 
-export default connect(mapStateToProps, {fetchGraph, putSelectedRef})(GraphContainer)
+export default connect(mapStateToProps, actionsCreator)(GraphContainer)

@@ -1,11 +1,11 @@
 import {
   FETCH_GRAPH
-} from "../constants/action-types";
+} from "../../constants/action-types";
 
 import {
   SERVER_URL,
   SERVER_PORT
-} from "../constants/urls";
+} from "../../constants/urls";
 
 export function fetchGraph(params) {
   return function (dispatch) {

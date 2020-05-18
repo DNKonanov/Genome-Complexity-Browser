@@ -11,20 +11,17 @@ const mapStateToProps = state => ({
     organisms: state.reference.organisms,
 });
 
-
-
-
 class SelectParameters extends React.Component {
-
     render() {
         return (
             <div>
                 <ReferenceParametersExpansionPanel/>
-                {/*----------------------------------------------Other settings-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
-                {/*<OtherSettingsExpansionPanel/>*/}
 
-                {/*<ComplexityPlotButtonFile/>*/}
-                {/*<ComplexityPlotButtonUserCoordinates/>*/}
+                <OtherSettingsExpansionPanel/>
+
+                <ComplexityPlotButtonFile/>
+
+                <ComplexityPlotButtonUserCoordinates/>
             </div>
         );
     }

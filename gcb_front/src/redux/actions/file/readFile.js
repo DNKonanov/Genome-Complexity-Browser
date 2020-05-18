@@ -2,7 +2,7 @@ import {
     SET_USER_COORDINATES_STR,
     SET_USER_COORDINATES,
     SET_USER_VALUES,
-    SET_MAX_USER_VALUE,
+    SET_MAX_USER_VALUE, IS_LOAD_USER_COORDINATES, ENABLED_SHOW_DELETE_USER_COORDINATES,
 
 } from "../../constants/file/constants";
 
@@ -35,22 +35,15 @@ export const setMaxUserValue = (maxUserValue) =>({
    }
 });
 
-
-
-
-// // LOAD USER
-// export const loadUser = () => async (dispatch, getState) => {
-//     dispatch({type: USER_LOADING});
-//
-//     try {
-//         const res = await axios.get('/api/auth/user', tokenConfig(getState));
-//         dispatch({
-//             type: USER_LOADED,
-//             payload: res.data
-//         });
-//     } catch (err) {
-//         dispatch({
-//             type: AUTH_ERROR
-//         });
-//     }
-// };
+export const setIs_Load_User_Coordinates = (is_Load_User_Coordinates) => ({
+    type:IS_LOAD_USER_COORDINATES,
+    payload: {
+        is_Load_User_Coordinates:is_Load_User_Coordinates
+    }
+});
+export const setEnabled_Show_Delete_User_Coordinates = (enabled_Show_Delete_User_Coordinates) => ({
+    type:ENABLED_SHOW_DELETE_USER_COORDINATES,
+    payload: {
+        enabled_Show_Delete_User_Coordinates:enabled_Show_Delete_User_Coordinates
+    }
+});

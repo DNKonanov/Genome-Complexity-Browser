@@ -34,6 +34,9 @@ import {
 
 import RefSelect from "../components/RefSelect";
 import RefTextFields from "../components/RefTextFields";
+import Button from "@material-ui/core/Button";
+import removeAllTips from "../../../../../../../../sctipts/helper/functions/removeAllTips";
+
 
 const mapStateToProps = state => ({
     organisms: state.reference.organisms,
@@ -70,6 +73,9 @@ const mapStateToProps = state => ({
 
     search_query: state.requisite.search_query,
     search_results: state.requisite.search_results,
+
+    // componentsProps
+    disabled_select_reference: state.components.select.disabled_select_reference
 });
 const actionCreators = {
     fetchOrganisms: fetchOrganisms,
@@ -81,14 +87,6 @@ const actionCreators = {
     //requisite
     setRequisite: setRequisite,
 };
-
-
-function removeAllTips() {
-    let elements = document.getElementsByClassName('tippy-popper');
-    while (elements.length > 0) {
-        elements[0].parentNode.removeChild(elements[0]);
-    }
-}
 
 class ReferenceParametersExpansionPanel extends React.Component {
     constructor(props) {
@@ -105,7 +103,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
     };
 
     // обновление стейта в общем виде
-    handleChange = (e) => {
+    handleChange =  (e) => {
         e.preventDefault();
         this.props.setRequisite(e.target.name.toUpperCase(), e.target.value);
     };
@@ -246,6 +244,8 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     selectValue={this.props.org}
                                                     inputLabel={'Organism'}
                                                     selectOptions={this.props.organisms} // array
+                                                    disabledSelect={false}
+                                                    focusedSelect={true}
                                                 />
                                             </Grid>
 
@@ -255,6 +255,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     selectNameId={'stamm'}
                                                     selectValue={this.props.stamm}
                                                     selectOptions={this.props.stamms.list} // arr
+                                                    disabledSelect={this.props.disabled_select_reference}
                                                 />
                                             </Grid>
 
@@ -264,6 +265,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     selectNameId={'contig'}
                                                     selectValue={this.props.contig}
                                                     selectOptions={this.props.contigs.list} //arr
+                                                    disabledSelect={this.props.disabled_select_reference}
                                                 />
                                             </Grid>
                                         </Grid>
@@ -277,6 +279,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     selectNameId={'method'}
                                                     selectValue={this.props.method}
                                                     selectOptions={this.props.methods}
+                                                    disabledSelect={this.props.disabled_select_reference}
                                                 />
                                             </Grid>
 
@@ -286,6 +289,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     selectNameId={'complexity_window'}
                                                     selectValue={this.props.complexity_window}
                                                     selectOptions={this.props.complexity_windows.list}
+                                                    disabledSelect={this.props.disabled_select_reference}
                                                 />
                                             </Grid>
                                         </Grid>
@@ -314,32 +318,34 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                                         <Divider className={classes.divider}/>
                                         {/*BUTTONS*/}
-                                        {/*<Grid container spacing={1}>*/}
-                                        {/*    <Grid item xs={6}>*/}
-                                        {/*        <Button*/}
-                                        {/*            fullWidth*/}
-                                        {/*            color='primary'*/}
-                                        {/*            variant='contained'*/}
-                                        {/*            onClick={(e) => {*/}
-                                        {/*                this.checkOGs(e)*/}
-                                        {/*            }}*/}
-                                        {/*        >*/}
-                                        {/*            Update genes*/}
-                                        {/*        </Button>*/}
-                                        {/*    </Grid>*/}
-                                        {/*    <Grid item xs={6}>*/}
-                                        {/*        <Button*/}
-                                        {/*            fullWidth*/}
-                                        {/*            color='primary'*/}
-                                        {/*            variant='contained'*/}
-                                        {/*            onClick={(e) => {*/}
-                                        {/*                this.checkCoord(e)*/}
-                                        {/*            }}*/}
-                                        {/*        >*/}
-                                        {/*            Update coordinates*/}
-                                        {/*        </Button>*/}
-                                        {/*    </Grid>*/}
-                                        {/*</Grid>*/}
+                                        <Grid container spacing={1}>
+                                            <Grid item xs={6}>
+                                                <Button
+                                                    fullWidth
+                                                    color='primary'
+                                                    variant='outlined'
+                                                    onClick={(e) => {
+                                                        this.checkOGs(e)
+                                                    }}
+                                                    disabled={this.props.disabled_select_reference}
+                                                >
+                                                    Update genes
+                                                </Button>
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                <Button
+                                                    fullWidth
+                                                    color='primary'
+                                                    variant='outlined'
+                                                    onClick={(e) => {
+                                                        this.checkCoord(e)
+                                                    }}
+                                                    disabled={this.props.disabled_select_reference}
+                                                >
+                                                    Update coordinates
+                                                </Button>
+                                            </Grid>
+                                        </Grid>
 
                                     </Box>
                                 </ExpansionPanelDetails>
@@ -352,7 +358,6 @@ class ReferenceParametersExpansionPanel extends React.Component {
     }
 
     checkOGs = (event) => {
-
         console.log('OG checked!');
         let close_st_gene = 0;
         let close_end_gene = 0;
@@ -364,8 +369,6 @@ class ReferenceParametersExpansionPanel extends React.Component {
                 close_st_gene = i;
                 close_st_len = len
             }
-
-
             len = Math.abs(this.props.complexity.coord_list[i] - this.props.coord_end);
             if (len < close_end_len) {
                 close_end_gene = i;
@@ -402,7 +405,6 @@ class ReferenceParametersExpansionPanel extends React.Component {
             this.props.setRequisite(COORD_START, coord_start);
             this.props.setRequisite(COORD_END, coord_end);
         }
-
     };
 
     // самописная проверка на вхождение элемена, не помню уже зачем
@@ -415,13 +417,6 @@ class ReferenceParametersExpansionPanel extends React.Component {
         return false;
     };
 
-    /* жесткое дерево апдейтов
-    основные действия здесь
-    1) fetchStammsForOrg - загрузка штаммов из БД
-    2) fetchContigs - загрузка контигов из БД
-    3) fetchWindows - загрузка препросчитанных размеров окна из БД
-    4) putSelectedRef - загрузка профиля сложности из БД
-    */
     handleChangeExpPanel = () => {
         this.setState({expanded: !this.state.expanded});
     };

@@ -127,15 +127,15 @@ class LeftMenu extends React.Component {
                                     </Card>
                                 </Grid>
 
-                    {/*            <Grid item xs={12}>*/}
-                    {/*                <Card>*/}
-                    {/*                    <CardHeader title={'Graph'}/>*/}
-                    {/*                    <CardContent>*/}
-                    {/*                        <GraphContainer data={this.state.data}/>*/}
-                    {/*                        <GraphLayout/>*/}
-                    {/*                    </CardContent>*/}
-                    {/*                </Card>*/}
-                    {/*            </Grid>*/}
+                                <Grid item xs={12}>
+                                    <Card>
+                                        <CardHeader title={'Graph'}/>
+                                        <CardContent>
+                                            <GraphContainer data={this.state.data}/>
+                                            <GraphLayout/>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
                             </Grid>
                         </Container>
                     </main>

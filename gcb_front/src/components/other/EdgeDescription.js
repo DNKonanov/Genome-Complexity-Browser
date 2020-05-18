@@ -11,7 +11,6 @@ import TableRow from '@material-ui/core/TableRow';
 import { Grid, Typography } from '@material-ui/core';
 
 class EdgeDescription extends Component {
-
     // просто компонент с табличкой по данным из пропсов
 
     render() {
@@ -44,9 +43,6 @@ class EdgeDescription extends Component {
                     </TableBody>
                 </Table>
             </Grid>
-            
-                
-                
         )
     }
 }

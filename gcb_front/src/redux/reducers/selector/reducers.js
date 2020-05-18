@@ -44,19 +44,6 @@ const initiateState = {
     search_query: '',
     search_results: [],
 };
-// also boring scripts code gen
-
-// let key = Object.keys(initiateState).map((key) => {
-//     console.log('case ' + key.toUpperCase() + ':\n' +
-//         '            return {\n' +
-//         '                ...state,\n' +
-//         '                ' + key + ': action.payload.' + key + '\n' +
-//         '            };')
-// });
-// let mapToState = Object.keys(initiateState).map((key) => {
-//     console.log(key + ':' + 'state.requisite.' + key+',');
-// });
-
 
 function complexityProfileSelector(state = initiateState, action) {
     switch (action.type) {
