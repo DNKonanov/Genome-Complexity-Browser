@@ -76,6 +76,16 @@ const styles = theme => ({
     }
 });
 
+const mapStateToProps = state => ({
+    organisms: state.reference.organisms,
+    stamms: state.reference.stamms,
+    contigs: state.reference.contigs,
+    complexity_windows: state.reference.complexity_windows,
+    complexity: state.reference.complexity,
+    og_start: state.reference.selection.og_start,
+    og_end: state.reference.selection.og_end
+});
+
 class Selector extends Component {
 
     // компонент SELECT PARAMETERS, много всяких параметров
@@ -84,24 +94,22 @@ class Selector extends Component {
         org: 'Escherichia_coli_300_genomes',
         stamm: 'GCF_000284495.1_ASM28449v1',
         genome_name: '',
-        contig: 'NC_011993.1',
+        method: 'probabilistic complexity',
+        //////////////////
 
-        og_start: 'OG0001707',
-        og_end: 'OG0001707',
-        coord_start: 0,
-        coord_end: 0,
-
-        pars: false,
-        operons: true,
 
         methods: [
             'by strains complexity',
             'probabilistic complexity',
         ],
-        method: 'probabilistic complexity',
-        user_coordinates_str: '',
-        user_coordinates: [],
-        user_values: [],
+        contig: 'NC_011993.1',
+        og_start: 'OG0001707',
+        og_end: 'OG0001707',
+        coord_start: 0,
+        coord_end: 0,
+        pars: false,
+        operons: true,
+
         draw_types: ['line', 'markers'],
         draw_type: 'line',
         data: '',
@@ -109,7 +117,13 @@ class Selector extends Component {
         complexity_window: 20,
         search_query: '',
         search_results: [],
-        max_user_value: 1
+
+        // in redux already
+        user_coordinates_str: '',
+        user_coordinates: [],
+        user_values: [],
+        max_user_value: 1,
+
     };
 
 
@@ -125,7 +139,7 @@ class Selector extends Component {
             }
         }
         return false;
-    }
+    };
 
     /* жесткое дерево апдейтов
 
@@ -136,15 +150,16 @@ class Selector extends Component {
     4) putSelectedRef - загрузка профиля сложности из БД
 
     */
-    componentDidUpdate(prevProps, prevState) {
-        removeAllTips()
+    componentDidUpdate(prevProps,
+                       ) {
+        removeAllTips();
         if (this.props.organisms.length > 0) {// This means we succesfully loaded list of organisms
             if (this.props.stamms.org !== this.state.org) { //Stamms for selected organims are not loaded
                 this.props.fetchStammsForOrg(this.state.org);
                 return;
             } else { // stamms loaded
                 if (!this.isInArray(this.props.stamms.list, this.state.stamm)) { //selected stamm is not from list
-                    this.setState({stamm: this.props.stamms.list[0]})
+                    this.setState({stamm: this.props.stamms.list[0]});
                     this.setState({genome_name: this.props.stamms.names[0]})
                 } else { //selected stamm is from current list
                     if (this.props.contigs.stamm !== this.state.stamm) { //contigs for stamm not loaded
@@ -159,9 +174,17 @@ class Selector extends Component {
                                 this.setState({contig: this.props.contigs.list[0]})
                             } else {
                                 let comp_par = this.props.complexity.request;
-                                this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig,
-                                    this.state.og_start, this.state.og_end, this.state.method, this.state.pars, this.state.operons, this.state.complexity_window
-                                )
+                                this.props.putSelectedRef(
+                                    this.state.org,
+                                    this.state.stamm,
+                                    this.state.contig,
+                                    this.state.og_start,
+                                    this.state.og_end,
+                                    this.state.method,
+                                    this.state.pars,
+                                    this.state.operons,
+                                    this.state.complexity_window
+                                );
 
 
                                 if (comp_par.org !== this.state.org || comp_par.stamm !== this.state.stamm ||
@@ -180,8 +203,8 @@ class Selector extends Component {
                                         if (prevState.coord_start !== this.state.coord_start || prevState.coord_end !== this.state.coord_end) {
 
 
-                                            let close_st_gene = 0
-                                            let close_end_gene = 0
+                                            let close_st_gene = 0;
+                                            let close_end_gene = 0;
                                             let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
                                             let close_end_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
                                             for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
@@ -218,7 +241,7 @@ class Selector extends Component {
                 }
             }
         }
-    }
+    };
 
     // подгоняет ноды под выбранные координаты
     checkOGs = (event) => {
@@ -253,8 +276,8 @@ class Selector extends Component {
 
     // подгоняет координаты под выбранные ноды (если он есть в геноме)
     checkCoord = (event) => {
-        let coord_start = -1
-        let coord_end = -1
+        let coord_start = -1;
+        let coord_end = -1;
 
         for (let i = 0; i < this.props.complexity.OGs.length; i++) {
             if (this.props.complexity.OGs[i] === this.state.og_start) {
@@ -278,7 +301,7 @@ class Selector extends Component {
             })
         }
 
-    }
+    };
 
     // из версии без redux осталось, не юзается
     handleSubmit = (event) => {
@@ -289,52 +312,53 @@ class Selector extends Component {
     // обновление стейта в общем виде
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value})
-    }
+    };
 
     // меняет в стейте pars и обновляет ноды
     checkPars = (event) => {
         this.setState({pars: event.target.checked});
         setTimeout(this.checkOGs, 500)
 
-    }
+    };
 
     // легаси, выпилено
     checkOperons = (event) => {
         this.setState({operons: event.target.checked});
-    }
+    };
 
+    // загружает пользовательские координаты
+    drawUserCoordinates = (e) => {
+        if (this.state.user_coordinates_str.length !== 0) {
 
-    // // загружает пользовательские координаты
-    // drawUserCoordinates = (e) => {
-    //   if (this.state.user_coordinates_str.length !== 0) {
-    //
-    //     let string = this.state.user_coordinates_str
-    //
-    //     let lines;
-    //     lines = string.split('\n');
-    //     this.setState({ user_coordinates: [] })
-    //     let coord = []
-    //     let values = []
-    //
-    //     let max_coord = -Infinity
-    //
-    //     for (let i = 0; i < lines.length; i++) {
-    //       let line = lines[i].replace(' ', '\t').split('\t');
-    //       coord.push(parseInt(line[0], 10));
-    //
-    //       let v = parseFloat(line[1])
-    //       if (v > max_coord) { max_coord = v}
-    //       values.push(-v)
-    //     }
-    //
-    //     this.setState({
-    //       user_coordinates: coord,
-    //       user_values: values,
-    //       max_user_value: max_coord
-    //     })
-    //   }
-    //   e.preventDefault()
-    // }
+            let string = this.state.user_coordinates_str;
+
+            let lines;
+            lines = string.split('\n');
+            this.setState({user_coordinates: []});
+            let coord = [];
+            let values = [];
+
+            let max_coord = -Infinity;
+
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i].replace(' ', '\t').split('\t');
+                coord.push(parseInt(line[0], 10));
+
+                let v = parseFloat(line[1]);
+                if (v > max_coord) {
+                    max_coord = v
+                }
+                values.push(-v)
+            }
+
+            this.setState({
+                user_coordinates: coord,
+                user_values: values,
+                max_user_value: max_coord
+            })
+        }
+        e.preventDefault()
+    };
 
     // удаляет отрисовванные координаты
     deleteUserCoordinates = (e) => {
@@ -342,45 +366,52 @@ class Selector extends Component {
         this.setState({
             user_coordinates: [],
             user_coordinates_str: ''
-        })
+        });
         e.preventDefault()
-    }
+    };
 
-    // // грузит файл с профилем сложности
-    // downloadData = (e) => {
-    //
-    //
-    //   let data = 'organism=' + this.state.org + '\tgenome=' + this.state.stamm + '\tcontig=' + this.state.contig + '\tmethod=' + this.state.method + '\n'
-    //   data = data + 'position\tcomplexity\n'
-    //   for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
-    //     data = data + this.props.complexity.coord_list[i] + '\t' + this.props.complexity.complexity[i] + '\n'
-    //   }
-    //
-    //   var element = document.createElement("a");
-    //   var file = new Blob([data], { type: 'text/plain' });
-    //   element.href = URL.createObjectURL(file);
-    //   element.download = this.state.contig + ".txt";
-    //   element.click();
-    // }
+    // грузит файл с профилем сложности
+    downloadData = (e) => {
+        let data = 'organism=' + this.state.org + '\tgenome=' + this.state.stamm +
+            '\tcontig=' + this.state.contig + '\tmethod=' + this.state.method + '\n';
 
+
+        data = data + 'position\tcomplexity\n';
+
+
+        for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
+            data = data + this.props.complexity.coord_list[i] + '\t' + this.props.complexity.complexity[i] + '\n'
+        }
+
+        let element = document.createElement("a");
+        let file = new Blob([data], {type: 'text/plain'});
+
+        element.href = URL.createObjectURL(file);
+        element.download = this.state.contig + ".txt";
+        element.click();
+    };
 
     // открыте файла с клиента
     inputFileChanged = (e) => {
 
         if (window.FileReader) {
-            let file = e.target.files[0], reader = new FileReader();
+            let file = e.target.files[0];
+            let reader = new FileReader();
+
             reader.onload = function (r) {
+
                 this.setState({
                     user_coordinates_str: r.target.result
                 });
-            }.bind(this)
+            }.bind(this);
+
             reader.readAsText(file);
         } else {
             alert('Sorry, your browser does\'nt support for preview');
         }
 
         e.preventDefault()
-    }
+    };
 
     // поиск по описаниям генов в БД
     search = (e) => {
@@ -393,7 +424,7 @@ class Selector extends Component {
             .catch(error => console.log('error'));
 
         e.preventDefault()
-    }
+    };
 
     // удаление результатов поиска из стейта
     clearSearchResults = (e) => {
@@ -401,7 +432,7 @@ class Selector extends Component {
                 search_results: []
             }
         )
-    }
+    };
 
 
     render() {
@@ -496,7 +527,11 @@ class Selector extends Component {
                             <Grid item xs={6}>
                                 <Grid container direction="column" justify="space-between" alignItems="flex-start">
 
-                                    <Grid><Typography variant='h6'>Reference parameters</Typography></Grid>
+                                    <Grid item>
+                                        <Typography variant='h6'>Reference parameters</Typography>
+                                    </Grid>
+
+                                    {/*-Organism_SELECT-*/}
 
                                     <Grid item>
                                         <FormControl>
@@ -507,8 +542,12 @@ class Selector extends Component {
                                                     onChange={this.handleChange}
                                             >
                                                 {this.props.organisms.map(org => <MenuItem key={org}
-                                                                                           value={org}>{org}</MenuItem>)}
+                                                                                           value={org}
+                                                >
+                                                    {org}
+                                                </MenuItem>)}
                                             </Select>
+
                                         </FormControl>
                                     </Grid>
 
@@ -570,8 +609,10 @@ class Selector extends Component {
                                     <Grid container direction="row" justify="flex-start" alignItems="flex-start">
 
                                         <Grid item xs={6}>
-                                            <TextField label={'Start coordinate'} name='coord_start'
-                                                       value={this.state.coord_start} onChange={this.handleChange}/>
+                                            <TextField label={'Start coordinate'}
+                                                       name='coord_start'
+                                                       value={this.state.coord_start}
+                                                       onChange={this.handleChange}/>
                                         </Grid>
 
                                         <Grid item xs={6}>
@@ -591,14 +632,19 @@ class Selector extends Component {
 
                                     <Grid item>
                                         <FormControlLabel
-                                            control={<Switch name='pars' value="checked" color="primary"
-                                                             checked={this.state.pars} onChange={this.checkPars}/>}
-                                            label="Draw paralogous"/>
+                                            control={<Switch name='pars'
+                                                             value="checked"
+                                                             color="primary"
+                                                             checked={this.state.pars}
+                                                             onChange={this.checkPars}/>}
+                                            label="Draw paralogous"
+                                        />
                                     </Grid>
                                 </Grid>
                             </Grid>
 
                         </Grid>
+
 
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
@@ -714,6 +760,8 @@ class Selector extends Component {
                                                     type="file"
                                                 />
                                             </Button>
+
+
                                         </Grid>
                                         <Grid item>
 
@@ -864,21 +912,13 @@ class Selector extends Component {
 
 }
 
-const mapStateToProps = state => ({
-    organisms: state.reference.organisms,
-    stamms: state.reference.stamms,
-    complexity_windows: state.reference.complexity_windows,
-    contigs: state.reference.contigs,
-    complexity: state.reference.complexity,
-    og_start: state.reference.selection.og_start,
-    og_end: state.reference.selection.og_end
-});
+
 
 export default connect(mapStateToProps, {
     fetchOrganisms,
-    fetchStammsForOrg,
     fetchContigs,
+    fetchWindows,
+    fetchStammsForOrg,
     fetchComplexity,
-    putSelectedRef,
-    fetchWindows
+    putSelectedRef
 })(withStyles(styles)(Selector));

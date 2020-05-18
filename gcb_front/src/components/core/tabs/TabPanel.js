@@ -5,13 +5,12 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import SelectParameters from "./parameters/SelectParameters";
 import Search from "./search/Search";
 import About from "./about/About";
-
+import FilePlot from "./file/FilePlot";
 
 
 class TabPanel extends React.Component {
 
     render() {
-        const {classes} = this.props;
         const {children, value, index, ...other} = this.props;
         return (
             <div
@@ -30,7 +29,11 @@ class TabPanel extends React.Component {
                                 case 1:
                                     return <Search/>;
                                 case 2:
-                                    return <About/>
+                                    return <FilePlot/>;
+                                case 3:
+                                    return <About/>;
+                                default:
+                                    return <div/>
                             }
                         })(value)
                     }

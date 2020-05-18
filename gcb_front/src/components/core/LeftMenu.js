@@ -8,10 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 
 import Grid from '@material-ui/core/Grid';
-import MenuIcon from '@material-ui/icons/Menu';
 import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/es";
-import Container from "@material-ui/core/Container";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import TabPanel from "./tabs/TabPanel";
@@ -21,10 +19,11 @@ import ComplexityPlot from "../plot/ComplexityPlot";
 import {Card, CardHeader} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import SettingsIcon from '@material-ui/icons/Settings';
+import Container from "@material-ui/core/Container";
 
-const mapStateToProps = state => {
-
-};
+const mapStateToProps = state => ({
+    userCoordinatesStr: state.file.userCoordinatesStr
+});
 
 function a11yProps(index) {
     return {
@@ -38,7 +37,6 @@ class LeftMenu extends React.Component {
         super(props);
         this.state = {
             open: false,
-            // fixedHeightPaper: clsx(classes.paper, classes.fixedHeight),
             fixedHeightPaper: clsx(this.props.classes.paper, this.props.classes.fixedHeight),
             value: 0,
         };
@@ -52,7 +50,6 @@ class LeftMenu extends React.Component {
     };
     handleChange = (event, newValue) => {
         this.setState({value: newValue});
-        console.log('newValue', newValue);
     };
 
     render() {
@@ -92,29 +89,35 @@ class LeftMenu extends React.Component {
                                 <Tabs value={this.state.value} onChange={this.handleChange}
                                       aria-label="simple tabs example">
                                     <Tab label="Select parameters" {...a11yProps(0)} />
-                                    <Tab label="Search" {...a11yProps(1)} />
-                                    <Tab label="About" {...a11yProps(2)} />
+                                    {/*<Tab label="Search" {...a11yProps(1)} />*/}
+                                    {/*<Tab label="File" {...a11yProps(2)} />*/}
+                                    {/*<Tab label="About" {...a11yProps(3)} />*/}
                                 </Tabs>
                             </AppBar>
 
                             <TabPanel value={this.state.value} index={0}>
                                 Select parameters
                             </TabPanel>
-                            <TabPanel value={this.state.value} index={1}>
-                                Search
-                            </TabPanel>
-                            <TabPanel value={this.state.value} index={2}>
-                                About
-                            </TabPanel>
+                            {/*<TabPanel value={this.state.value} index={1}>*/}
+                            {/*    Search*/}
+                            {/*</TabPanel>*/}
+
+                            {/*<TabPanel value={this.state.value} index={2}>*/}
+                            {/*    File*/}
+                            {/*</TabPanel>*/}
+
+                            {/*<TabPanel value={this.state.value} index={3}>*/}
+                            {/*    About*/}
+                            {/*</TabPanel>*/}
                         </div>
                     </Drawer>
 
 
                     <main className={classes.content}>
                         <div className={classes.appBarSpacer}/>
-                        <Container maxWidth="lg" className={classes.container}>
+                        <Container maxWidth="xl" className={classes.container}>
+                            {/*<Container>*/}
                             <Grid container spacing={3}>
-
                                 <Grid item xs={12}>
                                     <Card>
                                         <CardHeader title={'Complexity Plot'}/>
@@ -124,15 +127,15 @@ class LeftMenu extends React.Component {
                                     </Card>
                                 </Grid>
 
-                                <Grid item xs={12}>
-                                    <Card>
-                                        <CardHeader title={'Graph'}/>
-                                        <CardContent>
-                                            <GraphContainer data={this.state.data}/>
-                                            <GraphLayout/>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
+                    {/*            <Grid item xs={12}>*/}
+                    {/*                <Card>*/}
+                    {/*                    <CardHeader title={'Graph'}/>*/}
+                    {/*                    <CardContent>*/}
+                    {/*                        <GraphContainer data={this.state.data}/>*/}
+                    {/*                        <GraphLayout/>*/}
+                    {/*                    </CardContent>*/}
+                    {/*                </Card>*/}
+                    {/*            </Grid>*/}
                             </Grid>
                         </Container>
                     </main>

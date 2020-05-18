@@ -33,11 +33,6 @@ class App extends Component {
             <Provider store={store}>
                 < div className={classes.root}>
                     <div className={classes.content}>
-                        {/*<Selector getDataFromSelector={this.getDataFromSelector} />*/}
-                        {/*<Paper>*/}
-                        {/*  <GraphContainer data={this.state.data}/>*/}
-                        {/*  <GraphLayout  />*/}
-                        {/*</Paper>*/}
                         <LeftMenu/>
                     </div>
                 </div>
