@@ -13,26 +13,24 @@ class GraphLayout extends Component {
         let what_to_show = null;
         if (this.props.graph.result === 'NOT LOADED') {
             what_to_show =
-                <div style={
-                    {
-                        display: 'flex',
-                        height: 300, width: '100%'
-                    }
-                }
+                <div style={{
+                    display: 'flex',
+                    height: 300,
+                    width: '100%'
+                }}
                 >
                     <Typography variant="h4"
-                                style={
-                                    {
-                                        margin: 'auto',
-                                        textAlign: 'center'
-                                    }}
+                                style={{
+                                    margin: 'auto',
+                                    textAlign: 'center'
+                                }}
                     > Please, select parameters and click DRAW button</Typography>
                 </div>
         } else {
-
-            what_to_show = < CytoscapeDagreGraph data={this.props.graph.data}
-                                                 layout={this.props.graph.params.layout}
-            />
+            what_to_show =
+                < CytoscapeDagreGraph data={this.props.graph.data}
+                                      layout={this.props.graph.params.layout}
+                />
         }
 
         // console.log(what_to_show)

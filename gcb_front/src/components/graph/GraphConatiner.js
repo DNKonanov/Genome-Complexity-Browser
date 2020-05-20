@@ -145,7 +145,11 @@ class GraphContainer extends Component {
 
         return (
             <div>
-                <Grid container direction="row" justify="flex-start" alignItems="center">
+                <Grid container
+                      direction="row"
+                      justify="flex-start"
+                      alignItems="center"
+                >
                     <Grid item>
                         <Button variant="contained"
                                 size="large"

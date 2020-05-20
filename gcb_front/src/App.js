@@ -4,40 +4,25 @@ import store from "./redux/store/index"
 import './App.css';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import LeftMenu from "./components/core/LeftMenu";
-
+import Core from "./components/core/Core";
+import Button from "@material-ui/core/Button";
+import {Box} from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
 
 class App extends Component {
-
-    state = {
-        top: false,
-        loading: false,
-        data: '',
-        success: 'Selecting',
-        edge_description: '',
-        selected_nodes: '',
-    };
-
-    toggleDrawer = (side, open) => () => {
-        this.setState({
-            [side]: open,
-        });
-    };
-
     render() {
-        console.log('render APP component');
-
         const {classes} = this.props;
 
         return (
             <Provider store={store}>
-                < div className={classes.root}>
-                    <div className={classes.content}>
-                        <LeftMenu/>
+                <div>
+                    < div className={classes.root}>
+                        <div className={classes.content}>
+                            <Core/>
+                    </div>
                     </div>
                 </div>
             </Provider>
-
         );
     }
 }
@@ -49,7 +34,7 @@ App.propTypes = {
 
 const styles = theme => ({
     root: {
-        flexGrow: 1,
+        flexGrow: 0,
     },
     grow: {
         flexGrow: 1,
@@ -59,7 +44,7 @@ const styles = theme => ({
         marginRight: 20,
     },
     content: {
-        flexGrow: 1,
+        flexGrow: 0,
         backgroundColor: theme.palette.background.default,
         padding: theme.spacing.unit * 3,
     },
