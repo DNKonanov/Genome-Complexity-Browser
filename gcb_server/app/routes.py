@@ -9,6 +9,7 @@ from gene_graph_lib.draw_graph import get_json_graph
 import sqlite3
 from flask import render_template
 from app.process_graph import delete_double_edges 
+from app.extract_hotspots import extract_hotspot_coordinates
 
 data_path = './data/'
 
@@ -202,7 +203,11 @@ def get_complexity(org, stamm, contig, pars, method, window):
     # возвращает выбранный профиль сложности из БД
     
     complexity = get_complexity_from_db(data_path, org, stamm, contig, int(pars), methods[method], window)
-    return jsonify(complexity)
+    
+    hotspotpositions = extract_hotspot_coordinates(complexity[0], complexity[2])
+
+
+    return jsonify(complexity + hotspotpositions)
 
 
 @app.route('/org/<org>/stamms/<stamm>/complexity_windows/pars/<pars>/')

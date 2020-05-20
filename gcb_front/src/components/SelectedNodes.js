@@ -13,6 +13,8 @@ import { Grid, Typography } from '@material-ui/core';
 
 class SelectedNodes extends Component {
 
+    // просто табличка с данными из пропсов
+
     render() {
         return (
             <Grid>

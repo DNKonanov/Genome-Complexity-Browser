@@ -367,9 +367,13 @@ class Selector extends Component {
 
 
     let data = 'organism=' + this.state.org + '\tgenome=' + this.state.stamm + '\tcontig=' + this.state.contig + '\tmethod=' + this.state.method + '\n'
-    data = data + 'position\tcomplexity\n'
+    data = data + 'position\tOrthoGroupID\tcomplexity\thotspot\n'
     for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
-      data = data + this.props.complexity.coord_list[i] + '\t' + this.props.complexity.complexity[i] + '\n'
+      data = data + 
+      this.props.complexity.coord_list[i] + '\t' +
+      this.props.complexity.OGs[i] + '\t' +
+      this.props.complexity.complexity[i] + '\t' + 
+      this.props.complexity.hotspots_sym[i] + '\n'
     }
 
     var element = document.createElement("a");
@@ -423,6 +427,8 @@ class Selector extends Component {
   render() {
     const { classes } = this.props;
     const data = this.props.complexity
+
+    console.log(data)
 
 
     let search_field = this.state.search_results.length === 0 ? <Typography>There are not results to show</Typography> :
@@ -722,6 +728,17 @@ class Selector extends Component {
                         type: 'line',
                         name: 'complexity'
                       },
+                      
+                      {
+                        x: data.hotspots,
+                        y: data.base,
+                        mode: 'markers',
+                        name: 'hotspots',
+                        marker: {
+                          size: 2,
+                          symbol: 'square'
+                        }
+                      },
 
                       {
                         x: [this.state.coord_start, this.state.coord_start],
@@ -735,6 +752,8 @@ class Selector extends Component {
                         mode: 'lines',
                         name: 'rigth edge'
                       },
+
+                      
 
                       {
                         x: this.state.user_coordinates,
