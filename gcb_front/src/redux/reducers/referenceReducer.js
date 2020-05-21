@@ -38,7 +38,8 @@ const initialState = {
       stamm: '',
       contig: '',
       method: '',
-      pars: false
+      pars: false,
+      coef: 1.5,
     }
   },
   selection: 'None'

@@ -108,8 +108,21 @@ class Selector extends Component {
     complexity_window: 20,
     search_query: '',
     search_results: [],
-    max_user_value: 1
+    max_user_value: 1,
+    coef: 1.5,
+    show_hotspots: true,
   };
+
+
+  hotspots() {
+    if (this.show_hotspots) {
+      return true
+    }
+
+    else {
+      return 'legendonly'
+    }
+  }
 
 
   componentDidMount() {
@@ -174,9 +187,10 @@ class Selector extends Component {
 
                 if (comp_par.org !== this.state.org || comp_par.stamm !== this.state.stamm ||
                   comp_par.contig !== this.state.contig || comp_par.method !== this.state.method ||
-                  comp_par.pars !== this.state.pars || comp_par.complexity_window !== this.state.complexity_window) {
+                  comp_par.pars !== this.state.pars || comp_par.complexity_window !== this.state.complexity_window || 
+                  comp_par.coef !== this.state.coef) {
                   
-                  this.props.fetchComplexity(this.state.org, this.state.stamm, this.state.contig, this.state.method, this.state.pars, this.state.complexity_window)
+                  this.props.fetchComplexity(this.state.org, this.state.stamm, this.state.contig, this.state.method, this.state.pars, this.state.complexity_window, this.state.coef)
 
                   }
                 
@@ -314,9 +328,16 @@ class Selector extends Component {
 
   }
 
+  setHotspotsVisibility = (event) => {
+
+    this.setState({ show_hotspots: event.target.checked });
+    this.render()
+  }
+
   // легаси, выпилено
   checkOperons = (event) => {
     this.setState({ operons: event.target.checked });
+    
   }
 
 
@@ -427,8 +448,6 @@ class Selector extends Component {
   render() {
     const { classes } = this.props;
     const data = this.props.complexity
-
-    console.log(data)
 
 
     let search_field = this.state.search_results.length === 0 ? <Typography>There are not results to show</Typography> :
@@ -662,6 +681,21 @@ class Selector extends Component {
                     </FormControl>
                     </Grid>
 
+
+                    <Grid item >
+                      <TextField 
+                      label={'Hotspots threshold coef'} 
+                      name='coef' 
+                      value={this.state.coef} 
+                      onChange={this.handleChange} />
+                    </Grid>
+
+                    <Grid item>
+                      <FormControlLabel
+                        control={<Switch name='show_hotspots' value="checked" color="primary" checked={this.state.show_hotspots} onChange={this.setHotspotsVisibility} />}
+                        label="Show hotspots" />
+                    </Grid>
+
                     <Grid item>
 
                       <Button
@@ -737,7 +771,8 @@ class Selector extends Component {
                         marker: {
                           size: 2,
                           symbol: 'square'
-                        }
+                        },
+                        visible: this.state.show_hotspots,
                       },
 
                       {

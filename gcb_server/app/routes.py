@@ -197,14 +197,14 @@ def get_contig_list(org, stamm):
     connect.close()
     return jsonify(contigs)
 
-@app.route('/org/<org>/stamms/<stamm>/contigs/<contig>/methods/<method>/pars/<pars>/complexity/window/<window>/')
-def get_complexity(org, stamm, contig, pars, method, window):
+@app.route('/org/<org>/stamms/<stamm>/contigs/<contig>/methods/<method>/pars/<pars>/complexity/window/<window>/coef/<coef>')
+def get_complexity(org, stamm, contig, pars, method, window, coef):
 
     # возвращает выбранный профиль сложности из БД
     
     complexity = get_complexity_from_db(data_path, org, stamm, contig, int(pars), methods[method], window)
     
-    hotspotpositions = extract_hotspot_coordinates(complexity[0], complexity[2])
+    hotspotpositions = extract_hotspot_coordinates(complexity[0], complexity[2], coef=float(coef))
 
 
     return jsonify(complexity + hotspotpositions)

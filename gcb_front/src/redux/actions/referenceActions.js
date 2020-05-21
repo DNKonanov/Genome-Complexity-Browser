@@ -67,14 +67,14 @@ export function fetchContigs(org, stamm) {
 }
 
 
-export function fetchComplexity(org, stamm, contig, method, pars, complexity_window) {
+export function fetchComplexity(org, stamm, contig, method, pars, complexity_window, coef) {
   return function (dispatch) {
 
     let pars_int = 0
     if (pars === true) {
       pars_int = 1
     }
-    let url = SERVER_URL + SERVER_PORT + '/org/' + org + '/stamms/' + stamm + '/contigs/' + contig + '/methods/' + method + '/pars/' + pars_int + '/complexity/window/' + complexity_window + '/'
+    let url = SERVER_URL + SERVER_PORT + '/org/' + org + '/stamms/' + stamm + '/contigs/' + contig + '/methods/' + method + '/pars/' + pars_int + '/complexity/window/' + complexity_window + '/coef/' + coef
 
     fetch(url)
       .then(response => response.json())
@@ -87,7 +87,8 @@ export function fetchComplexity(org, stamm, contig, method, pars, complexity_win
           contig: contig,
           method: method,
           pars: pars,
-          complexity_window: complexity_window
+          complexity_window: complexity_window,
+          coef, coef,
         }
       }));
   }
