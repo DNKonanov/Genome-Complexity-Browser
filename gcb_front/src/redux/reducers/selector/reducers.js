@@ -17,7 +17,9 @@ import {
     SRC,
     COMPLEXITY_WINDOW,
     SEARCH_QUERY,
-    SEARCH_RESULTS
+    SEARCH_RESULTS,
+
+    OG_START_S_OG_END_S, COORD_START_COORD_END, STAMM_GENOME_NAME,
 } from "../../constants/selector/constants";
 
 const initiateState = {
@@ -30,8 +32,10 @@ const initiateState = {
         'probabilistic complexity',
     ],
     contig: 'NC_011993.1',
+
     og_start_s: 'OG0001707',
     og_end_s: 'OG0001707',
+
     coord_start: 0,
     coord_end: 0,
     pars: false,
@@ -62,6 +66,11 @@ function complexityProfileSelector(state = initiateState, action) {
                 ...state,
                 genome_name: action.payload.genome_name
             };
+        case STAMM_GENOME_NAME:
+            return {
+                stamm: action.payload.stamm,
+                genome_name: action.payload.genome_name
+            };
         case METHOD:
             return {
                 ...state,
@@ -87,6 +96,13 @@ function complexityProfileSelector(state = initiateState, action) {
                 ...state,
                 og_end_s: action.payload.og_end
             };
+        case OG_START_S_OG_END_S:
+            return {
+                ...state,
+                og_start_s: action.payload.og_start_s,
+                og_end_s: action.payload.og_end_s
+            };
+        ////////////////////////////////////
         case COORD_START:
             return {
                 ...state,
@@ -96,6 +112,12 @@ function complexityProfileSelector(state = initiateState, action) {
             return {
                 ...state,
                 coord_end: action.payload.coord_end
+            };
+        case COORD_START_COORD_END:
+            return {
+                ...state,
+                coord_start: action.payload.coord_start,
+                coord_end: action.payload.coord_end,
             };
         case PARS:
             return {

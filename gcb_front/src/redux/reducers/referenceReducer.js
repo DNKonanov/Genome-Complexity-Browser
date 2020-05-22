@@ -42,7 +42,7 @@ const initialState = {
         }
     },
     selection: 'None'
-}
+};
 
 
 export default function (state = initialState, action) {

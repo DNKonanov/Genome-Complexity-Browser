@@ -101,6 +101,7 @@ const actionsCreator = {
 };
 
 class CytoscapeDagreGraph extends Component {
+
     componentDidMount() {
         this.prepareCy(this.props)
     }
@@ -178,11 +179,13 @@ class CytoscapeDagreGraph extends Component {
         // при клике на ребро подкрашивает синим все ребра которые пересекаются по геномам с кликнутым
         cy.on('click', 'edge', function (evt) {
 
-          // this.setState({
-          //     edge_description: evt.target.data().description
-          // });
+            // this.setState({
+            //     edge_description: evt.target.data().description
+            // });
 
-          this.props.setContainerGraph(EDGE_DESCRIPTION,evt.target.data().description);
+            this.props.setContainerGraph(EDGE_DESCRIPTION, evt.target.data().description);
+
+            console.log('HIIIIIIIIIIIIIIIIIIIIIII ');
 
             let organisms = evt.target.data().description.split('\n');
 
@@ -236,10 +239,10 @@ class CytoscapeDagreGraph extends Component {
                     if (ele.data().description !== undefined) nodes_list = nodes_list + ele.data().id + '\t' + ele.data().description.split(':')[0] + '\n'
                 }
             });
-          this.props.setContainerGraph(SELECTED_NODES, nodes_list);
+            this.props.setContainerGraph(SELECTED_NODES, nodes_list);
         }.bind(this));
 
-      this.props.setContainerGraph(CY,cy);
+        this.props.setContainerGraph(CY, cy);
     };
 
     componentWillReceiveProps(nextProps) {
@@ -268,7 +271,6 @@ class CytoscapeDagreGraph extends Component {
             }
             this.prepareCy(this.props)
         }
-
     }
 
     // грузит jpg графа
@@ -374,7 +376,7 @@ class CytoscapeDagreGraph extends Component {
                 </Button>
 
 
-                <Grid alignItems="flex-start" container direction="row" spacing={24}>
+                <Grid alignItems="flex-start" container direction="row" spacing={3}>
                     <Grid xs={6} item>
                         <Paper className={classes.paper}>
                             <EdgeDescription edge_description={this.props.edge_description}/>

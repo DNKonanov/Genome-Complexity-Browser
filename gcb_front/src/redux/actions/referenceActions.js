@@ -117,15 +117,17 @@ export const fetchComplexityt = (org, stamm, contig, method, pars, complexity_wi
     }
 };
 
-export const putSelectedRef = (org, stamm, contig, og_start, og_end, method, pars, operons, complexity_window) => ({
+export const putSelectedRef = (org, stamm, contig, og_start_s, og_end_s, method, pars, operons, complexity_window) => ({
     type: PUT_SELECTION,
     payload: {
         complexity_window: complexity_window,
         org: org,
         stamm: stamm,
         contig: contig,
-        og_start: og_start,
-        og_end: og_end,
+
+        og_start: og_start_s,
+        og_end: og_end_s,
+
         method: method,
         pars_int: pars === true ? 1 : 0,
         operons_int: operons === true ? 1 : 0,

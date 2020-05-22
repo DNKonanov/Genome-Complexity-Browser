@@ -21,14 +21,10 @@ import {
 } from "../../../../../../../../redux/actions/referenceActions";
 
 import {setRequisite} from "../../../../../../../../redux/actions/selector/actions";
-
+import {setOgStartOgEnd,setCoordStartCoordEnd,setStammGenomeName} from "../../../../../../../../redux/actions/selector/actions";
 import {
     CONTIG,
-    COORD_END,
-    COORD_START,
     GENOME_NAME,
-    OG_END_S,
-    OG_START_S,
     STAMM
 } from "../../../../../../../../redux/constants/selector/constants";
 
@@ -86,6 +82,9 @@ const actionCreators = {
     putSelectedRef: putSelectedRef,
     //requisite
     setRequisite: setRequisite,
+    setOgStartOgEnd: setOgStartOgEnd,
+    setCoordStartCoordEnd:setCoordStartCoordEnd,
+    setStammGenomeName:setStammGenomeName,
 };
 
 class ReferenceParametersExpansionPanel extends React.Component {
@@ -103,7 +102,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
     };
 
     // обновление стейта в общем виде
-    handleChange =  (e) => {
+    handleChange = (e) => {
         e.preventDefault();
         this.props.setRequisite(e.target.name.toUpperCase(), e.target.value);
     };
@@ -115,8 +114,10 @@ class ReferenceParametersExpansionPanel extends React.Component {
             if (this.props.stamms.org !== this.props.org) { //Stamms for selected organims are not loaded
                 this.props.fetchStammsForOrg(this.props.org);
                 return;
+
             } else { // stamms loaded
                 if (!this.isInArray(this.props.stamms.list, this.props.stamm)) { //selected stamm is not from list
+                    // this.props.setStammGenomeName(this.props.stamms.list[0],this.props.stamms.names[0]);
                     this.props.setRequisite(STAMM, this.props.stamms.list[0]);
                     this.props.setRequisite(GENOME_NAME, this.props.stamms.names[0]);
 
@@ -124,15 +125,19 @@ class ReferenceParametersExpansionPanel extends React.Component {
                     if (this.props.contigs.stamm !== this.props.stamm) { //contigs for stamm not loaded
                         this.props.fetchContigs(this.props.org, this.props.stamm);
                         return;
+
                     } else { //selected stamm is from current list
                         if (this.props.complexity_windows.stamm !== this.props.stamm) { //contigs for stamm not loaded
                             this.props.fetchWindows(this.props.org, this.props.stamm);
                             return;
+
                         } else {//contigs loaded
                             if (!this.isInArray(this.props.contigs.list, this.props.contig)) { //selected stamm is not from list
                                 this.props.setRequisite(CONTIG, this.props.contigs.list[0]);
                             } else {
+
                                 let comp_par = this.props.complexity.request;
+
                                 this.props.putSelectedRef(
                                     this.props.org,
                                     this.props.stamm,
@@ -176,18 +181,17 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                     } else {
 
                                         if (prevProps.coord_start !== this.props.coord_start || prevProps.coord_end !== this.props.coord_end) {
-
                                             let close_st_gene = 0;
                                             let close_end_gene = 0;
                                             let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.props.coord_start);
                                             let close_end_len = Math.abs(this.props.complexity.coord_list[0] - this.props.coord_start);
+
                                             for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
                                                 let len = Math.abs(this.props.complexity.coord_list[i] - this.props.coord_start);
                                                 if (len < close_st_len) {
                                                     close_st_gene = i;
                                                     close_st_len = len
                                                 }
-
 
                                                 len = Math.abs(this.props.complexity.coord_list[i] - this.props.coord_end);
                                                 if (len < close_end_len) {
@@ -197,10 +201,20 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                             }
 
                                             if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
-                                                this.props.setRequisite(OG_END_S, this.props.complexity.OGs[close_end_gene]);
-                                                this.props.setRequisite(OG_START_S, this.props.complexity.OGs[close_st_gene]);
-                                                this.props.putSelectedRef(this.props.org, this.props.stamm, this.props.contig,
-                                                    this.props.complexity.OGs[close_st_gene], this.props.complexity.OGs[close_end_gene], this.props.method, this.props.pars, this.props.operons, this.props.complexity_window)
+
+                                                this.props.setOgStartOgEnd(this.props.complexity.OGs[close_st_gene],this.props.complexity.OGs[close_end_gene]);
+
+                                                this.props.putSelectedRef(
+                                                    this.props.org,
+                                                    this.props.stamm,
+                                                    this.props.contig,
+                                                    this.props.complexity.OGs[close_st_gene],
+                                                    this.props.complexity.OGs[close_end_gene],
+                                                    this.props.pars,
+                                                    this.props.method,
+                                                    this.props.operons,
+                                                    this.props.complexity_window,
+                                                );
                                             }
                                         }
                                     }
@@ -363,6 +377,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
         let close_end_gene = 0;
         let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.props.coord_start);
         let close_end_len = Math.abs(this.props.complexity.coord_list[0] - this.props.coord_start);
+
         for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
             let len = Math.abs(this.props.complexity.coord_list[i] - this.props.coord_start);
             if (len < close_st_len) {
@@ -377,8 +392,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
         }
 
         if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
-            this.props.setRequisite(OG_END_S, this.props.complexity.OGs[close_end_gene]);
-            this.props.setRequisite(OG_START_S, this.props.complexity.OGs[close_st_gene]);
+            this.props.setOgStartOgEnd(this.props.complexity.OGs[close_st_gene], this.props.complexity.OGs[close_end_gene])
         }
     };
 
@@ -388,10 +402,10 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
         for (let i = 0; i < this.props.complexity.OGs.length; i++) {
             if (this.props.complexity.OGs[i] === this.props.og_start_s) {
-                coord_start = this.props.complexity.coord_list[i]
+                coord_start = this.props.complexity.coord_list[i];
             }
             if (this.props.complexity.OGs[i] === this.props.og_end_s) {
-                coord_end = this.props.complexity.coord_list[i]
+                coord_end = this.props.complexity.coord_list[i];
             }
         }
 
@@ -402,8 +416,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
         }
 
         if (coord_start !== -1 && coord_end !== -1) {
-            this.props.setRequisite(COORD_START, coord_start);
-            this.props.setRequisite(COORD_END, coord_end);
+            this.props.setCoordStartCoordEnd(coord_start,coord_end);
         }
     };
 

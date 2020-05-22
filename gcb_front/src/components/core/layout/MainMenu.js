@@ -95,7 +95,7 @@ class MainMenu extends React.Component {
                                                 <CardHeader title={'Graph'}/>
                                                 <CardContent>
                                                     <GraphContainer/>
-                                                    <GraphLayout/>
+                                                    {/*<GraphLayout/>*/}
                                                 </CardContent>
                                             </Card>
                                         </Grid>

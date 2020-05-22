@@ -103,18 +103,24 @@ class Selector extends Component {
             'probabilistic complexity',
         ],
         contig: 'NC_011993.1',
+
         og_start: 'OG0001707',
         og_end: 'OG0001707',
+
         coord_start: 0,
         coord_end: 0,
+
         pars: false,
         operons: true,
 
         draw_types: ['line', 'markers'],
         draw_type: 'line',
+
         data: '',
         src: '',
+
         complexity_window: 20,
+
         search_query: '',
         search_results: [],
 
@@ -150,29 +156,38 @@ class Selector extends Component {
     4) putSelectedRef - загрузка профиля сложности из БД
 
     */
-    componentDidUpdate(prevProps,
-                       ) {
+    componentDidUpdate(prevProps,prevState) {
         removeAllTips();
         if (this.props.organisms.length > 0) {// This means we succesfully loaded list of organisms
             if (this.props.stamms.org !== this.state.org) { //Stamms for selected organims are not loaded
                 this.props.fetchStammsForOrg(this.state.org);
                 return;
+
+
             } else { // stamms loaded
                 if (!this.isInArray(this.props.stamms.list, this.state.stamm)) { //selected stamm is not from list
                     this.setState({stamm: this.props.stamms.list[0]});
                     this.setState({genome_name: this.props.stamms.names[0]})
+
+
                 } else { //selected stamm is from current list
                     if (this.props.contigs.stamm !== this.state.stamm) { //contigs for stamm not loaded
                         this.props.fetchContigs(this.state.org, this.state.stamm);
                         return;
+
+
                     } else { //selected stamm is from current list
                         if (this.props.complexity_windows.stamm !== this.state.stamm) { //contigs for stamm not loaded
                             this.props.fetchWindows(this.state.org, this.state.stamm);
                             return;
+
+
                         } else {//contigs loaded
                             if (!this.isInArray(this.props.contigs.list, this.state.contig)) { //selected stamm is not from list
                                 this.setState({contig: this.props.contigs.list[0]})
                             } else {
+
+
                                 let comp_par = this.props.complexity.request;
                                 this.props.putSelectedRef(
                                     this.state.org,
@@ -191,12 +206,28 @@ class Selector extends Component {
                                     comp_par.contig !== this.state.contig || comp_par.method !== this.state.method ||
                                     comp_par.pars !== this.state.pars || comp_par.complexity_window !== this.state.complexity_window) {
 
-                                    this.props.fetchComplexity(this.state.org, this.state.stamm, this.state.contig, this.state.method, this.state.pars, this.state.complexity_window)
+                                    this.props.fetchComplexity(
+                                        this.state.org,
+                                        this.state.stamm,
+                                        this.state.contig,
+                                        this.state.method,
+                                        this.state.pars,
+                                        this.state.complexity_window
+                                    )
 
                                 } else {
                                     if (this.props.og_start !== this.state.og_start || this.props.og_end !== this.state.og_end) {
-                                        this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig,
-                                            this.state.og_start, this.state.og_end, this.state.method, this.state.pars, this.state.operons, this.state.complexity_window);
+                                        this.props.putSelectedRef(
+                                            this.state.org,
+                                            this.state.stamm,
+                                            this.state.contig,
+                                            this.state.og_start,
+                                            this.state.og_end,
+                                            this.state.method,
+                                            this.state.pars,
+                                            this.state.operons,
+                                            this.state.complexity_window
+                                        );
 
                                     } else {
 
@@ -223,12 +254,23 @@ class Selector extends Component {
                                             }
 
                                             if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
+
                                                 this.setState({
                                                     og_end: this.props.complexity.OGs[close_end_gene],
                                                     og_start: this.props.complexity.OGs[close_st_gene]
-                                                })
-                                                this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig,
-                                                    this.props.complexity.OGs[close_st_gene], this.props.complexity.OGs[close_end_gene], this.state.method, this.state.pars, this.state.operons, this.state.complexity_window)
+                                                });
+
+                                                this.props.putSelectedRef(
+                                                    this.state.org,
+                                                    this.state.stamm,
+                                                    this.state.contig,
+                                                    this.props.complexity.OGs[close_st_gene],
+                                                    this.props.complexity.OGs[close_end_gene],
+                                                    this.state.method,
+                                                    this.state.pars,
+                                                    this.state.operons,
+                                                    this.state.complexity_window
+                                                )
 
 
                                             }
@@ -246,9 +288,9 @@ class Selector extends Component {
     // подгоняет ноды под выбранные координаты
     checkOGs = (event) => {
 
-        console.log('OG checked!')
-        let close_st_gene = 0
-        let close_end_gene = 0
+        console.log('OG checked!');
+        let close_st_gene = 0;
+        let close_end_gene = 0;
         let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
         let close_end_len = Math.abs(this.props.complexity.coord_list[0] - this.state.coord_start)
         for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
@@ -267,12 +309,13 @@ class Selector extends Component {
         }
 
         if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
+
             this.setState({
                 og_end: this.props.complexity.OGs[close_end_gene],
                 og_start: this.props.complexity.OGs[close_st_gene]
             })
         }
-    }
+    };
 
     // подгоняет координаты под выбранные ноды (если он есть в геноме)
     checkCoord = (event) => {

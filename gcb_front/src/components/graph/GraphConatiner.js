@@ -8,6 +8,8 @@ import {connect} from 'react-redux';
 import {setContainerGraph} from "../../redux/actions/graph/container/actions";
 import removeAllTips from "../../sctipts/helper/functions/removeAllTips";
 import {LOADING} from "../../redux/constants/graph/container/constants";
+import Typography from "@material-ui/core/Typography";
+import CytoscapeDagreGraph from "./CytoscapeDagreGraph";
 
 const mapStateToProps = state => ({
     graph: state.graph.graph,
@@ -109,20 +111,28 @@ class GraphContainer extends Component {
 
     // рисует. Плюс анимация загрузки
     handleGraphDraw = () => {
+
+        console.log('handleGraphDraw');
+
+
         if (this.checkOG() === true)
             return;
         // Make redux request
         let params = this.getGraphParams();
-        this.props.fetchGraph(params);
 
-        this.props.setContainerGraph(LOADING, true);
+        this.props.fetchGraph(params);
+        // this.props.setContainerGraph(LOADING, true);
     };
 
 
     // заканчивает крутить анимацию по завершении обновления компонента
     componentDidUpdate(prevProps, prevState) {
         removeAllTips();
-        if (this.props.graph.result === 'SUCCESS' && this.props.loading === true) {
+
+        console.log('componentDidUpdate');
+
+        // if (this.props.graph.result === 'SUCCESS' && this.props.loading === true) {
+        if (this.props.graph.result === 'SUCCESS') {
             if (JSON.stringify(this.props.graph.params) === JSON.stringify(this.getGraphParams())) {
                 this.props.setContainerGraph(LOADING, false);
             }
@@ -138,6 +148,19 @@ class GraphContainer extends Component {
             show_load = <CircularProgress style={{margin: 'auto'}} variant='static' size={40}/>
         }
 
+        let what_to_show = null;
+        let notLoaded = () => (<div style={{display: 'flex', height: 300, width: '100%'}}>
+            <Typography variant="h4" style={{margin: 'auto', textAlign: 'center'}}>
+                Please, select parameters and click DRAW button
+            </Typography>
+        </div>);
+
+        let cytoscapeDagreGraph = () => (
+            < CytoscapeDagreGraph data={this.props.graph.data}
+                                  layout={this.props.graph.params.layout}
+            />
+        );
+
         return (
             <div>
                 <Grid container
@@ -145,7 +168,7 @@ class GraphContainer extends Component {
                       justify="flex-start"
                       alignItems="center"
                 >
-                    <Grid item xs={12}>
+                    <Grid item xs={11}>
                         <Button variant="contained"
                                 size="large"
                                 color="primary"
@@ -156,8 +179,13 @@ class GraphContainer extends Component {
                         </Button>
                     </Grid>
 
-                    <Grid item>
+                    <Grid item xs={1}>
                         {show_load}
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        {this.props.graph.result === 'NOT LOADED' ? notLoaded(): cytoscapeDagreGraph()}
+                        {/*{this.props.graph.result === 'NOT LOADED' ? notLoaded(): this.props.graph.result}*/}
                     </Grid>
 
                 </Grid>
