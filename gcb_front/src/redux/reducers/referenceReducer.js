@@ -1,26 +1,26 @@
 import {
-  FETCH_ORGANISMS,
-  FETCH_STAMMS,
-  FETCH_CONTIGS,
-  FETCH_COMPLEXITY,
-  PUT_SELECTION,
-  FETCH_WINDOWS
+    FETCH_ORGANISMS,
+    FETCH_STAMMS,
+    FETCH_CONTIGS,
+    FETCH_COMPLEXITY,
+    PUT_SELECTION,
+    FETCH_WINDOWS
 } from "../constants/action-types";
 
 import * as math from 'mathjs';
 
 
 const initialState = {
-  organisms: [],
-  stamms: {
-    list: [],
-    names: [],
-    org: 'None'
-  },
-  contigs: {
-    list: [],
-    stamm: 'None'
-  },
+    organisms: [],
+    stamms: {
+        list: [],
+        names: [],
+        org: 'None'
+    },
+    contigs: {
+        list: [],
+        stamm: 'None'
+    },
 
   complexity_windows: {
     list: [],
@@ -47,21 +47,21 @@ const initialState = {
 
 
 export default function (state = initialState, action) {
-  switch (action.type) {
-    case FETCH_ORGANISMS:
-      return {
-        ...state,
-        organisms: action.payload
-      };
-    case FETCH_STAMMS:
-      return {
-        ...state,
-        stamms: {
-          list: action.payload[0],
-          names: action.payload[1],
-          org: action.org
-        }
-      };
+    switch (action.type) {
+        case FETCH_ORGANISMS:
+            return {
+                ...state,
+                organisms: action.payload
+            };
+        case FETCH_STAMMS:
+            return {
+                ...state,
+                stamms: {
+                    list: action.payload[0],
+                    names: action.payload[1],
+                    org: action.org
+                }
+            };
 
     case FETCH_WINDOWS:
       return {

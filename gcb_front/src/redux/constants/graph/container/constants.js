@@ -1,0 +1,13 @@
+export const WINDOW = 'WINDOW';
+export const TAILS = 'TAILS';
+export const DEPTH = 'DEPTH';
+export const FREQ_MIN = 'FREQ_MIN';
+export const LAYOUT = 'LAYOUT';
+export const LOADING = 'LOADING';
+export const STEP = 'STEP';
+export const HIDE_EDGES = 'HIDE_EDGES';
+export const CY = 'CY';
+export const EDGE_DESCRIPTION = 'EDGE_DESCRIPTION';
+export const JSON_FORMAT = 'JSON_FORMAT';
+export const SELECTED_NODES = 'SELECTED_NODES';
+export const USER_COLORS = 'USER_COLORS';
