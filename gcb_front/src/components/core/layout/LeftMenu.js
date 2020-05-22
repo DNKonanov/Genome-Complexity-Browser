@@ -57,7 +57,7 @@ class LeftMenu extends React.Component {
                             <Tabs value={this.state.value} onChange={this.handleChange}
                                   aria-label="simple tabs example">
                                 <Tab label="Select parameters" {...a11yProps(0)} />
-                                {/*<Tab label="Search" {...a11yProps(1)} />*/}
+                                <Tab label="Search" {...a11yProps(1)} />
                                 {/*<Tab label="File" {...a11yProps(2)} />*/}
                                 {/*<Tab label="About" {...a11yProps(3)} />*/}
                             </Tabs>
@@ -66,9 +66,10 @@ class LeftMenu extends React.Component {
                         <TabPanel value={this.state.value} index={0}>
                             Select parameters
                         </TabPanel>
-                        {/*<TabPanel value={this.state.value} index={1}>*/}
-                        {/*    Search*/}
-                        {/*</TabPanel>*/}
+
+                        <TabPanel value={this.state.value} index={1}>
+                            Search
+                        </TabPanel>
 
                         {/*<TabPanel value={this.state.value} index={2}>*/}
                         {/*    File*/}

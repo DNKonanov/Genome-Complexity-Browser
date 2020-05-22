@@ -31,7 +31,8 @@ class HeaderMenu extends React.Component {
         const {classes} = this.props;
         return (
             <div>
-                <AppBar position="absolute"
+                <AppBar id={'HEADER_GGG'}
+                        position="absolute"
                         className={clsx(classes.appBar, this.props.is_open_drawer && classes.appBarShift)}
                 >
                     <Toolbar className={classes.toolbar}>

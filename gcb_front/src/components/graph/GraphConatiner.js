@@ -63,7 +63,7 @@ class GraphContainer extends Component {
             return
         }
         // this.setState({[event.target.name]: event.target.value});
-        this.props.setContainerGraph(event.target.name.toUpperCase(),event.target.value);
+        this.props.setContainerGraph(event.target.name.toUpperCase(), event.target.value);
     };
 
     // забирает из пропсов все параметры графа и добавляет свои
@@ -94,18 +94,18 @@ class GraphContainer extends Component {
     }
 
     // проверает наличие нодов из стейта в загруженном списке нодов
-     checkOG = () => {
-    if (this.props.complexity.OGs.indexOf(this.props.selection.og_start) ===-1) {
-      alert('Start OG is not in chosen genome');
-      return true
-    }
+    checkOG = () => {
+        if (this.props.complexity.OGs.indexOf(this.props.selection.og_start) === -1) {
+            alert('Start OG is not in chosen genome');
+            return true
+        }
 
-    if (this.props.complexity.OGs.indexOf(this.props.selection.og_end) ===-1) {
-      alert('End OG is not in chosen genome');
-      return true
-    }
-    return false
-  };
+        if (this.props.complexity.OGs.indexOf(this.props.selection.og_end) === -1) {
+            alert('End OG is not in chosen genome');
+            return true
+        }
+        return false
+    };
 
     // рисует. Плюс анимация загрузки
     handleGraphDraw = () => {
@@ -115,7 +115,7 @@ class GraphContainer extends Component {
         let params = this.getGraphParams();
         this.props.fetchGraph(params);
 
-        this.props.setContainerGraph(LOADING,true);
+        this.props.setContainerGraph(LOADING, true);
     };
 
 
@@ -124,7 +124,7 @@ class GraphContainer extends Component {
         removeAllTips();
         if (this.props.graph.result === 'SUCCESS' && this.props.loading === true) {
             if (JSON.stringify(this.props.graph.params) === JSON.stringify(this.getGraphParams())) {
-                this.props.setContainerGraph(LOADING,false);
+                this.props.setContainerGraph(LOADING, false);
             }
         }
     }
@@ -133,14 +133,9 @@ class GraphContainer extends Component {
         let show_load;
         if (this.props.loading) {
             show_load =
-                <CircularProgress style={{margin: 'auto'}}
-                                  size={40}
-                />
+                <CircularProgress style={{margin: 'auto'}} size={40}/>
         } else {
-            show_load = <CircularProgress style={{margin: 'auto'}}
-                                          variant='static'
-                                          size={40}
-            />
+            show_load = <CircularProgress style={{margin: 'auto'}} variant='static' size={40}/>
         }
 
         return (
@@ -150,7 +145,7 @@ class GraphContainer extends Component {
                       justify="flex-start"
                       alignItems="center"
                 >
-                    <Grid item>
+                    <Grid item xs={12}>
                         <Button variant="contained"
                                 size="large"
                                 color="primary"

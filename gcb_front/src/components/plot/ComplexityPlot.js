@@ -29,12 +29,6 @@ class ComplexityPlot extends React.Component {
         const data = this.props.complexity;
         return (
             <div>
-                <Grid container
-                      direction="column"
-                      justify="flex-start"
-                      alignItems="stretch"
-                >
-                    <Grid item xs={12}>
                         <Plot
                             data={[
                                 {
@@ -101,8 +95,6 @@ class ComplexityPlot extends React.Component {
                                 this.props.setRequisite(COORD_END, data.points[0].text);
                             }}
                         />
-                    </Grid>
-                </Grid>
             </div>
         );
     }

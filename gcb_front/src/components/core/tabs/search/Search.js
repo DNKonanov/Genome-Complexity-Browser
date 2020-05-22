@@ -109,8 +109,8 @@ class Search extends React.Component {
                          style={this.state.search_results.length === 0 ? {display: 'none'} : {display: ''}}/>
 
                 <Grid container spacing={3}
-                      // style={this.state.search_results.length === 0 ? {display: 'none'} : {display: ''}}
-                    >
+                    // style={this.state.search_results.length === 0 ? {display: 'none'} : {display: ''}}
+                >
                     <Grid item xs={12}>
                         <Container fixed>
                             <ExpansionPanel>

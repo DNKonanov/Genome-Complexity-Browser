@@ -20,9 +20,9 @@ class Core extends React.Component {
 
                     <LeftMenu/>
 
-                    <main className={classes.content}>
+                    {/*<main className={classes.content}>*/}
                         <MainMenu/>
-                    </main>
+                    {/*</main>*/}
                 </div>
             </div>
         );
