@@ -13,6 +13,7 @@ import Button from "@material-ui/core/Button";
 import SettingsIcon from "@material-ui/icons/Settings";
 import IconButton from "@material-ui/core/IconButton";
 import {setIs_open_drawer} from "../../../redux/actions/layout/actions";
+import Fab from "@material-ui/core/Fab";
 
 const mapStateToProps = state => ({
     is_open_drawer: state.layout.leftMenu.is_open_drawer,
@@ -58,30 +59,43 @@ class MainMenu extends React.Component {
                 <div className={classes.appBarSpacer}/>
 
                 <Grid container spacing={0} justify="flex-start">
-                    <Grid item xs={1}>
+                    <Grid item
+                          xs={1}
+                    >
                         <div style={{
                             marginTop: document.documentElement.clientHeight / 2 - this.state.headerOffsetHeight + this.state.scrollValue,
-                            WebkitTransform: 'rotate(90deg)',
+                            // WebkitTransform: 'rotate(90deg)',
                         }}>
 
-                            <Button
-                                startIcon={
-                                    <SettingsIcon style={{fontSize: 30}}/>}
-                                color="secondary"
-                                variant="contained"
-                                onClick={this.handleOpenCloseDrawer}
+                            {/*<Button*/}
+                            {/*    startIcon={*/}
+                            {/*        <SettingsIcon style={{fontSize: 30}}/>}*/}
+                            {/*    color="secondary"*/}
+                            {/*    variant="contained"*/}
+                            {/*    onClick={this.handleOpenCloseDrawer}*/}
+                            {/*>*/}
+                            {/*    Setting*/}
+                            {/*</Button>*/}
+
+                            <Fab color="primary"
+                                 aria-label="add"
+                                 size={'large'}
+                                 onClick={this.handleOpenCloseDrawer}
                             >
-                                Setting
-                            </Button>
+                                <SettingsIcon style={{fontSize: 30}}/>
+                            </Fab>
                         </div>
                     </Grid>
 
-                    <Grid item xs={11}>
+                    <Grid item
+                          xs={11}
+                    >
                         <Grid container direction="column">
                             <Grid item xs={12}>
                                 <Container maxWidth="xl" className={classes.container}>
                                     <Grid container spacing={3}>
                                         <Grid item xs={12}>
+
                                             <Card>
                                                 <CardHeader title={'Complexity Plot'}/>
                                                 <CardContent>
@@ -95,7 +109,6 @@ class MainMenu extends React.Component {
                                                 <CardHeader title={'Graph'}/>
                                                 <CardContent>
                                                     <GraphContainer/>
-                                                    {/*<GraphLayout/>*/}
                                                 </CardContent>
                                             </Card>
                                         </Grid>

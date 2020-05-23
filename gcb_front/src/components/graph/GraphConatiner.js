@@ -185,7 +185,6 @@ class GraphContainer extends Component {
 
                     <Grid item xs={12}>
                         {this.props.graph.result === 'NOT LOADED' ? notLoaded(): cytoscapeDagreGraph()}
-                        {/*{this.props.graph.result === 'NOT LOADED' ? notLoaded(): this.props.graph.result}*/}
                     </Grid>
 
                 </Grid>
