@@ -1,5 +1,6 @@
 const initiateState = {
-    is_open_drawer:false,
+    show_hotspots: true,
+    coef: 1.5
 };
 
 console.log('======================CONSTANTS==============================');

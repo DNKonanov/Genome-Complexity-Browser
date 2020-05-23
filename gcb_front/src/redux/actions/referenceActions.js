@@ -71,7 +71,7 @@ export function fetchContigs(org, stamm) {
 export function fetchComplexity(org, stamm, contig, method, pars, complexity_window, coef) {
   return function (dispatch) {
 
-    let pars_int = 0
+    let pars_int = 0;
     if (pars === true) {
       pars_int = 1
     }

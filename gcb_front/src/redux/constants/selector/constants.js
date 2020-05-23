@@ -29,3 +29,6 @@ export const  OG_START_S_OG_END_S = 'OG_START_S_OG_END_S';
 export const COORD_START_COORD_END = 'COORD_START_COORD_END';
 
 export const STAMM_GENOME_NAME = 'STAMM_GENOME_NAME';
+
+export const SHOW_HOTSPOTS = 'SHOW_HOTSPOTS';
+export const COEF = 'COEF';

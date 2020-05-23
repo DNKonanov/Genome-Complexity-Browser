@@ -20,18 +20,20 @@ import {
     putSelectedRef
 } from "../../../../../../../../redux/actions/referenceActions";
 
-import {setRequisite} from "../../../../../../../../redux/actions/selector/actions";
-import {setOgStartOgEnd,setCoordStartCoordEnd,setStammGenomeName} from "../../../../../../../../redux/actions/selector/actions";
 import {
-    CONTIG,
-    GENOME_NAME,
-    STAMM
-} from "../../../../../../../../redux/constants/selector/constants";
+    setCoordStartCoordEnd,
+    setOgStartOgEnd,
+    setRequisite,
+    setStammGenomeName
+} from "../../../../../../../../redux/actions/selector/actions";
+import {CONTIG, GENOME_NAME, STAMM} from "../../../../../../../../redux/constants/selector/constants";
 
 import RefSelect from "../components/RefSelect";
 import RefTextFields from "../components/RefTextFields";
 import Button from "@material-ui/core/Button";
 import removeAllTips from "../../../../../../../../sctipts/helper/functions/removeAllTips";
+import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 
 const mapStateToProps = state => ({
@@ -69,6 +71,9 @@ const mapStateToProps = state => ({
 
     search_query: state.requisite.search_query,
     search_results: state.requisite.search_results,
+    // 23.05.2020
+    show_hotspots: state.requisite.show_hotspots,
+    coef: state.requisite.coef,
 
     // componentsProps
     disabled_select_reference: state.components.select.disabled_select_reference
@@ -83,8 +88,8 @@ const actionCreators = {
     //requisite
     setRequisite: setRequisite,
     setOgStartOgEnd: setOgStartOgEnd,
-    setCoordStartCoordEnd:setCoordStartCoordEnd,
-    setStammGenomeName:setStammGenomeName,
+    setCoordStartCoordEnd: setCoordStartCoordEnd,
+    setStammGenomeName: setStammGenomeName,
 };
 
 class ReferenceParametersExpansionPanel extends React.Component {
@@ -104,7 +109,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
     // обновление стейта в общем виде
     handleChange = (e) => {
         e.preventDefault();
-        this.props.setRequisite(e.target.name.toUpperCase(), e.target.value);
+        this.props.setRequisite(e.target.name.toUpperCase(), !this.props.show_hotspots);
     };
 
     componentDidUpdate(prevProps, prevState) {
@@ -152,7 +157,8 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                                 if (comp_par.org !== this.props.org || comp_par.stamm !== this.props.stamm ||
                                     comp_par.contig !== this.props.contig || comp_par.method !== this.props.method ||
-                                    comp_par.pars !== this.props.pars || comp_par.complexity_window !== this.props.complexity_window) {
+                                    comp_par.pars !== this.props.pars || comp_par.complexity_window !== this.props.complexity_window
+                                    || comp_par.coef !== this.props.coef) {
 
                                     this.props.fetchComplexity(
                                         this.props.org,
@@ -160,7 +166,9 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                         this.props.contig,
                                         this.props.method,
                                         this.props.pars,
-                                        this.props.complexity_window
+                                        this.props.complexity_window,
+
+                                        this.props.coef
                                     )
 
                                 } else {
@@ -202,7 +210,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                                             if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
 
-                                                this.props.setOgStartOgEnd(this.props.complexity.OGs[close_st_gene],this.props.complexity.OGs[close_end_gene]);
+                                                this.props.setOgStartOgEnd(this.props.complexity.OGs[close_st_gene], this.props.complexity.OGs[close_end_gene]);
 
                                                 this.props.putSelectedRef(
                                                     this.props.org,
@@ -310,6 +318,39 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                                         <Divider className={classes.divider}/>
 
+                                        <Grid container spacing={3}>
+                                            <Grid item xs={6}>
+                                                <RefTextFields
+                                                    labelTF={'Hotspots threshold coef'}
+                                                    nameTF={'coef'}
+                                                    valueTF={this.props.coef}
+                                                />
+                                            </Grid>
+
+                                            <Grid item xs={6}>
+                                                <FormControlLabel
+                                                    control={<Switch name='show_hotspots'
+                                                                     color="primary"
+                                                                     value={this.props.show_hotspots}
+                                                                     checked={this.props.show_hotspots}
+                                                                     onChange={this.handleChange}
+                                                    />}
+                                                    label="Show hotspots"
+                                                />
+
+                                                {/*<FormControlLabel*/}
+                                                {/*    control={*/}
+                                                {/*        <Switch name='hide_edges'*/}
+                                                {/*            // value="checked"*/}
+                                                {/*                checked={this.props.hide_edges}*/}
+                                                {/*                color="primary"*/}
+                                                {/*                onChange={this.handleChange}/>}*/}
+                                                {/*    label="Hide reversed"*/}
+                                                {/*/>*/}
+                                            </Grid>
+
+                                        </Grid>
+
                                         {/*TEXT FIELDS*/}
                                         <Grid container spacing={3}>
                                             <Grid item xs={6}>
@@ -416,7 +457,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
         }
 
         if (coord_start !== -1 && coord_end !== -1) {
-            this.props.setCoordStartCoordEnd(coord_start,coord_end);
+            this.props.setCoordStartCoordEnd(coord_start, coord_end);
         }
     };
 

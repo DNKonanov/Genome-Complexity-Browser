@@ -14,10 +14,14 @@ const mapStateToProps = state => ({
     coord_start: state.requisite.coord_start,
     coord_end: state.requisite.coord_end,
     draw_type: state.requisite.draw_type,
+    show_hotspots:state.requisite.show_hotspots,
+    coef:state.requisite.coef,
+
     // file
     userCoordinates: state.file.userCoordinates,
     userValues: state.file.userValues,
     maxUserValue: state.file.maxUserValue,
+
 });
 
 const actionsCreator = {
@@ -38,7 +42,17 @@ class ComplexityPlot extends React.Component {
                                     type: 'line',
                                     name: 'complexity'
                                 },
-
+                                {
+                                    x: data.hotspots,
+                                    y: data.base,
+                                    mode: 'markers',
+                                    name: 'hotspots',
+                                    marker: {
+                                        size: 2,
+                                        symbol: 'square'
+                                    },
+                                    visible: this.props.show_hotspots,
+                                },
                                 {
                                     x: [this.props.coord_start, this.props.coord_start],
                                     y: [-data.max_complexity / 2, data.max_complexity],
@@ -89,6 +103,7 @@ class ComplexityPlot extends React.Component {
                             useResizeHandler={true}
                             style={{width: "100%", height: "400"}}
                             onClick={(data) => {
+                                //***
                                 this.props.setRequisite(OG_START_S, data.points[0].text);
                                 this.props.setRequisite(OG_END_S, data.points[0].text);
                                 this.props.setRequisite(COORD_START, data.points[0].text);

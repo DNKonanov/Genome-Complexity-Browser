@@ -43,7 +43,7 @@ const initialState = {
     }
   },
   selection: 'None'
-}
+};
 
 
 export default function (state = initialState, action) {
@@ -88,6 +88,7 @@ export default function (state = initialState, action) {
           length_list: action.payload[3],
           OGs: action.payload[1],
           coord_list: action.payload[2],
+
           hotspots: action.payload[4],
           base: action.payload[5],
           hotspots_sym: action.payload[6],
@@ -98,7 +99,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         selection: action.payload
-      }
+      };
     default:
       return state;
   }

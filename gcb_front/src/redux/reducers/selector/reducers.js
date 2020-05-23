@@ -20,6 +20,9 @@ import {
     SEARCH_RESULTS,
 
     OG_START_S_OG_END_S, COORD_START_COORD_END, STAMM_GENOME_NAME,
+    SHOW_HOTSPOTS,
+    COEF,
+
 } from "../../constants/selector/constants";
 
 const initiateState = {
@@ -47,6 +50,9 @@ const initiateState = {
     complexity_window: 20,
     search_query: '',
     search_results: [],
+    // 23.05.2020
+    show_hotspots: true,
+    coef: 1.5
 };
 
 function complexityProfileSelector(state = initiateState, action) {
@@ -164,6 +170,18 @@ function complexityProfileSelector(state = initiateState, action) {
                 ...state,
                 search_results: action.payload.search_results
             };
+        // ========================REDUCER_CASE==============================
+        case SHOW_HOTSPOTS:
+            return {
+                ...state,
+                show_hotspots: action.payload.show_hotspots
+            };
+        case COEF:
+            return {
+                ...state,
+                coef: action.payload.coef
+            };
+
         default:
             return state;
     }

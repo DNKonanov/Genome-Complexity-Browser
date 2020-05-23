@@ -109,6 +109,9 @@ class Selector extends Component {
     search_query: '',
     search_results: [],
     max_user_value: 1,
+
+
+
     coef: 1.5,
     show_hotspots: true,
   };
@@ -190,7 +193,15 @@ class Selector extends Component {
                   comp_par.pars !== this.state.pars || comp_par.complexity_window !== this.state.complexity_window || 
                   comp_par.coef !== this.state.coef) {
                   
-                  this.props.fetchComplexity(this.state.org, this.state.stamm, this.state.contig, this.state.method, this.state.pars, this.state.complexity_window, this.state.coef)
+                  this.props.fetchComplexity(
+                      this.state.org,
+                      this.state.stamm,
+                      this.state.contig,
+                      this.state.method,
+                      this.state.pars,
+                      this.state.complexity_window,
+                      this.state.coef
+                  )
 
                   }
                 
@@ -393,7 +404,8 @@ class Selector extends Component {
       data = data + 
       this.props.complexity.coord_list[i] + '\t' +
       this.props.complexity.OGs[i] + '\t' +
-      this.props.complexity.complexity[i] + '\t' + 
+      this.props.complexity.complexity[i] + '\t' +
+
       this.props.complexity.hotspots_sym[i] + '\n'
     }
 
@@ -402,7 +414,8 @@ class Selector extends Component {
     element.href = URL.createObjectURL(file);
     element.download = this.state.contig + ".txt";
     element.click();
-  }
+
+  };
 
 
   // открыте файла с клиента
@@ -447,7 +460,7 @@ class Selector extends Component {
 
   render() {
     const { classes } = this.props;
-    const data = this.props.complexity
+    const data = this.props.complexity;
 
 
     let search_field = this.state.search_results.length === 0 ? <Typography>There are not results to show</Typography> :
@@ -524,11 +537,6 @@ class Selector extends Component {
               </Typography>
 
             </Grid>
-
-
-            
-            
-
           </ExpansionPanelDetails>
         </ExpansionPanel>
         
@@ -602,7 +610,14 @@ class Selector extends Component {
 
                   <Grid item>
                     <FormControlLabel
-                      control={<Switch name='pars' value="checked" color="primary" checked={this.state.pars} onChange={this.checkPars} />}
+                      {/*  OTHERS пойдет*/}
+                      control={<Switch
+                          name='pars'
+                          value="checked"
+                          color="primary"
+                          checked={this.state.pars}
+                          onChange={this.checkPars}
+                      />}
                       label="Draw paralogous" />
                   </Grid>
                 </Grid>
@@ -687,12 +702,18 @@ class Selector extends Component {
                       label={'Hotspots threshold coef'} 
                       name='coef' 
                       value={this.state.coef} 
-                      onChange={this.handleChange} />
+                      onChange={this.handleChange}
+                      />
                     </Grid>
 
                     <Grid item>
                       <FormControlLabel
-                        control={<Switch name='show_hotspots' value="checked" color="primary" checked={this.state.show_hotspots} onChange={this.setHotspotsVisibility} />}
+                        control={<Switch name='show_hotspots'
+                                         value="checked"
+                                         color="primary"
+                                         checked={this.state.show_hotspots}
+                                         onChange={this.setHotspotsVisibility}
+                        />}
                         label="Show hotspots" />
                     </Grid>
 
@@ -787,9 +808,6 @@ class Selector extends Component {
                         mode: 'lines',
                         name: 'rigth edge'
                       },
-
-                      
-
                       {
                         x: this.state.user_coordinates,
                         y: this.state.user_values,
@@ -801,8 +819,6 @@ class Selector extends Component {
                           size: 5,
                         },
                       }
-
-
                     ]}
                     layout={
                       {

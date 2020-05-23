@@ -4,7 +4,6 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import {useStyles} from "../../style/SelectParametersStyle";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import CloudDownloadRoundedIcon from "@material-ui/icons/CloudDownloadRounded";
 import BackupRoundedIcon from "@material-ui/icons/BackupRounded";
@@ -14,7 +13,6 @@ import {
     setEnabled_Show_Delete_User_Coordinates,
     setUserCoordinatesStr
 } from "../../../../../../redux/actions/file/readFile";
-import {ENABLED_SHOW_DELETE_USER_COORDINATES} from "../../../../../../redux/constants/file/constants";
 
 
 const mapStateToProps = state => ({
@@ -39,7 +37,7 @@ class ComplexityPlotButtonFile extends React.Component {
             let file = e.target.files[0], reader = new FileReader();
             reader.onload = function (r) {
                 this.props.setUserCoordinatesStr(r.target.result);
-                this.props.setEnabled_Show_Delete_User_Coordinates( true);
+                this.props.setEnabled_Show_Delete_User_Coordinates(true);
             }.bind(this);
             reader.readAsText(file);
         } else {
@@ -56,13 +54,14 @@ class ComplexityPlotButtonFile extends React.Component {
             '\tcontig=' + this.props.contig +
             '\tmethod=' + this.props.method + '\n';
 
-        data = data + 'position\tcomplexity\n';
+        data = data + 'position\tOrthoGroupID\tcomplexity\thotspot\n';
 
         for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
-            data =
-                data
-                + this.props.complexity.coord_list[i] + '\t'
-                + this.props.complexity.complexity[i] + '\n'
+            data = data +
+                this.props.complexity.coord_list[i] + '\t' +
+                this.props.complexity.OGs[i] + '\t' +
+                this.props.complexity.complexity[i] + '\t' +
+                this.props.complexity.hotspots_sym[i] + '\n'
         }
 
         let element = document.createElement("a");
