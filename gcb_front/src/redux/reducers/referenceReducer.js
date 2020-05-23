@@ -22,27 +22,28 @@ const initialState = {
         stamm: 'None'
     },
 
-    complexity_windows: {
-        list: [],
-        complexity_window: 0,
-    },
-    complexity: {
-        complexity: [],
-        max_complexity: 0,
-        length_list: [],
-        OGs: [],
-        coord_list: [],
-        request: {
-            complexity_window: 0,
-            org: '',
-            stamm: '',
-            contig: '',
-            method: '',
-            pars: false
-        }
-    },
-    selection: 'None'
-};
+  complexity_windows: {
+    list: [],
+    complexity_window: 0,
+  },
+  complexity: {
+    complexity: [],
+    max_complexity: 0,
+    length_list: [],
+    OGs: [],
+    coord_list: [],
+    request : {
+      complexity_window: 0,
+      org: '',
+      stamm: '',
+      contig: '',
+      method: '',
+      pars: false,
+      coef: 1.5,
+    }
+  },
+  selection: 'None'
+}
 
 
 export default function (state = initialState, action) {
@@ -62,41 +63,43 @@ export default function (state = initialState, action) {
                 }
             };
 
-        case FETCH_WINDOWS:
-            return {
-                ...state,
-                complexity_windows: {
-                    list: action.payload,
-                    stamm: action.stamm
-                }
-            };
-        case FETCH_CONTIGS:
-            return {
-                ...state,
-                contigs: {
-                    list: action.payload,
-                    stamm: action.stamm
-                }
-            };
-        case FETCH_COMPLEXITY:
-            return {
-                ...state,
-                complexity: {
-                    complexity: action.payload[0],
-                    max_complexity: Math.max(action.payload[0]),
-                    length_list: action.payload[3],
-                    OGs: action.payload[1],
-                    coord_list: action.payload[2],
-
-                    request: action.params
-                }
-            };
-        case PUT_SELECTION:
-            return {
-                ...state,
-                selection: action.payload
-            };
-        default:
-            return state;
-    }
+    case FETCH_WINDOWS:
+      return {
+        ...state,
+        complexity_windows: {
+          list: action.payload,
+          stamm: action.stamm
+        }
+      };
+    case FETCH_CONTIGS:
+      return {
+        ...state,
+        contigs: {
+          list: action.payload,
+          stamm: action.stamm
+        }
+      };
+    case FETCH_COMPLEXITY:
+      return {
+        ...state,
+        complexity: {
+          complexity: action.payload[0],
+          max_complexity: math.max(action.payload[0]),
+          length_list: action.payload[3],
+          OGs: action.payload[1],
+          coord_list: action.payload[2],
+          hotspots: action.payload[4],
+          base: action.payload[5],
+          hotspots_sym: action.payload[6],
+          request: action.params
+        }
+      };
+    case PUT_SELECTION:
+      return {
+        ...state,
+        selection: action.payload
+      }
+    default:
+      return state;
+  }
 }

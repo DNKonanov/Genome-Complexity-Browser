@@ -68,30 +68,31 @@ export function fetchContigs(org, stamm) {
 }
 
 
-export function fetchComplexity(org, stamm, contig, method, pars, complexity_window) {
-    return function (dispatch) {
+export function fetchComplexity(org, stamm, contig, method, pars, complexity_window, coef) {
+  return function (dispatch) {
 
-        let pars_int = 0;
-        if (pars === true) {
-            pars_int = 1
-        }
-        let url = SERVER_URL + SERVER_PORT + '/org/' + org + '/stamms/' + stamm + '/contigs/' + contig + '/methods/' + method + '/pars/' + pars_int + '/complexity/window/' + complexity_window + '/';
-
-        fetch(url)
-            .then(response => response.json())
-            .then(data => dispatch({
-                type: FETCH_COMPLEXITY,
-                payload: data,
-                params: {
-                    org: org,
-                    stamm: stamm,
-                    contig: contig,
-                    method: method,
-                    pars: pars,
-                    complexity_window: complexity_window
-                }
-            }));
+    let pars_int = 0
+    if (pars === true) {
+      pars_int = 1
     }
+    let url = SERVER_URL + SERVER_PORT + '/org/' + org + '/stamms/' + stamm + '/contigs/' + contig + '/methods/' + method + '/pars/' + pars_int + '/complexity/window/' + complexity_window + '/coef/' + coef
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => dispatch({
+        type: FETCH_COMPLEXITY,
+        payload: data,
+        params: {
+          org: org,
+          stamm: stamm,
+          contig: contig,
+          method: method,
+          pars: pars,
+          complexity_window: complexity_window,
+          coef: coef,
+        }
+    }));
+  }
 }
 
 export const fetchComplexityt = (org, stamm, contig, method, pars, complexity_window) => async dispatch => {

@@ -9,6 +9,7 @@ from gene_graph_lib.draw_graph import get_json_graph
 import sqlite3
 from flask import render_template
 from app.process_graph import delete_double_edges 
+from app.extract_hotspots import extract_hotspot_coordinates
 
 data_path = './data/'
 
@@ -196,13 +197,17 @@ def get_contig_list(org, stamm):
     connect.close()
     return jsonify(contigs)
 
-@app.route('/org/<org>/stamms/<stamm>/contigs/<contig>/methods/<method>/pars/<pars>/complexity/window/<window>/')
-def get_complexity(org, stamm, contig, pars, method, window):
+@app.route('/org/<org>/stamms/<stamm>/contigs/<contig>/methods/<method>/pars/<pars>/complexity/window/<window>/coef/<coef>')
+def get_complexity(org, stamm, contig, pars, method, window, coef):
 
     # возвращает выбранный профиль сложности из БД
     
     complexity = get_complexity_from_db(data_path, org, stamm, contig, int(pars), methods[method], window)
-    return jsonify(complexity)
+    
+    hotspotpositions = extract_hotspot_coordinates(complexity[0], complexity[2], coef=float(coef))
+
+
+    return jsonify(complexity + hotspotpositions)
 
 
 @app.route('/org/<org>/stamms/<stamm>/complexity_windows/pars/<pars>/')
@@ -214,6 +219,31 @@ def get_complexity_windows(org, stamm, pars):
 
     print(windows)
     return jsonify(windows)
+
+
+@app.route('/get_genes/org/<org>/strain/<stamm>/pars/<pars>')
+def get_gene_names(org, stamm, pars):
+
+    # поиск по названиям генов в БД для данного организма
+
+    if pars == 'false':
+        connect = sqlite3.connect(data_path + org + '/' + org + '.db')
+
+    elif pars == 'true':
+        connect = sqlite3.connect(data_path + org + '/' + org + '_pars.db')
+
+    c = connect.cursor()
+
+    stamm_key = [row for row in c.execute('SELECT genome_id FROM genomes_table WHERE genome_code = "' + stamm + '"')][0][0]
+    contigs = [row for row in c.execute('SELECT contig_id, contig_code FROM contigs_table WHERE genome_id = ' + str(stamm_key))]
+
+    genes = []
+    for contig in contigs:
+        query = 'SELECT description FROM nodes_table WHERE contig_id=' + str(contig[0])
+        genes += [q for q in c.execute(query)]
+
+    connect.close()
+    return jsonify(genes)
 
 
 @app.route('/search/org/<org>/strain/<stamm>/pars/<pars>/input/<input>/')
@@ -237,4 +267,5 @@ def search(org, stamm, pars, input):
         query = 'SELECT node_name, description, (start_coord+end_coord)/2 FROM nodes_table WHERE contig_id=' + str(contig[0])
         table += [list(q) + [contig[1]] for q in c.execute(query) if input.lower() in q[1].lower()]
 
+    connect.close()
     return jsonify(table)

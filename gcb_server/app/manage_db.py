@@ -1,6 +1,5 @@
 import sqlite3
 from app import app
-import pandas as pd
 
 methods = ['win_var', 'prob_win_var', 'IO', 'prob_IO']
 
