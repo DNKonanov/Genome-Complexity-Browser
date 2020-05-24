@@ -189,9 +189,6 @@ class OtherSettingsExpansionPanel extends React.Component {
                                                 />
                                             </Grid>
 
-                                        </Grid>
-                                        {/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
-                                        <Grid container spacing={3}>
                                             <Grid item xs={6}>
                                                 <RefTextFields
                                                     labelTF={'Window'}
@@ -200,6 +197,7 @@ class OtherSettingsExpansionPanel extends React.Component {
                                                     typeTF={"number"}
                                                 />
                                             </Grid>
+
                                         </Grid>
                                     </Box>
                                 </ExpansionPanelDetails>
