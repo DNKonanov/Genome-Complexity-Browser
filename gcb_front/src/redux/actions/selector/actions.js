@@ -1,7 +1,7 @@
 import {
     COORD_START_COORD_END,
     OG_START_S_OG_END_S, SEARCH_QUERY,
-    SEARCH_RESULTS,
+    SEARCH_RESULTS, SET_COORD_ON_CLICK,
     STAMM_GENOME_NAME
 } from "../../constants/selector/constants";
 import axios from 'axios';
@@ -56,3 +56,13 @@ export const loadGenName = (org, stamm, pars) => async (dispatch) => {
 
     }
 };
+
+export const setCoordOnClick = (og_start_s, og_end_s,coord_start, coord_end) => ({
+    type: SET_COORD_ON_CLICK,
+    payload: {
+        og_start_s: og_start_s,
+        og_end_s: og_end_s,
+        coord_start: coord_start,
+        coord_end: coord_end,
+    }
+});

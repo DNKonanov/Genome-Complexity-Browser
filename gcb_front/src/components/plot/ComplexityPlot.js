@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import {withStyles} from "@material-ui/core";
 import Plot from "react-plotly.js";
 import {connect} from 'react-redux';
-import {setRequisite} from "../../redux/actions/selector/actions";
+import {setCoordOnClick, setRequisite} from "../../redux/actions/selector/actions";
 import {COORD_END, COORD_START, OG_END_S, OG_START_S} from "../../redux/constants/selector/constants";
 
 const mapStateToProps = state => ({
@@ -25,7 +25,8 @@ const mapStateToProps = state => ({
 });
 
 const actionsCreator = {
-    setRequisite: setRequisite
+    setRequisite: setRequisite,
+    setCoordOnClick:setCoordOnClick,
 };
 
 class ComplexityPlot extends React.Component {
@@ -104,10 +105,12 @@ class ComplexityPlot extends React.Component {
                             style={{width: "100%", height: "400"}}
                             onClick={(data) => {
                                 //***
-                                this.props.setRequisite(OG_START_S, data.points[0].text);
-                                this.props.setRequisite(OG_END_S, data.points[0].text);
-                                this.props.setRequisite(COORD_START, data.points[0].text);
-                                this.props.setRequisite(COORD_END, data.points[0].text);
+                                this.props.setCoordOnClick(
+                                    data.points[0].text,
+                                    data.points[0].text,
+                                    data.points[0].text,
+                                    data.points[0].text
+                                    );
                             }}
                         />
             </div>

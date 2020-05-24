@@ -12,6 +12,7 @@ import {setIs_open_drawer} from "../../../redux/actions/layout/actions";
 import SelectParameters from "../tabs/parameters/SelectParameters";
 import Search from "../tabs/search/Search";
 import FilePlot from "../tabs/file/FilePlot";
+import About from "../tabs/about/About";
 
 const mapStateToProps = state => ({
     is_open_drawer: state.layout.leftMenu.is_open_drawer,
@@ -60,7 +61,8 @@ class LeftMenu extends React.Component {
                 >
                     <div className={classes.tabsProps}>
                         <AppBar position="static">
-                            <Tabs value={this.state.value} onChange={this.handleChange}
+                            <Tabs value={this.state.value}
+                                  onChange={this.handleChange}
                                   aria-label="simple tabs example"
                             >
                                 <Tab label="Select parameters" {...a11yProps(0)} />
@@ -82,9 +84,9 @@ class LeftMenu extends React.Component {
                             <FilePlot/>
                         </TabPanel>
 
-                        {/*<TabPanel value={this.state.value} index={3}>*/}
-                        {/*    <About/>*/}
-                        {/*</TabPanel>*/}
+                        <TabPanel value={this.state.value} index={3}>
+                            <About/>
+                        </TabPanel>
                     </div>
                 </Drawer>
             </div>

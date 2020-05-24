@@ -21,7 +21,7 @@ import {
 
     OG_START_S_OG_END_S, COORD_START_COORD_END, STAMM_GENOME_NAME,
     SHOW_HOTSPOTS,
-    COEF,
+    COEF, SET_COORD_ON_CLICK,
 
 } from "../../constants/selector/constants";
 
@@ -181,6 +181,16 @@ function complexityProfileSelector(state = initiateState, action) {
             return {
                 ...state,
                 coef: action.payload.coef
+            };
+        case SET_COORD_ON_CLICK:
+            return {
+                ...state,
+                og_start_s: action.payload.og_start_s,
+                og_end_s: action.payload.og_end_s,
+
+                coord_start: action.payload.coord_start,
+                coord_end: action.payload.coord_end,
+
             };
 
         default:
