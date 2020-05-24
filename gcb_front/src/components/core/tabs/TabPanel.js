@@ -10,6 +10,10 @@ import FilePlot from "./file/FilePlot";
 
 class TabPanel extends React.Component {
 
+    componentDidMount() {
+        console.log('did mount', this);
+    }
+
     render() {
         const {children, value, index, ...other} = this.props;
         return (
@@ -20,24 +24,13 @@ class TabPanel extends React.Component {
                 aria-labelledby={`simple-tab-${index}`}
                 {...other}
             >
-                <Box p={3}>
-                    {
-                        ((value) => {
-                            switch (value) {
-                                case 0:
-                                    return <SelectParameters/>;
-                                case 1:
-                                    return <Search/>;
-                                case 2:
-                                    return <FilePlot/>;
-                                case 3:
-                                    return <About/>;
-                                default:
-                                    return <div/>
-                            }
-                        })(value)
-                    }
-                </Box>
+                {
+                     value === index && (
+                         <Box p={3}>
+                             {children}
+                         </Box>
+                     )
+                }
             </div>
         );
     }

@@ -101,6 +101,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
     };
 
     componentDidMount() {
+        console.log('did mount', this);
         if (this.props.organisms.length === 0)
             this.props.fetchOrganisms();
         return;

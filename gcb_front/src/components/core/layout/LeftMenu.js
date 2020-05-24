@@ -9,6 +9,9 @@ import TabPanel from "../tabs/TabPanel";
 
 import {layoutStyle} from "./styles/LayoutStyle";
 import {setIs_open_drawer} from "../../../redux/actions/layout/actions";
+import SelectParameters from "../tabs/parameters/SelectParameters";
+import Search from "../tabs/search/Search";
+import FilePlot from "../tabs/file/FilePlot";
 
 const mapStateToProps = state => ({
     is_open_drawer: state.layout.leftMenu.is_open_drawer,
@@ -33,13 +36,15 @@ class LeftMenu extends React.Component {
         };
     }
 
+    componentDidMount() {
+        console.log('did mount', this);
+    }
+
     handleChange = (event, newValue) => {
         this.setState({value: newValue});
     };
 
     handleOpenCloseDrawer = (e) => {
-        console.log(this.props.is_open_drawer);
-        console.log(!this.props.is_open_drawer);
         this.props.setIs_open_drawer(!this.props.is_open_drawer);
     };
 
@@ -55,7 +60,8 @@ class LeftMenu extends React.Component {
                     <div className={classes.tabsProps}>
                         <AppBar position="static">
                             <Tabs value={this.state.value} onChange={this.handleChange}
-                                  aria-label="simple tabs example">
+                                  aria-label="simple tabs example"
+                            >
                                 <Tab label="Select parameters" {...a11yProps(0)} />
                                 <Tab label="Search" {...a11yProps(1)} />
                                 <Tab label="File" {...a11yProps(2)} />
@@ -64,19 +70,19 @@ class LeftMenu extends React.Component {
                         </AppBar>
 
                         <TabPanel value={this.state.value} index={0}>
-                            Select parameters
+                            <SelectParameters/>
                         </TabPanel>
 
                         <TabPanel value={this.state.value} index={1}>
-                            Search
+                            <Search/>
                         </TabPanel>
 
                         <TabPanel value={this.state.value} index={2}>
-                            File
+                            <FilePlot/>
                         </TabPanel>
 
                         {/*<TabPanel value={this.state.value} index={3}>*/}
-                        {/*    About*/}
+                        {/*    <About/>*/}
                         {/*</TabPanel>*/}
                     </div>
                 </Drawer>

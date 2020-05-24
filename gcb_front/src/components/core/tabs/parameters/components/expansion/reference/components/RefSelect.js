@@ -39,7 +39,6 @@ class RefSelect extends React.Component {
                     className={classes.formControl}
                     fullWidth
                     disabled={this.props.disabledSelect}
-                    focused={this.props.focusedSelect}
                 >
                     <InputLabel id={this.props.selectNameId}>{this.props.inputLabel}</InputLabel>
 

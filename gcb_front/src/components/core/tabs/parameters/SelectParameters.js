@@ -12,6 +12,9 @@ const mapStateToProps = state => ({
 });
 
 class SelectParameters extends React.Component {
+    componentDidMount() {
+        console.log('did mount', this);
+    }
     render() {
         return (
             <div>
