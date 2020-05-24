@@ -68,7 +68,7 @@ class LeftMenu extends React.Component {
                                 <Tab label="Select parameters" {...a11yProps(0)} />
                                 <Tab label="Search" {...a11yProps(1)} disabled={this.props.disabled_select_reference} />
                                 <Tab label="File" {...a11yProps(2)} disabled={this.props.disabled_select_reference} />
-                                {/*<Tab label="About" {...a11yProps(3)} />*/}
+                                <Tab label="About" {...a11yProps(3)} />
                             </Tabs>
                         </AppBar>
 
