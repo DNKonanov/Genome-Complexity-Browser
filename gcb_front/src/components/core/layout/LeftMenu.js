@@ -15,6 +15,7 @@ import FilePlot from "../tabs/file/FilePlot";
 
 const mapStateToProps = state => ({
     is_open_drawer: state.layout.leftMenu.is_open_drawer,
+    disabled_select_reference: state.components.select.disabled_select_reference
 });
 
 const actionsCreator = {
@@ -63,8 +64,8 @@ class LeftMenu extends React.Component {
                                   aria-label="simple tabs example"
                             >
                                 <Tab label="Select parameters" {...a11yProps(0)} />
-                                <Tab label="Search" {...a11yProps(1)} />
-                                <Tab label="File" {...a11yProps(2)} />
+                                <Tab label="Search" {...a11yProps(1)} disabled={this.props.disabled_select_reference} />
+                                <Tab label="File" {...a11yProps(2)} disabled={this.props.disabled_select_reference} />
                                 {/*<Tab label="About" {...a11yProps(3)} />*/}
                             </Tabs>
                         </AppBar>
