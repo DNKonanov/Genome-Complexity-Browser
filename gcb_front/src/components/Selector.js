@@ -184,7 +184,6 @@ class Selector extends Component {
                 let comp_par = this.props.complexity.request;
                 this.props.putSelectedRef(this.state.org, this.state.stamm, this.state.contig, 
                   this.state.og_start, this.state.og_end, this.state.method, this.state.pars, this.state.operons, this.state.complexity_window
-
                 )
 
 
@@ -849,9 +848,11 @@ class Selector extends Component {
                     useResizeHandler={true}
                     style={{ width: "100%", height: "400" }}
                     onClick={(data) => {
+
                       this.setState({
                         og_start: data.points[0].text,
                         og_end: data.points[0].text,
+
                         coord_start: data.points[0].x,
                         coord_end: data.points[0].x
                       });
@@ -895,4 +896,7 @@ const mapStateToProps = state => ({
   og_end: state.reference.selection.og_end
 });
 
-export default connect(mapStateToProps, { fetchOrganisms, fetchStammsForOrg, fetchContigs, fetchComplexity, putSelectedRef, fetchWindows })(withStyles(styles)(Selector));
+export default connect(mapStateToProps, { fetchOrganisms,
+  fetchStammsForOrg, fetchContigs, fetchComplexity,
+  putSelectedRef,
+  fetchWindows })(withStyles(styles)(Selector));

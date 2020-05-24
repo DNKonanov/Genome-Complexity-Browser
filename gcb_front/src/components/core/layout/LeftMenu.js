@@ -37,11 +37,6 @@ class LeftMenu extends React.Component {
             value: 0,
         };
     }
-
-    componentDidMount() {
-        console.log('did mount', this);
-    }
-
     handleChange = (event, newValue) => {
         this.setState({value: newValue});
     };

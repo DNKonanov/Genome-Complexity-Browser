@@ -4,17 +4,12 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import {useStyles} from "./style/SelectParametersStyle";
 import ReferenceParametersExpansionPanel from "./components/expansion/reference/main/ReferenceParametersExpansionPanel";
 import OtherSettingsExpansionPanel from "./components/expansion/reference/other/OtherSettingsExpansionPanel";
-import ComplexityPlotButtonFile from "./components/buttons/ComplexityPlotButtonFile";
-import ComplexityPlotButtonUserCoordinates from "./components/buttons/ComplexityPlotButtonUserCoordinates";
 
 const mapStateToProps = state => ({
     organisms: state.reference.organisms,
 });
 
 class SelectParameters extends React.Component {
-    componentDidMount() {
-        console.log('did mount', this);
-    }
     render() {
         return (
             <div>

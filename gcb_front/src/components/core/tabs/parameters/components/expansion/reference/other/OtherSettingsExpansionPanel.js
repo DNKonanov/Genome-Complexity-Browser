@@ -19,7 +19,6 @@ import Radio from "@material-ui/core/Radio";
 import Switch from "@material-ui/core/Switch";
 import removeAllTips from "../../../../../../../../sctipts/helper/functions/removeAllTips";
 import RefTextFields from "../components/RefTextFields";
-import {LAYOUT} from "../../../../../../../../redux/constants/graph/container/constants";
 import {setContainerGraph} from "../../../../../../../../redux/actions/graph/container/actions";
 
 const mapStateToProps = state => ({

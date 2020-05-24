@@ -81,7 +81,6 @@ class Search extends React.Component {
 
     handleChange = (event,newValue) => {
         event.preventDefault();
-        console.log(newValue[0]);
         this.setState({search_query_value: newValue[0]})
     };
 

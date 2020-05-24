@@ -101,7 +101,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
     };
 
     componentDidMount() {
-        console.log('did mount', this);
+
         if (this.props.organisms.length === 0)
             this.props.fetchOrganisms();
         return;
@@ -319,7 +319,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                                         <Divider className={classes.divider}/>
 
-                                        <Grid container spacing={3}>
+                                        <Grid container justify="center" spacing={3}>
                                             <Grid item xs={6}>
                                                 <RefTextFields
                                                     labelTF={'Hotspots threshold coef'}
@@ -353,7 +353,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                         </Grid>
 
                                         {/*TEXT FIELDS*/}
-                                        <Grid container spacing={3}>
+                                        <Grid container justify="center" spacing={3}>
                                             <Grid item xs={6}>
                                                 <RefTextFields
                                                     labelTF={'Start coordinate'}
@@ -374,7 +374,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                                         <Divider className={classes.divider}/>
                                         {/*BUTTONS*/}
-                                        <Grid container spacing={1}>
+                                        <Grid container justify="center" spacing={1}>
                                             <Grid item xs={6}>
                                                 <Button
                                                     fullWidth

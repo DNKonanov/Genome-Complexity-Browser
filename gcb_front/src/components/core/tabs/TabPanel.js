@@ -9,11 +9,6 @@ import FilePlot from "./file/FilePlot";
 
 
 class TabPanel extends React.Component {
-
-    componentDidMount() {
-        console.log('did mount', this);
-    }
-
     render() {
         const {children, value, index, ...other} = this.props;
         return (

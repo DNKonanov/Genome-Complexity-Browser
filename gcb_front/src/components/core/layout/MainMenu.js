@@ -8,10 +8,7 @@ import {Card, CardHeader} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import ComplexityPlot from "../../plot/ComplexityPlot";
 import GraphContainer from "../../graph/GraphConatiner";
-import GraphLayout from "../../graph/GraphLayout";
-import Button from "@material-ui/core/Button";
 import SettingsIcon from "@material-ui/icons/Settings";
-import IconButton from "@material-ui/core/IconButton";
 import {setIs_open_drawer} from "../../../redux/actions/layout/actions";
 import Fab from "@material-ui/core/Fab";
 
@@ -58,25 +55,16 @@ class MainMenu extends React.Component {
             <div>
                 <div className={classes.appBarSpacer}/>
 
-                <Grid container spacing={0} justify="flex-start">
+                <Grid container
+                      spacing={0}
+                      justify="flex-start"
+                >
                     <Grid item
                           xs={1}
                     >
                         <div style={{
                             marginTop: document.documentElement.clientHeight / 2 - this.state.headerOffsetHeight + this.state.scrollValue,
-                            // WebkitTransform: 'rotate(90deg)',
                         }}>
-
-                            {/*<Button*/}
-                            {/*    startIcon={*/}
-                            {/*        <SettingsIcon style={{fontSize: 30}}/>}*/}
-                            {/*    color="secondary"*/}
-                            {/*    variant="contained"*/}
-                            {/*    onClick={this.handleOpenCloseDrawer}*/}
-                            {/*>*/}
-                            {/*    Setting*/}
-                            {/*</Button>*/}
-
                             <Fab color="primary"
                                  aria-label="add"
                                  size={'large'}

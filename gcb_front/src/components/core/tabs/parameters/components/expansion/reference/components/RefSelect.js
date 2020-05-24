@@ -22,13 +22,10 @@ const actionsCreator = {
 class RefSelect extends React.Component {
     handleChange = async (e) => {
         e.preventDefault();
-        console.log(this.props.disabled_select_reference);
         if(e.target.name === 'org')
             this.props.setDisabled_select_reference(false) ;
 
         await this.props.setRequisite(e.target.name.toUpperCase(), e.target.value);
-
-        console.log(this.props.disabled_select_reference);
     };
 
     render() {
@@ -47,7 +44,6 @@ class RefSelect extends React.Component {
                             value={this.props.selectValue}
                             onChange={this.handleChange}
                             autoWidth={false}
-
                     >
                         {
                             this.props.selectOptions.map(opt => (
