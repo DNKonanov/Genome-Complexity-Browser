@@ -48,7 +48,8 @@ const initiateState = {
     data: '',
     src: '',
     complexity_window: 20,
-    search_query: '',
+    //search
+    search_query: [],
     search_results: [],
     // 23.05.2020
     show_hotspots: true,

@@ -21,14 +21,14 @@ export const DRAW_TYPE = 'DRAW_TYPE';
 export const DATA = 'DATA';
 export const SRC = 'SRC';
 export const COMPLEXITY_WINDOW = 'COMPLEXITY_WINDOW';
+export const SHOW_HOTSPOTS = 'SHOW_HOTSPOTS';
+export const COEF = 'COEF';
+
 export const SEARCH_QUERY = 'SEARCH_QUERY';
 export const SEARCH_RESULTS = 'SEARCH_RESULTS';
 
 export const  OG_START_S_OG_END_S = 'OG_START_S_OG_END_S';
-
 export const COORD_START_COORD_END = 'COORD_START_COORD_END';
-
 export const STAMM_GENOME_NAME = 'STAMM_GENOME_NAME';
 
-export const SHOW_HOTSPOTS = 'SHOW_HOTSPOTS';
-export const COEF = 'COEF';
+

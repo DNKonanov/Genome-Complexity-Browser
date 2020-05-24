@@ -21,18 +21,47 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import TableContainer from "@material-ui/core/TableContainer";
 import {withStyles} from "@material-ui/core/es";
 import Divider from "@material-ui/core/Divider";
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import {loadGenName} from "../../../../redux/actions/selector/actions";
+import {connect} from 'react-redux';
+
+const mapStateToProps = state => ({
+    org: state.requisite.org,
+    stamm: state.requisite.stamm,
+    pars: state.requisite.pars,
+
+    search_query: state.requisite.search_query,
+    search_results: state.requisite.search_results,
+});
+
+const actionsCreator = {
+    loadGenName: loadGenName
+};
 
 class Search extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            search_query: '',
+            search_query_value: '',
             search_results: [],
         }
     }
 
+    componentDidMount() {
+        this.props.loadGenName(
+            this.props.org,
+            this.props.stamm,
+            this.props.pars,
+        );
+    }
+
     search = (e) => {
-        let url = SERVER_URL + SERVER_PORT + '/search/org/' + this.state.org + '/strain/' + this.state.stamm + '/pars/' + this.state.pars + '/input/' + this.state.search_query + '/'
+        let url = SERVER_URL + SERVER_PORT + '/search/org/'
+            + this.props.org + '/strain/'
+            + this.props.stamm + '/pars/'
+            + this.props.pars + '/input/'
+            + this.state.search_query_value + '/';
+
         fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -50,8 +79,10 @@ class Search extends React.Component {
         )
     };
 
-    handleChange = (event) => {
-        this.setState({[event.target.name]: event.target.value})
+    handleChange = (event,newValue) => {
+        event.preventDefault();
+        console.log(newValue[0]);
+        this.setState({search_query_value: newValue[0]})
     };
 
     render() {
@@ -67,21 +98,32 @@ class Search extends React.Component {
                                         <form onSubmit={this.search}>
                                             <Grid container spacing={1} justify="center">
                                                 <Grid item xs={10}>
-                                                    <TextField label={'Search'}
-                                                               fullWidth
-                                                               name='search_query'
-                                                               value={this.state.search_query}
-                                                               onChange={this.handleChange}
-                                                               helperText={this.state.search_query === '' ? 'Enter text' : 'There are not result to show'}
+                                                    <Autocomplete
+                                                        id="combo-box-demo"
+                                                        options={this.props.search_query}
+                                                        getOptionLabel={(option) => option.toString()}
+                                                        loading={this.props.search_query.length === 0}
+                                                        value={this.state.search_query_value}
+                                                        onChange={this.handleChange}
+
+                                                        inputValue={this.state.search_query_value}
+                                                        onInputChange={this.handleChange}
+
+                                                        renderInput={(params) => (
+                                                                <TextField {...params}
+                                                                           label="Search"
+                                                                           variant="outlined"
+                                                                           fullWidth
+                                                                           name='search_query'
+                                                                />)
+                                                        }
                                                     />
                                                 </Grid>
 
                                                 <Grid item xs={1}>
                                                     <IconButton
                                                         type="submit"
-                                                        onClick={(e) => {
-                                                            this.search(e)
-                                                        }}
+                                                        onClick={this.search}
                                                     >
                                                         <SearchIcon/>
                                                     </IconButton>
@@ -89,9 +131,7 @@ class Search extends React.Component {
 
                                                 <Grid item xs={1}>
                                                     <IconButton
-                                                        onClick={(e) => {
-                                                            this.clearSearchResults(e)
-                                                        }}
+                                                        onClick={this.clearSearchResults}
                                                     >
                                                         <ClearIcon/>
                                                     </IconButton>
@@ -183,4 +223,5 @@ const useStyle = theme => ({
         margin: theme.spacing(2, 0),
     },
 });
-export default withStyles(useStyle)(Search);
+const connectClass = connect(mapStateToProps, actionsCreator)(Search);
+export default withStyles(useStyle)(connectClass);

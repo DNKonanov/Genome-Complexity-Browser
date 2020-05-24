@@ -638,7 +638,11 @@ class Selector extends Component {
 
                 <Grid container direction="row" alignItems="flex-start" spacing={24}>
                   <Grid >
-                    <TextField label={'Search'} name='search_query' value={this.state.search_query}  onChange={this.handleChange}/>
+                    <TextField label={'Search'}
+                               name='search_query'
+                               value={this.state.search_query}
+                               onChange={this.handleChange}
+                    />
                   </Grid>
 
                   <Grid item>
