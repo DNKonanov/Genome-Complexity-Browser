@@ -261,7 +261,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                                         <Grid container
                                               justify="center"
-                                              spacing={1}
+                                              spacing={3}
                                               direction="column"
                                         >
                                             <Grid item xs={12}>
@@ -298,7 +298,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                         {/*-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
                                         <Divider className={classes.divider}/>
 
-                                        <Grid container spacing={1} justify="center">
+                                        <Grid container spacing={3} justify="flex-start">
                                             <Grid item xs={6}>
                                                 <RefSelect
                                                     inputLabel={'Method'}
@@ -322,17 +322,19 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                                         <Divider className={classes.divider}/>
 
-                                        <Grid container justify="center" spacing={3}>
+                                        <Grid container justify="flex-start" spacing={3}>
                                             <Grid item xs={6}>
                                                 <RefTextFields
                                                     labelTF={'Hotspots threshold coef'}
                                                     nameTF={'coef'}
                                                     valueTF={this.props.coef}
+                                                    disTF={this.props.disabled_select_reference}
                                                 />
                                             </Grid>
 
                                             <Grid item xs={6}>
                                                 <FormControlLabel
+                                                    disabled={this.props.disabled_select_reference}
                                                     control={<Switch name='show_hotspots'
                                                                      color="primary"
                                                                      value={this.props.show_hotspots}
@@ -341,22 +343,22 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     />}
                                                     label="Show hotspots"
                                                 />
+                                            </Grid>
 
-                                                {/*<FormControlLabel*/}
-                                                {/*    control={*/}
-                                                {/*        <Switch name='hide_edges'*/}
-                                                {/*            // value="checked"*/}
-                                                {/*                checked={this.props.hide_edges}*/}
-                                                {/*                color="primary"*/}
-                                                {/*                onChange={this.handleChange}/>}*/}
-                                                {/*    label="Hide reversed"*/}
-                                                {/*/>*/}
+                                            <Grid item xs={6}>
+                                                <RefSelect
+                                                    inputLabel={'Marker'}
+                                                    selectNameId={'draw_type'}
+                                                    selectValue={this.props.draw_type}
+                                                    selectOptions={this.props.draw_types}
+                                                    disabledSelect={this.props.disabled_select_reference}
+                                                />
                                             </Grid>
 
                                         </Grid>
 
                                         {/*TEXT FIELDS*/}
-                                        <Grid container justify="center" spacing={3}>
+                                        <Grid container justify="flex-start" spacing={3}>
                                             <Grid item xs={6}>
                                                 <RefTextFields
                                                     labelTF={'Start coordinate'}
@@ -377,7 +379,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                                         <Divider className={classes.divider}/>
                                         {/*BUTTONS*/}
-                                        <Grid container justify="center" spacing={3}>
+                                        <Grid container justify="flex-start" spacing={3}>
                                             <Grid item xs={6}>
                                                 <Button
                                                     fullWidth

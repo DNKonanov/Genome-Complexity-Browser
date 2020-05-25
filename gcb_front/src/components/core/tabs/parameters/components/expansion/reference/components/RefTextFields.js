@@ -23,6 +23,7 @@ class RefTextFields extends React.Component {
                            value={this.props.valueTF}
                            type={this.props.typeTF}
                            onChange={this.handleChange}
+                           disabled={this.props.disTF}
                 />
             </div>
         );
@@ -31,6 +32,7 @@ class RefTextFields extends React.Component {
 
 RefTextFields.defaultProps = {
     typeTF: 'text',
+    disTF: false,
 };
 
 const connectClass = connect(null, actionsCreator)(RefTextFields);
