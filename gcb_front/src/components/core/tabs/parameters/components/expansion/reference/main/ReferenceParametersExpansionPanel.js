@@ -411,7 +411,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                 <a href="#GraphShowOnClick"
                                                    style={{
                                                        color:'white',
-                                                       'text-decoration': 'none',
+                                                       textDecoration: 'none',
                                                    }}
                                                 >
                                                 <Button size="large"

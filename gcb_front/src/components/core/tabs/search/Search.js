@@ -22,7 +22,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import {withStyles} from "@material-ui/core/es";
 import Divider from "@material-ui/core/Divider";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {loadGenName} from "../../../../redux/actions/selector/actions";
+import {loadGenName, setCoordStartCoordEnd} from "../../../../redux/actions/selector/actions";
 import {connect} from 'react-redux';
 
 const mapStateToProps = state => ({
@@ -35,7 +35,8 @@ const mapStateToProps = state => ({
 });
 
 const actionsCreator = {
-    loadGenName: loadGenName
+    loadGenName: loadGenName,
+    setCoordStartCoordEnd:setCoordStartCoordEnd,
 };
 
 class Search extends React.Component {
@@ -48,11 +49,11 @@ class Search extends React.Component {
     }
 
     componentDidMount() {
-        this.props.loadGenName(
-            this.props.org,
-            this.props.stamm,
-            this.props.pars,
-        );
+            this.props.loadGenName(
+                this.props.org,
+                this.props.stamm,
+                this.props.pars,
+            );
     }
 
     search = (e) => {
@@ -79,7 +80,7 @@ class Search extends React.Component {
         )
     };
 
-    handleChange = (event,newValue) => {
+    handleChange = (event, newValue) => {
         event.preventDefault();
         this.setState({search_query_value: newValue[0]})
     };
@@ -109,12 +110,12 @@ class Search extends React.Component {
                                                         onInputChange={this.handleChange}
 
                                                         renderInput={(params) => (
-                                                                <TextField {...params}
-                                                                           label="Search"
-                                                                           variant="outlined"
-                                                                           fullWidth
-                                                                           name='search_query'
-                                                                />)
+                                                            <TextField {...params}
+                                                                       label="Search"
+                                                                       variant="outlined"
+                                                                       fullWidth
+                                                                       name='search_query'
+                                                            />)
                                                         }
                                                     />
                                                 </Grid>
@@ -183,10 +184,15 @@ class Search extends React.Component {
                                                                                 <button
                                                                                     value={result[2]}
                                                                                     onClick={(e) => {
-                                                                                        this.setState({
-                                                                                            coord_start: e.target.value,
-                                                                                            coord_end: e.target.value
-                                                                                        })
+
+                                                                                        this.props.setCoordStartCoordEnd(
+                                                                                            e.target.value,
+                                                                                            e.target.value
+                                                                                        );
+                                                                                        // this.setState({
+                                                                                        //     coord_start: e.target.value,
+                                                                                        //     coord_end: e.target.value
+                                                                                        // })
                                                                                     }}
                                                                                 >
                                                                                     {result[2]}
