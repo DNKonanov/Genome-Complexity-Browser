@@ -763,7 +763,10 @@ class Selector extends Component {
                     
                     <Grid item>
 
-                      <Select style={{ margin: 6 }} value={this.state.draw_type} name='draw_types' onChange={e => this.setState({ draw_type: e.target.value })}>
+                      <Select style={{ margin: 6 }}
+                              value={this.state.draw_type}
+                              name='draw_types'
+                              onChange={e => this.setState({ draw_type: e.target.value })}>
                         {this.state.draw_types.map(draw_type => <MenuItem key={draw_type} value={draw_type}>{draw_type}</MenuItem>)}
                       </Select>
                       

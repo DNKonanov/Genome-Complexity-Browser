@@ -34,7 +34,8 @@ import Button from "@material-ui/core/Button";
 import removeAllTips from "../../../../../../../../sctipts/helper/functions/removeAllTips";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-
+import { Link,} from 'react-scroll';
+import {setIs_open_drawer} from "../../../../../../../../redux/actions/layout/actions";
 
 const mapStateToProps = state => ({
     organisms: state.reference.organisms,
@@ -69,14 +70,15 @@ const mapStateToProps = state => ({
 
     complexity_window: state.requisite.complexity_window,
 
-    search_query: state.requisite.search_query,
-    search_results: state.requisite.search_results,
     // 23.05.2020
     show_hotspots: state.requisite.show_hotspots,
     coef: state.requisite.coef,
 
     // componentsProps
-    disabled_select_reference: state.components.select.disabled_select_reference
+    disabled_select_reference: state.components.select.disabled_select_reference,
+
+    is_open_drawer: state.layout.leftMenu.is_open_drawer,
+
 });
 const actionCreators = {
     fetchOrganisms: fetchOrganisms,
@@ -90,6 +92,8 @@ const actionCreators = {
     setOgStartOgEnd: setOgStartOgEnd,
     setCoordStartCoordEnd: setCoordStartCoordEnd,
     setStammGenomeName: setStammGenomeName,
+
+    setIs_open_drawer: setIs_open_drawer,
 };
 
 class ReferenceParametersExpansionPanel extends React.Component {
@@ -101,7 +105,6 @@ class ReferenceParametersExpansionPanel extends React.Component {
     };
 
     componentDidMount() {
-
         if (this.props.organisms.length === 0)
             this.props.fetchOrganisms();
         return;
@@ -374,7 +377,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                                         <Divider className={classes.divider}/>
                                         {/*BUTTONS*/}
-                                        <Grid container justify="center" spacing={1}>
+                                        <Grid container justify="center" spacing={3}>
                                             <Grid item xs={6}>
                                                 <Button
                                                     fullWidth
@@ -401,8 +404,34 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     Update coordinates
                                                 </Button>
                                             </Grid>
-                                        </Grid>
 
+                                            <Grid item xs={12}>
+                                                <a href="#GraphShowOnClick"
+                                                   style={{
+                                                       color:'white',
+                                                       'text-decoration': 'none',
+                                                   }}
+                                                >
+                                                <Button size="large"
+                                                        variant="contained"
+                                                        color="secondary"
+                                                        onClick={this.handleDraw}
+                                                        fullWidth
+                                                >
+                                                    {/*<Link  to="GraphShowOnClick"*/}
+                                                    {/*       spy={true}*/}
+                                                    {/*       smooth={true}*/}
+                                                    {/*       duration={500}*/}
+                                                    {/*>*/}
+                                                    {/*    DRAW GRAPH*/}
+                                                    {/*</Link>*/}
+
+                                                        DRAW GRAPH
+                                                </Button>
+                                            </a>
+
+                                        </Grid>
+                                        </Grid>
                                     </Box>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
@@ -474,6 +503,11 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
     handleChangeExpPanel = () => {
         this.setState({expanded: !this.state.expanded});
+    };
+
+    handleDraw = () => {
+        document.getElementById('graphButtonDraw').click();
+        this.props.setIs_open_drawer(!this.props.is_open_drawer);
     };
 }
 

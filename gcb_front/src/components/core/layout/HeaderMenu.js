@@ -20,12 +20,8 @@ const actionsCreator = {
 
 class HeaderMenu extends React.Component {
     handleOpenCloseDrawer = (e) => {
-        console.log(this.props.is_open_drawer);
-        console.log(!this.props.is_open_drawer);
-
         this.props.setIs_open_drawer(!this.props.is_open_drawer);
     };
-
 
     render() {
         const {classes} = this.props;

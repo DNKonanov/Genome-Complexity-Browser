@@ -379,7 +379,11 @@ class CytoscapeDagreGraph extends Component {
                 </Button>
 
 
-                <Grid alignItems="flex-start" container direction="row" spacing={24}>
+                <Grid
+                    alignItems="flex-start"
+                    container direction="row"
+                    spacing={2}
+                >
                     <Grid xs={6} item>
                         <Paper className={classes.paper}>
                             <EdgeDescription edge_description={this.state.edge_description}/>

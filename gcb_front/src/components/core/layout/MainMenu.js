@@ -93,12 +93,20 @@ class MainMenu extends React.Component {
                                         </Grid>
                                         {/**/}
                                         <Grid item xs={12}>
-                                            <Card>
+                                            {/*<Element name="GraphShowOnClick" className="element">*/}
+
+                                            <Card style={{
+                                                minHeight:1309
+                                            }}>
                                                 <CardHeader title={'Graph'}/>
                                                 <CardContent>
-                                                    <GraphContainer/>
+                                                    <div id="GraphShowOnClick">
+                                                        <GraphContainer/>
+                                                    </div>
                                                 </CardContent>
                                             </Card>
+
+                                            {/*</Element>*/}
                                         </Grid>
                                     </Grid>
                                 </Container>

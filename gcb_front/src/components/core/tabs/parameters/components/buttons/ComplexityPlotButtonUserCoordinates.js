@@ -84,13 +84,14 @@ class ComplexityPlotButtonUserCoordinates extends React.Component {
                 <Container fixed className={classes.boxButtons}>
                     <Card>
                         <CardContent>
-                            <Grid container spacing={1} justify="flex-end" alignItems="stretch">
+                            <Grid container spacing={1} justify="center" alignItems="stretch">
                                 <Grid item xs={12}>
                                     <ButtonGroup
                                         variant="contained"
                                         color="primary"
                                         aria-label="contained primary button group"
                                         disabled={!this.props.enabled_Show_Delete_User_Coordinates}
+                                        fullWidth
                                     >
                                         <Button
                                             startIcon={<VisibilityIcon/>}
@@ -99,6 +100,7 @@ class ComplexityPlotButtonUserCoordinates extends React.Component {
                                         >
                                             Show user coordinates
                                         </Button>
+
                                         <Button
                                             startIcon={<DeleteForeverRoundedIcon/>}
                                             onClick={this.deleteUserCoordinates}

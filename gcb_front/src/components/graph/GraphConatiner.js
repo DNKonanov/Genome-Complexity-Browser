@@ -114,7 +114,6 @@ class GraphContainer extends Component {
 
         console.log('handleGraphDraw');
 
-
         if (this.checkOG() === true)
             return;
         // Make redux request
@@ -128,9 +127,6 @@ class GraphContainer extends Component {
     // заканчивает крутить анимацию по завершении обновления компонента
     componentDidUpdate(prevProps, prevState) {
         removeAllTips();
-
-        console.log('componentDidUpdate');
-
         // if (this.props.graph.result === 'SUCCESS' && this.props.loading === true) {
         if (this.props.graph.result === 'SUCCESS') {
             if (JSON.stringify(this.props.graph.params) === JSON.stringify(this.getGraphParams())) {
@@ -170,10 +166,14 @@ class GraphContainer extends Component {
                 >
                     <Grid item xs={11}>
                         <Button variant="contained"
+                                id="graphButtonDraw"
                                 size="large"
                                 color="primary"
                                 onClick={this.handleGraphDraw}
-                                style={{margin: 12}}
+                                style={{
+                                    margin: 12,
+                                    display:'none'
+                                }}
                         >
                             Draw
                         </Button>

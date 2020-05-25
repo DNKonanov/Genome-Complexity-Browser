@@ -78,17 +78,7 @@ class ComplexityPlotButtonFile extends React.Component {
                 <Container fixed className={classes.boxButtons}>
                     <Card>
                         <CardContent>
-                            <Grid container spacing={3}>
-                                <Grid item xs={6}>
-                                    <Button size="large"
-                                            variant="contained"
-                                            color="secondary"
-                                    >
-                                        DRAW GRAPH
-                                    </Button>
-                                </Grid>
-                            </Grid>
-                            <Grid container spacing={1} justify="flex-end" alignItems="stretch">
+                            <Grid container spacing={1} justify="center" alignItems="stretch" >
                                 <Grid item xs={6}>
                                     <Button
                                         variant="contained"

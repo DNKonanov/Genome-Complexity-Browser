@@ -197,6 +197,7 @@ class OtherSettingsExpansionPanel extends React.Component {
                                                 />
                                             </Grid>
 
+
                                         </Grid>
                                     </Box>
                                 </ExpansionPanelDetails>
