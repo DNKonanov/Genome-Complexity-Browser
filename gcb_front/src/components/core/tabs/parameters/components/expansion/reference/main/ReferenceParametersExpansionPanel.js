@@ -34,7 +34,7 @@ import Button from "@material-ui/core/Button";
 import removeAllTips from "../../../../../../../../sctipts/helper/functions/removeAllTips";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { Link,} from 'react-scroll';
+import {Link,} from 'react-scroll';
 import {setIs_open_drawer} from "../../../../../../../../redux/actions/layout/actions";
 
 const mapStateToProps = state => ({
@@ -381,59 +381,51 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                         <Divider className={classes.divider}/>
                                         {/*BUTTONS*/}
                                         <Grid container justify="flex-start" spacing={3}>
-                                            <Grid item xs={6}>
-                                                <Button
-                                                    fullWidth
-                                                    color='primary'
-                                                    variant='outlined'
-                                                    onClick={(e) => {
-                                                        this.checkOGs(e)
-                                                    }}
-                                                    disabled={this.props.disabled_select_reference}
-                                                >
-                                                    Update genes
-                                                </Button>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <Button
-                                                    fullWidth
-                                                    color='primary'
-                                                    variant='outlined'
-                                                    onClick={(e) => {
-                                                        this.checkCoord(e)
-                                                    }}
-                                                    disabled={this.props.disabled_select_reference}
-                                                >
-                                                    Update coordinates
-                                                </Button>
-                                            </Grid>
+                                            {/*    <Grid item xs={6}>*/}
+                                            {/*        <Button*/}
+                                            {/*            fullWidth*/}
+                                            {/*            color='primary'*/}
+                                            {/*            variant='outlined'*/}
+                                            {/*            onClick={(e) => {*/}
+                                            {/*                this.checkOGs(e)*/}
+                                            {/*            }}*/}
+                                            {/*            disabled={this.props.disabled_select_reference}*/}
+                                            {/*        >*/}
+                                            {/*            Update genes*/}
+                                            {/*        </Button>*/}
+                                            {/*    </Grid>*/}
+                                            {/*    <Grid item xs={6}>*/}
+                                            {/*        <Button*/}
+                                            {/*            fullWidth*/}
+                                            {/*            color='primary'*/}
+                                            {/*            variant='outlined'*/}
+                                            {/*            onClick={(e) => {*/}
+                                            {/*                this.checkCoord(e)*/}
+                                            {/*            }}*/}
+                                            {/*            disabled={this.props.disabled_select_reference}*/}
+                                            {/*        >*/}
+                                            {/*            Update coordinates*/}
+                                            {/*        </Button>*/}
+                                            {/*    </Grid>*/}
 
                                             <Grid item xs={12}>
                                                 <a href="#GraphShowOnClick"
                                                    style={{
-                                                       color:'white',
+                                                       color: 'white',
                                                        textDecoration: 'none',
                                                    }}
                                                 >
-                                                <Button size="large"
-                                                        variant="contained"
-                                                        color="secondary"
-                                                        onClick={this.handleDraw}
-                                                        fullWidth
-                                                >
-                                                    {/*<Link  to="GraphShowOnClick"*/}
-                                                    {/*       spy={true}*/}
-                                                    {/*       smooth={true}*/}
-                                                    {/*       duration={500}*/}
-                                                    {/*>*/}
-                                                    {/*    DRAW GRAPH*/}
-                                                    {/*</Link>*/}
-
+                                                    <Button size="large"
+                                                            variant="contained"
+                                                            color="secondary"
+                                                            onClick={this.handleDraw}
+                                                            fullWidth
+                                                            disabled={this.props.disabled_select_reference}
+                                                    >
                                                         DRAW GRAPH
-                                                </Button>
-                                            </a>
-
-                                        </Grid>
+                                                    </Button>
+                                                </a>
+                                            </Grid>
                                         </Grid>
                                     </Box>
                                 </ExpansionPanelDetails>
@@ -509,6 +501,9 @@ class ReferenceParametersExpansionPanel extends React.Component {
     };
 
     handleDraw = () => {
+        this.checkOGs();
+        this.checkCoord();
+
         document.getElementById('graphButtonDraw').click();
         this.props.setIs_open_drawer(!this.props.is_open_drawer);
     };
