@@ -81,8 +81,8 @@ class Search extends React.Component {
     };
 
     handleChange = (event, newValue) => {
-        event.preventDefault();
-        this.setState({search_query_value: newValue[0]})
+        console.log(newValue);
+        this.setState({search_query_value: newValue})
     };
 
     render() {
@@ -168,6 +168,7 @@ class Search extends React.Component {
                                                                 <TableCell>OG</TableCell>
                                                                 <TableCell>Gene description</TableCell>
                                                                 <TableCell>Position</TableCell>
+                                                                <TableCell>Jump to</TableCell>
                                                                 <TableCell>Contig</TableCell>
                                                             </TableRow>
                                                         </TableHead>
@@ -179,6 +180,7 @@ class Search extends React.Component {
                                                                         <TableRow key={result[0]}>
                                                                             <TableCell>{result[0]}</TableCell>
                                                                             <TableCell>{result[1]}</TableCell>
+                                                                            <TableCell>{result[2]}</TableCell>
                                                                             <TableCell>
 
                                                                                 <button
