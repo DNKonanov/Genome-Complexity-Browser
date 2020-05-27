@@ -36,6 +36,7 @@ import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {Link,} from 'react-scroll';
 import {setIs_open_drawer} from "../../../../../../../../redux/actions/layout/actions";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const mapStateToProps = state => ({
     organisms: state.reference.organisms,
@@ -78,6 +79,8 @@ const mapStateToProps = state => ({
     disabled_select_reference: state.components.select.disabled_select_reference,
 
     is_open_drawer: state.layout.leftMenu.is_open_drawer,
+
+    loading: state.container.loading,
 
 });
 const actionCreators = {
@@ -415,12 +418,18 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                        textDecoration: 'none',
                                                    }}
                                                 >
+                                                    <div style={{
+                                                        display: this.props.loading ? '':'none'
+                                                    }}>
+                                                        <LinearProgress />
+                                                    </div>
                                                     <Button size="large"
                                                             variant="contained"
                                                             color="secondary"
                                                             onClick={this.handleDraw}
                                                             fullWidth
-                                                            disabled={this.props.disabled_select_reference}
+                                                            disabled={this.props.disabled_select_reference === true &&
+                                                            this.props.loading === false ? true: this.props.loading}
                                                     >
                                                         DRAW GRAPH
                                                     </Button>
@@ -505,7 +514,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
         this.checkCoord();
 
         document.getElementById('graphButtonDraw').click();
-        this.props.setIs_open_drawer(!this.props.is_open_drawer);
+        // this.props.setIs_open_drawer(!this.props.is_open_drawer);
     };
 }
 

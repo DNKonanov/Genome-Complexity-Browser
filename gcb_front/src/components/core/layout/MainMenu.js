@@ -11,6 +11,7 @@ import GraphContainer from "../../graph/GraphConatiner";
 import SettingsIcon from "@material-ui/icons/Settings";
 import {setIs_open_drawer} from "../../../redux/actions/layout/actions";
 import Fab from "@material-ui/core/Fab";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const mapStateToProps = state => ({
     is_open_drawer: state.layout.leftMenu.is_open_drawer,

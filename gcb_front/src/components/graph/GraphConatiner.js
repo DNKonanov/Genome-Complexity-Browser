@@ -21,7 +21,9 @@ const mapStateToProps = state => ({
     depth: state.container.depth,
     freq_min: state.container.freq_min,
     layout: state.container.layout,
+
     loading: state.container.loading,
+
     step: state.container.step,
     hide_edges: state.container.hide_edges,
 });
@@ -111,8 +113,7 @@ class GraphContainer extends Component {
 
     // рисует. Плюс анимация загрузки
     handleGraphDraw = () => {
-
-        console.log('handleGraphDraw');
+        this.props.setContainerGraph(LOADING, true);
 
         if (this.checkOG() === true)
             return;
@@ -120,36 +121,31 @@ class GraphContainer extends Component {
         let params = this.getGraphParams();
 
         this.props.fetchGraph(params);
-        // this.props.setContainerGraph(LOADING, true);
+
     };
 
 
     // заканчивает крутить анимацию по завершении обновления компонента
     componentDidUpdate(prevProps, prevState) {
         removeAllTips();
-        // if (this.props.graph.result === 'SUCCESS' && this.props.loading === true) {
-        if (this.props.graph.result === 'SUCCESS') {
+        if (this.props.graph.result === 'SUCCESS' && this.props.loading === true) {
+        // if (this.props.graph.result === 'SUCCESS') {
             if (JSON.stringify(this.props.graph.params) === JSON.stringify(this.getGraphParams())) {
-                this.props.setContainerGraph(LOADING, false);
+                // this.props.setContainerGraph(LOADING, false);
             }
         }
     }
 
     render() {
-        let show_load;
-        if (this.props.loading) {
-            show_load =
-                <CircularProgress style={{margin: 'auto'}} size={40}/>
-        } else {
-            show_load = <CircularProgress style={{margin: 'auto'}} variant='static' size={40}/>
-        }
-
         let what_to_show = null;
-        let notLoaded = () => (<div style={{display: 'flex', height: 300, width: '100%'}}>
-            <Typography variant="h4" style={{margin: 'auto', textAlign: 'center'}}>
-                Please, select parameters and click DRAW button
-            </Typography>
-        </div>);
+        let notLoaded = () => (
+            <div style={{display: 'flex', height: 300, width: '100%'}}>
+                <Typography variant="h4" style={{margin: 'auto', textAlign: 'center'}}>
+                    Please, select parameters and click DRAW button
+                </Typography>
+            </div>
+
+        );
 
         let cytoscapeDagreGraph = () => (
             < CytoscapeDagreGraph data={this.props.graph.data}
@@ -172,19 +168,15 @@ class GraphContainer extends Component {
                                 onClick={this.handleGraphDraw}
                                 style={{
                                     margin: 12,
-                                    display:'none'
+                                    display: 'none'
                                 }}
                         >
                             Draw
                         </Button>
                     </Grid>
 
-                    <Grid item xs={1}>
-                        {show_load}
-                    </Grid>
-
                     <Grid item xs={12}>
-                        {this.props.graph.result === 'NOT LOADED' ? notLoaded(): cytoscapeDagreGraph()}
+                        {this.props.graph.result === 'NOT LOADED' ? notLoaded() : cytoscapeDagreGraph()}
                     </Grid>
 
                 </Grid>
