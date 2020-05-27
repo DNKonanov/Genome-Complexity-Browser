@@ -88,11 +88,12 @@ const actionCreators = {
     fetchComplexity: fetchComplexity,
     putSelectedRef: putSelectedRef,
     //requisite
-    setRequisite: setRequisite,
+    setRequisite: setRequisite, // main
+
     setOgStartOgEnd: setOgStartOgEnd,
     setCoordStartCoordEnd: setCoordStartCoordEnd,
     setStammGenomeName: setStammGenomeName,
-
+    // components
     setIs_open_drawer: setIs_open_drawer,
 };
 

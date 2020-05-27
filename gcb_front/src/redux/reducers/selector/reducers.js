@@ -23,6 +23,11 @@ import {
     SHOW_HOTSPOTS,
     COEF, SET_COORD_ON_CLICK,
 
+    PREVORGSEARCH,
+    PREVSTAMMSEARCH,
+    PREVPARSSEARCH,
+    SET_VALUE_FOR_SEARCH
+
 } from "../../constants/selector/constants";
 
 const initiateState = {
@@ -53,7 +58,11 @@ const initiateState = {
     search_results: [],
     // 23.05.2020
     show_hotspots: true,
-    coef: 1.5
+    coef: 1.5,
+
+    prevOrgSearch: '',
+    prevStammSearch: '',
+    prevParsSearch: false
 };
 
 function complexityProfileSelector(state = initiateState, action) {
@@ -192,7 +201,28 @@ function complexityProfileSelector(state = initiateState, action) {
                 coord_end: action.payload.coord_end,
 
             };
-
+        case PREVORGSEARCH:
+            return {
+                ...state,
+                prevOrgSearch: action.payload.prevOrgSearch
+            };
+        case PREVSTAMMSEARCH:
+            return {
+                ...state,
+                prevStammSearch: action.payload.prevStammSearch
+            };
+        case PREVPARSSEARCH:
+            return {
+                ...state,
+                prevParsSearch: action.payload.prevParsSearch
+            };
+        case SET_VALUE_FOR_SEARCH:
+            return {
+              ...state,
+                prevOrgSearch: action.payload.prevOrgSearch,
+                prevStammSearch: action.payload.prevStammSearch,
+                prevParsSearch: action.payload.prevParsSearch
+            };
         default:
             return state;
     }

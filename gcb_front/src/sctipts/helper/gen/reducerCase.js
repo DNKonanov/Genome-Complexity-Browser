@@ -1,6 +1,7 @@
 const initiateState = {
-    show_hotspots: true,
-    coef: 1.5
+    prevOrgSearch: '',
+    prevStammSearch: '',
+    prevParsSearch: false
 };
 
 console.log('======================CONSTANTS==============================');

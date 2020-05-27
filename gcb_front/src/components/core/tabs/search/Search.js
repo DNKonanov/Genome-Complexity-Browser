@@ -22,8 +22,15 @@ import TableContainer from "@material-ui/core/TableContainer";
 import {withStyles} from "@material-ui/core/es";
 import Divider from "@material-ui/core/Divider";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {loadGenName, setCoordStartCoordEnd} from "../../../../redux/actions/selector/actions";
+import {
+    loadGenName,
+    setCoordStartCoordEnd,
+    setRequisite,
+    setValueForSearch
+} from "../../../../redux/actions/selector/actions";
 import {connect} from 'react-redux';
+import {SEARCH_RESULTS} from "../../../../redux/constants/selector/constants";
+import Paper from "@material-ui/core/Paper";
 
 const mapStateToProps = state => ({
     org: state.requisite.org,
@@ -32,11 +39,19 @@ const mapStateToProps = state => ({
 
     search_query: state.requisite.search_query,
     search_results: state.requisite.search_results,
+
+    prevOrgSearch: state.requisite.prevOrgSearch,
+    prevStammSearch: state.requisite.prevStammSearch,
+    prevParsSearch: state.requisite.prevParsSearch,
+
 });
 
 const actionsCreator = {
     loadGenName: loadGenName,
-    setCoordStartCoordEnd:setCoordStartCoordEnd,
+    setCoordStartCoordEnd: setCoordStartCoordEnd,
+    setRequisite: setRequisite,
+
+    setValueForSearch: setValueForSearch,
 };
 
 class Search extends React.Component {
@@ -49,12 +64,34 @@ class Search extends React.Component {
     }
 
     componentDidMount() {
-            this.props.loadGenName(
-                this.props.org,
-                this.props.stamm,
-                this.props.pars,
-            );
+        if (this.props.search_query.length === 0) {
+            this.loadGenName();
+            this.setValueForSearch();
+        } else if (
+            this.props.org !== this.props.prevOrgSearch ||
+            this.props.stamm !== this.props.prevStammSearch ||
+            this.props.pars !== this.props.prevParsSearch
+        ) {
+            this.loadGenName();
+            this.setValueForSearch();
+        }
     }
+
+    loadGenName = () => {
+        this.props.loadGenName(
+            this.props.org,
+            this.props.stamm,
+            this.props.pars,
+        );
+    };
+
+    setValueForSearch = () => {
+        this.props.setValueForSearch(
+            this.props.org,
+            this.props.stamm,
+            this.props.pars,
+        )
+    };
 
     search = (e) => {
         let url = SERVER_URL + SERVER_PORT + '/search/org/'
@@ -66,7 +103,7 @@ class Search extends React.Component {
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                this.setState({search_results: data})
+                this.props.setRequisite(SEARCH_RESULTS, data);
             })
             .catch(error => console.log('error'));
 
@@ -74,10 +111,7 @@ class Search extends React.Component {
     };
 
     clearSearchResults = (e) => {
-        this.setState({
-                search_results: []
-            }
-        )
+        this.props.setRequisite(SEARCH_RESULTS, []);
     };
 
     handleChange = (event, newValue) => {
@@ -91,7 +125,7 @@ class Search extends React.Component {
             <div>
                 <Grid container spacing={3} justify="center">
                     <Grid item xs={12}>
-                        <Container fixed>
+                        <Container >
                             <Box>
                                 <Card className={this.props.cardInDrawer}>
                                     <CardContent>
@@ -106,28 +140,28 @@ class Search extends React.Component {
                                                         value={this.state.search_query_value}
                                                         onChange={this.handleChange}
 
-                                                        inputValue={this.state.search_query_value}
-                                                        onInputChange={this.handleChange}
+                                            inputValue={this.state.search_query_value}
+                                            onInputChange={this.handleChange}
 
-                                                        renderInput={(params) => (
-                                                            <TextField {...params}
-                                                                       label="Search"
-                                                                       variant="outlined"
-                                                                       fullWidth
-                                                                       name='search_query'
-                                                            />)
-                                                        }
-                                                    />
-                                                </Grid>
+                                            renderInput={(params) => (
+                                                <TextField {...params}
+                                                           label="Search"
+                                                           variant="outlined"
+                                                           fullWidth
+                                                           name='search_query'
+                                                />)
+                                            }
+                                        />
+                                    </Grid>
 
-                                                <Grid item xs={1}>
-                                                    <IconButton
-                                                        type="submit"
-                                                        onClick={this.search}
-                                                    >
-                                                        <SearchIcon/>
-                                                    </IconButton>
-                                                </Grid>
+                                    <Grid item xs={1}>
+                                        <IconButton
+                                            type="submit"
+                                            onClick={this.search}
+                                        >
+                                            <SearchIcon/>
+                                        </IconButton>
+                                    </Grid>
 
                                                 <Grid item xs={1}>
                                                     <IconButton
@@ -146,72 +180,65 @@ class Search extends React.Component {
                 </Grid>
 
                 <Divider className={classes.divider}
-                         style={this.state.search_results.length === 0 ? {display: 'none'} : {display: ''}}/>
+                         style={this.props.search_results.length === 0 ? {display: 'none'} : {display: ''}}/>
 
-                <Grid container spacing={3}
-                    // style={this.state.search_results.length === 0 ? {display: 'none'} : {display: ''}}
-                >
+                <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <Container fixed>
+                        <Container
+                            // fixed
+                            maxWidth="xl"
+                        >
+
                             <ExpansionPanel>
                                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                                     <Typography>RESULT</Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>
-                                    <Box>
-                                        <Card>
-                                            <CardContent>
-                                                <TableContainer>
-                                                    <Table className={classes.table}>
-                                                        <TableHead>
-                                                            <TableRow>
-                                                                <TableCell>OG</TableCell>
-                                                                <TableCell>Gene description</TableCell>
-                                                                <TableCell>Position</TableCell>
-                                                                <TableCell>Jump to</TableCell>
-                                                                <TableCell>Contig</TableCell>
+                                    <TableContainer component={Paper}>
+                                        <Table className={classes.table}
+                                               size="small"
+                                               aria-label="a dense table"
+                                        >
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>OG</TableCell>
+                                                    <TableCell>Gene description</TableCell>
+                                                    <TableCell>Position</TableCell>
+                                                    <TableCell>Jump to</TableCell>
+                                                    <TableCell>Contig</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+
+                                            <TableBody>
+                                                {this.props.search_results.map(
+                                                    result => {
+                                                        return (
+                                                            <TableRow key={result[0]}>
+                                                                <TableCell>{result[0]}</TableCell>
+                                                                <TableCell>{result[1]}</TableCell>
+                                                                <TableCell>{result[2]}</TableCell>
+                                                                <TableCell>
+
+                                                                    <button
+                                                                        value={result[2]}
+                                                                        onClick={(e) => {
+                                                                            this.props.setCoordStartCoordEnd(
+                                                                                e.target.value,
+                                                                                e.target.value
+                                                                            );
+                                                                        }}
+                                                                    >
+                                                                        {result[2]}
+                                                                    </button>
+                                                                </TableCell>
+                                                                <TableCell>{result[3]}</TableCell>
                                                             </TableRow>
-                                                        </TableHead>
-
-                                                        <TableBody>
-                                                            {this.state.search_results.map(
-                                                                result => {
-                                                                    return (
-                                                                        <TableRow key={result[0]}>
-                                                                            <TableCell>{result[0]}</TableCell>
-                                                                            <TableCell>{result[1]}</TableCell>
-                                                                            <TableCell>{result[2]}</TableCell>
-                                                                            <TableCell>
-
-                                                                                <button
-                                                                                    value={result[2]}
-                                                                                    onClick={(e) => {
-
-                                                                                        this.props.setCoordStartCoordEnd(
-                                                                                            e.target.value,
-                                                                                            e.target.value
-                                                                                        );
-                                                                                        // this.setState({
-                                                                                        //     coord_start: e.target.value,
-                                                                                        //     coord_end: e.target.value
-                                                                                        // })
-                                                                                    }}
-                                                                                >
-                                                                                    {result[2]}
-                                                                                </button>
-
-                                                                            </TableCell>
-                                                                            <TableCell>{result[3]}</TableCell>
-                                                                        </TableRow>
-                                                                    )
-                                                                }
-                                                            )}
-                                                        </TableBody>
-                                                    </Table>
-                                                </TableContainer>
-                                            </CardContent>
-                                        </Card>
-                                    </Box>
+                                                        )
+                                                    }
+                                                )}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
                         </Container>
@@ -224,7 +251,7 @@ class Search extends React.Component {
 
 const useStyle = theme => ({
     table: {
-        minWidth: 450,
+        minWidth: 650,
     },
     divider: {
         margin: theme.spacing(2, 0),
