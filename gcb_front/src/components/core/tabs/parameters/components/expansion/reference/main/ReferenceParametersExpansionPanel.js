@@ -514,7 +514,6 @@ class ReferenceParametersExpansionPanel extends React.Component {
         this.checkCoord();
 
         document.getElementById('graphButtonDraw').click();
-        // this.props.setIs_open_drawer(!this.props.is_open_drawer);
     };
 }
 

@@ -13,7 +13,7 @@ import SelectParameters from "../tabs/parameters/SelectParameters";
 import Search from "../tabs/search/Search";
 import FilePlot from "../tabs/file/FilePlot";
 import About from "../tabs/about/About";
-
+import a11yProps from "../../../sctipts/helper/functions/a11yProps";
 const mapStateToProps = state => ({
     is_open_drawer: state.layout.leftMenu.is_open_drawer,
     disabled_select_reference: state.components.select.disabled_select_reference
@@ -23,12 +23,7 @@ const actionsCreator = {
     setIs_open_drawer: setIs_open_drawer,
 };
 
-function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
+
 
 class LeftMenu extends React.Component {
     constructor(props) {

@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import withStyles from "@material-ui/core/styles/withStyles";
-import {useStyles} from "../../style/SelectParametersStyle";
+import {useStyles} from "../../../../parameters/style/SelectParametersStyle";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
@@ -17,7 +17,7 @@ import {
     setMaxUserValue,
     setUserCoordinatesStr, setEnabled_Show_Delete_User_Coordinates
 }
-    from "../../../../../../redux/actions/file/readFile";
+    from "../../../../../../../redux/actions/file/readFile";
 
 const mapStateToProps = state => ({
     userCoordinatesStr: state.file.userCoordinatesStr,

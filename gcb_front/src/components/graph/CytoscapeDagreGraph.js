@@ -343,28 +343,34 @@ class CytoscapeDagreGraph extends Component {
                 </div>
 
                 <Button
-                    style={{margin: 12}}
+                    style={{
+                        margin: 12,
+                        display:'none',
+                    }}
                     variant="contained"
                     color="primary"
                     component="label"
                     onClick={this.downloadJson}
+                    id={'Download_json_graph'}
                 >Download json graph
                 </Button>
 
                 <Button
-                    style={{margin: 12}}
+                    style={{margin: 12,display:'none',}}
                     variant="contained"
                     color="primary"
                     component="label"
                     onClick={this.downloadjpg}
+                    id={'Download_JPG'}
                 >Download JPG
                 </Button>
 
                 <Button
-                    style={{margin: 6}}
+                    style={{margin: 6,display:'none',}}
                     variant="contained"
                     color="primary"
                     component="label"
+                    id={'Upload_colors'}
                 >
                     Upload colors
                     <input

@@ -125,7 +125,8 @@ class Search extends React.Component {
             <div>
                 <Grid container spacing={3} justify="center">
                     <Grid item xs={12}>
-                        <Container >
+                        <Container
+                        >
                             <Box>
                                 <Card className={this.props.cardInDrawer}>
                                     <CardContent>
