@@ -15,9 +15,6 @@ class SelectParameters extends React.Component {
             <div>
                 <ReferenceParametersExpansionPanel/>
                 <OtherSettingsExpansionPanel/>
-
-                {/*<ComplexityPlotButtonFile/>*/}
-                {/*<ComplexityPlotButtonUserCoordinates/>*/}
             </div>
         );
     }

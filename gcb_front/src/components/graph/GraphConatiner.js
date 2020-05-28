@@ -10,6 +10,7 @@ import removeAllTips from "../../sctipts/helper/functions/removeAllTips";
 import {LOADING} from "../../redux/constants/graph/container/constants";
 import Typography from "@material-ui/core/Typography";
 import CytoscapeDagreGraph from "./CytoscapeDagreGraph";
+import RefTextFields from "../core/tabs/parameters/components/expansion/reference/components/RefTextFields";
 
 const mapStateToProps = state => ({
     graph: state.graph.graph,
@@ -159,8 +160,9 @@ class GraphContainer extends Component {
                       direction="row"
                       justify="flex-start"
                       alignItems="center"
+                      spacing={1}
                 >
-                    <Grid item xs={11}>
+                    <Grid item xs={2}>
                         <Button variant="contained"
                                 id="graphButtonDraw"
                                 size="large"
@@ -173,6 +175,39 @@ class GraphContainer extends Component {
                         >
                             Draw
                         </Button>
+
+                        <RefTextFields
+                            labelTF={'Window'}
+                            nameTF={'window'}
+                            valueTF={this.props.window}
+                            typeTF={"number"}
+                        />
+                    </Grid>
+                    <Grid item xs={2}>
+                        <RefTextFields
+                            labelTF={'Depth'}
+                            nameTF={'depth'}
+                            valueTF={this.props.depth}
+                            typeTF={"number"}
+                        />
+                    </Grid>
+
+                    <Grid item xs={2}>
+                        <RefTextFields
+                            labelTF={'Tails OG'}
+                            nameTF={'tails'}
+                            valueTF={this.props.tails}
+                            typeTF={"number"}
+                        />
+                    </Grid>
+
+                    <Grid item xs={2}>
+                        <RefTextFields
+                            labelTF={'Minimal edge weight'}
+                            nameTF={'freq_min'}
+                            valueTF={this.props.freq_min}
+                            typeTF={"number"}
+                        />
                     </Grid>
 
                     <Grid item xs={12}>
