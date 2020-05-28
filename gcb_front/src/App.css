@@ -47,6 +47,10 @@
   margin-left: 20px;
 }
 
+.tippy-tooltip.left-align-theme {
+  text-align: left;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

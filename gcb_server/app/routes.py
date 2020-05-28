@@ -130,13 +130,33 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
             og_index = -1
         
         if (og_index != -1):
-            node['data']['description'] = descripton_list[og_index] + ': ' + str(abs(length_list[og_index]))
+            descripton = '<strong>{gene_description}</strong><br>'.format(
+                gene_description=descripton_list[og_index].replace('_', ' ')
+            )
+            descripton += 'Pfam: {pfam}<br>'.format(pfam='PF002301')
+            descripton += 'COG: {cog}'.format(cog='U')
+
+            node['data']['description'] = descripton
         else:
             node['data']['description'] = 'null'
         if node['data']['id'] in ref:
             try:
                 coord_index = coordinates[0].index(node['data']['id'])
-                node['data']['description'] = coordinates[2][coord_index] + ': ' + str(abs(length_list[og_index])) + ' (' + str(int(coordinates[1][coord_index])) + ')'
+
+                descripton = '<strong>{gene_description}</strong><br>'.format(
+                    gene_description=coordinates[2][coord_index].replace('_', ' ')
+                )
+                descripton += 'Located: {start}-{end} ({strand} strand)<br>'.format(
+                    start=coordinates[1][coord_index][0],
+                    end=coordinates[1][coord_index][1],
+                    strand='+'
+                )
+                descripton += 'Pfam: {pfam}<br>'.format(pfam='PF002301')
+                descripton += 'COG: {cog}'.format(cog='U')
+
+
+                node['data']['description'] = descripton
+
             except ValueError:
                 pass
             if (node ['data']['color'] != '#ff0000' and node['data']['color'] != 'pink'):

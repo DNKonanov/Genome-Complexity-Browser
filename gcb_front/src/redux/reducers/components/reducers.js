@@ -3,7 +3,7 @@ import {select} from "material-components-web/index";
 
 const initiateState = {
     select: {
-        disabled_select_reference: true
+        disabled_select_reference: false
     }
 };
 function componentsProps(state = initiateState, action) {

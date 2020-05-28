@@ -64,10 +64,10 @@ def get_coordinates_from_db(data_path, organism, reference, contig, pars):
     c = connect.cursor()
 
     contig_key = [row for row in c.execute('SELECT contig_id FROM contigs_table WHERE contig_code = "' + contig + '"')][0][0]
-    full_list = [(value[0], float(value[1]), value[2]) for value in c.execute('SELECT description,(start_coord+end_coord)/2,node_name FROM nodes_table WHERE contig_id = ' + str(contig_key))]
+    full_list = [(value[0], value[1], value[2], value[3]) for value in c.execute('SELECT description, start_coord, end_coord, node_name FROM nodes_table WHERE contig_id = ' + str(contig_key))]
 
-    og_list = [i[2] for i in full_list]
-    coord_list = [i[1] for i in full_list]
+    og_list = [i[3] for i in full_list]
+    coord_list = [(i[1], i[2]) for i in full_list]
     description_list = [i[0] for i in full_list]
 
     connect.close()

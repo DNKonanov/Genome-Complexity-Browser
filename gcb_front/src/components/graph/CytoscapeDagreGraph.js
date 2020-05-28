@@ -117,6 +117,7 @@ class CytoscapeDagreGraph extends Component {
                     return div;
                 })(),
                 trigger: 'manual',
+                theme: 'left-align',
                 arrow: true,
                 placement: 'bottom',
                 hideOnClick: false,
@@ -218,7 +219,11 @@ class CytoscapeDagreGraph extends Component {
                     ele.unselect()
                 }
                 if (ele.selected()) {
-                    if (ele.data().description !== undefined) nodes_list = nodes_list + ele.data().id + '\t' + ele.data().description.split(':')[0] + '\n'
+                    if (ele.data().description !== undefined) {
+                        
+                        let text = ele.data().description.split('<br>')[0].replace('</strong>', '').replace('<strong>', '');
+                        nodes_list = nodes_list + ele.data().id + '\t' + text + '\n'
+                    }
                 }
             });
 

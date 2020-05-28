@@ -32,6 +32,7 @@ class ComplexityPlot extends React.Component {
         const data = this.props.complexity;
         return (
             <div>
+                
                         <Plot
                             data={[
                                 {
