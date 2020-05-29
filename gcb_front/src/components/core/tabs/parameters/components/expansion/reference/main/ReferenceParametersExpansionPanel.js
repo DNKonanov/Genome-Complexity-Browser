@@ -34,9 +34,9 @@ import Button from "@material-ui/core/Button";
 import removeAllTips from "../../../../../../../../sctipts/helper/functions/removeAllTips";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import {Link,} from 'react-scroll';
 import {setIs_open_drawer} from "../../../../../../../../redux/actions/layout/actions";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const mapStateToProps = state => ({
     organisms: state.reference.organisms,
@@ -339,12 +339,15 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                             <Grid item xs={6}>
                                                 <FormControlLabel
                                                     disabled={this.props.disabled_select_reference}
-                                                    control={<Switch name='show_hotspots'
-                                                                     color="primary"
-                                                                     value={this.props.show_hotspots}
-                                                                     checked={this.props.show_hotspots}
-                                                                     onChange={this.handleChange}
-                                                    />}
+                                                    control={
+                                                        <Tooltip title={'helper'}>
+                                                            <Switch name='show_hotspots'
+                                                                    color="primary"
+                                                                    value={this.props.show_hotspots}
+                                                                    checked={this.props.show_hotspots}
+                                                                    onChange={this.handleChange}
+                                                            />
+                                                        </Tooltip>}
                                                     label="Show hotspots"
                                                 />
                                             </Grid>
@@ -408,20 +411,22 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                    }}
                                                 >
                                                     <div style={{
-                                                        display: this.props.loading ? '':'none'
+                                                        display: this.props.loading ? '' : 'none'
                                                     }}>
-                                                        <LinearProgress />
+                                                        <LinearProgress/>
                                                     </div>
-                                                    <Button size="large"
-                                                            variant="contained"
-                                                            color="secondary"
-                                                            onClick={this.handleDraw}
-                                                            fullWidth
-                                                            disabled={this.props.disabled_select_reference === true &&
-                                                            this.props.loading === false ? true: this.props.loading}
-                                                    >
-                                                        DRAW GRAPH
-                                                    </Button>
+                                                    <Tooltip title={'helper'}>
+                                                        <Button size="large"
+                                                                variant="contained"
+                                                                color="secondary"
+                                                                onClick={this.handleDraw}
+                                                                fullWidth
+                                                                disabled={this.props.disabled_select_reference === true &&
+                                                                this.props.loading === false ? true : this.props.loading}
+                                                        >
+                                                            DRAW GRAPH
+                                                        </Button>
+                                                    </Tooltip>
                                                 </a>
                                             </Grid>
                                         </Grid>

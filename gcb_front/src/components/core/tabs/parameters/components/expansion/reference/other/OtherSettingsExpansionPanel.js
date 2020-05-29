@@ -10,7 +10,6 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Typography from "@material-ui/core/Typography";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Box from "@material-ui/core/Box";
-import Divider from "@material-ui/core/Divider";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -20,6 +19,7 @@ import Switch from "@material-ui/core/Switch";
 import removeAllTips from "../../../../../../../../sctipts/helper/functions/removeAllTips";
 import RefTextFields from "../components/RefTextFields";
 import {setContainerGraph} from "../../../../../../../../redux/actions/graph/container/actions";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const mapStateToProps = state => ({
     organisms: state.reference.organisms,
@@ -62,7 +62,7 @@ class OtherSettingsExpansionPanel extends React.Component {
     handleLayout = event => {
         event.preventDefault();
         removeAllTips();
-        this.props.setContainerGraph(event.target.name.toUpperCase() ,event.target.value);
+        this.props.setContainerGraph(event.target.name.toUpperCase(), event.target.value);
     };
 
     render() {
@@ -96,34 +96,40 @@ class OtherSettingsExpansionPanel extends React.Component {
                                             <Grid item xs={6}>
                                                 <FormControl component="fieldset">
                                                     <FormLabel component="legend">Layouter</FormLabel>
-                                                    <RadioGroup
-                                                        name="layout"
-                                                        value={this.props.layout}
-                                                        onChange={this.handleLayout}
+                                                    <Tooltip title={'helper'}>
+                                                        <RadioGroup
+                                                            name="layout"
+                                                            value={this.props.layout}
+                                                            onChange={this.handleLayout}
 
-                                                        aria-label="layouter"
-                                                        style={{display: 'inline'}}
-                                                    >
-                                                        <FormControlLabel value="dagre"
-                                                                          control={<Radio/>}
-                                                                          label="Dagre"
-                                                        />
-                                                        <FormControlLabel value="graphviz"
-                                                                          control={<Radio/>}
-                                                                          label="Graphviz"
-                                                        />
-                                                    </RadioGroup>
+                                                            aria-label="layouter"
+                                                            style={{display: 'inline'}}
+                                                        >
+                                                            <FormControlLabel value="dagre"
+                                                                              control={<Radio/>}
+                                                                              label="Dagre"
+                                                            />
+                                                            <FormControlLabel value="graphviz"
+                                                                              control={<Radio/>}
+                                                                              label="Graphviz"
+                                                            />
+                                                        </RadioGroup>
+                                                    </Tooltip>
                                                 </FormControl>
                                             </Grid>
 
                                             <Grid item xs={6}>
                                                 <FormControlLabel
                                                     control={
-                                                        <Switch name='hide_edges'
+                                                        <Tooltip title={'helper'}>
+                                                            <Switch name='hide_edges'
                                                                 // value="checked"
-                                                                checked={this.props.hide_edges}
-                                                                color="primary"
-                                                                onChange={this.handleChange}/>}
+                                                                    checked={this.props.hide_edges}
+                                                                    color="primary"
+                                                                    onChange={this.handleChange}
+                                                            />
+                                                        </Tooltip>
+                                                    }
                                                     label="Hide reversed"
                                                 />
                                             </Grid>

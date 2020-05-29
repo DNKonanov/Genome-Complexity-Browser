@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import withStyles from "@material-ui/core/styles/withStyles";
 import {setRequisite} from "../../../../../../../../redux/actions/selector/actions";
 import TextField from "@material-ui/core/TextField";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const actionsCreator = {
     setRequisite: setRequisite,
@@ -18,6 +19,7 @@ class RefTextFields extends React.Component {
     render() {
         return (
             <div>
+                <Tooltip title={this.props.tooltipText}>
                 <TextField label={this.props.labelTF}
                            name={this.props.nameTF}
                            value={this.props.valueTF}
@@ -27,6 +29,7 @@ class RefTextFields extends React.Component {
                            error={this.props.errTF}
                            helperText={this.props.helperTextTF}
                 />
+                </Tooltip>
             </div>
         );
     }
@@ -37,6 +40,7 @@ RefTextFields.defaultProps = {
     disTF: false,
     errTF:false,
     helperTextTF:'',
+    tooltipText:'helper',
 
 };
 

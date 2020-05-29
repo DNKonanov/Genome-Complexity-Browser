@@ -11,7 +11,7 @@ import GraphContainer from "../../graph/GraphConatiner";
 import SettingsIcon from "@material-ui/icons/Settings";
 import {setIs_open_drawer} from "../../../redux/actions/layout/actions";
 import Fab from "@material-ui/core/Fab";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const mapStateToProps = state => ({
     is_open_drawer: state.layout.leftMenu.is_open_drawer,
@@ -66,13 +66,15 @@ class MainMenu extends React.Component {
                         <div style={{
                             marginTop: document.documentElement.clientHeight / 2 - this.state.headerOffsetHeight + this.state.scrollValue,
                         }}>
-                            <Fab color="primary"
-                                 aria-label="add"
-                                 size={'large'}
-                                 onClick={this.handleOpenCloseDrawer}
-                            >
-                                <SettingsIcon style={{fontSize: 30}}/>
-                            </Fab>
+                            <Tooltip title="helper" aria-label="add">
+                                <Fab color="primary"
+                                     aria-label="add"
+                                     size={'large'}
+                                     onClick={this.handleOpenCloseDrawer}
+                                >
+                                    <SettingsIcon style={{fontSize: 30}}/>
+                                </Fab>
+                            </Tooltip>
                         </div>
                     </Grid>
 
@@ -97,7 +99,7 @@ class MainMenu extends React.Component {
                                             {/*<Element name="GraphShowOnClick" className="element">*/}
 
                                             <Card style={{
-                                                minHeight:1309
+                                                minHeight: 1309
                                             }}>
                                                 <CardHeader title={'Graph'}/>
                                                 <CardContent>

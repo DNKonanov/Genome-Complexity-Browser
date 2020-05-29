@@ -11,6 +11,7 @@ import {
     setEnabled_Show_Delete_User_Coordinates,
     setUserCoordinatesStr
 } from "../../../../../../../redux/actions/file/readFile";
+import Tooltip from "@material-ui/core/Tooltip";
 
 
 const mapStateToProps = state => ({
@@ -76,37 +77,41 @@ class ComplexityPlotButtonFile extends React.Component {
                 <Container fixed className={classes.boxButtons}>
                     <Grid container spacing={1} justify="center">
                         <Grid item xs={6}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                component="label"
-                                fullWidth
-                                startIcon={<BackupRoundedIcon/>}
-                            >
-                                Load file
-                                <input
-                                    onChange={(e) => {
-                                        this.inputFileChanged(e)
-                                    }}
-                                    style={{display: 'none'}}
-                                    type="file"
-                                />
-                            </Button>
+                            <Tooltip title="helper" aria-label="add">
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    component="label"
+                                    fullWidth
+                                    startIcon={<BackupRoundedIcon/>}
+                                >
+                                    Load file
+                                    <input
+                                        onChange={(e) => {
+                                            this.inputFileChanged(e)
+                                        }}
+                                        style={{display: 'none'}}
+                                        type="file"
+                                    />
+                                </Button>
+                            </Tooltip>
                         </Grid>
 
                         <Grid item xs={6}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                component="label"
-                                fullWidth
-                                startIcon={<CloudDownloadRoundedIcon/>}
-                                onClick={(e) => {
-                                    this.downloadData(e)
-                                }}
-                            >
-                                Download data
-                            </Button>
+                            <Tooltip title="helper" aria-label="add">
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    component="label"
+                                    fullWidth
+                                    startIcon={<CloudDownloadRoundedIcon/>}
+                                    onClick={(e) => {
+                                        this.downloadData(e)
+                                    }}
+                                >
+                                    Download data
+                                </Button>
+                            </Tooltip>
                         </Grid>
                     </Grid>
                 </Container>

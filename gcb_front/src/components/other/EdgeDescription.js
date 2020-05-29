@@ -37,7 +37,6 @@ class EdgeDescription extends Component {
                                                 )
                                             })}
                                         </TableRow>
-
                                     )
                                 }
                             )}

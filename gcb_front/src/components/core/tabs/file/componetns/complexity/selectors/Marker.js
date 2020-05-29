@@ -24,6 +24,7 @@ class Marker extends React.Component {
             <div>
                 <Grid container spacing={1} justify="center">
                     <Grid item xs={12}>
+
                         <RefSelect
                             inputLabel={'Marker'}
                             selectNameId={'draw_type'}

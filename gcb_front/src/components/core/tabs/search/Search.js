@@ -189,7 +189,6 @@ class Search extends React.Component {
                             // fixed
                             maxWidth="xl"
                         >
-
                             <ExpansionPanel>
                                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                                     <Typography>RESULT</Typography>

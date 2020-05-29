@@ -9,20 +9,21 @@ import BackupRoundedIcon from "@material-ui/icons/BackupRounded";
 import CloudDownloadRoundedIcon from "@material-ui/icons/CloudDownloadRounded";
 import Container from "@material-ui/core/Container";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Tooltip from "@material-ui/core/Tooltip";
 
-class GraphJsonColors extends React.Component{
+class GraphJsonColors extends React.Component {
 
-    handleDownloadJSON = () =>{
+    handleDownloadJSON = () => {
         document.getElementById('Download_json_graph').click();
 
     };
 
-    handleDownloadJPG = () =>{
+    handleDownloadJPG = () => {
         document.getElementById('Download_JPG').click();
 
     };
 
-    handleUploadColors = () =>{
+    handleUploadColors = () => {
         document.getElementById('Upload_colors').click();
 
     };
@@ -38,33 +39,39 @@ class GraphJsonColors extends React.Component{
                             <Grid container
                                   spacing={3}
                                   justify="center"
-                                  // alignItems="stretch"
+                                // alignItems="stretch"
                             >
                                 <Grid item xs={6}>
                                     <ButtonGroup
-                                                 aria-label="outlined button group"
-                                                 orientation="vertical"
+                                        aria-label="outlined button group"
+                                        orientation="vertical"
                                     >
-                                        <Button
+                                        <Tooltip title="helper">
+                                            <Button
+                                                startIcon={<CloudDownloadRoundedIcon/>}
+                                                onClick={this.handleDownloadJSON}
+                                            >
+                                                DOWNLOAD JSON
+                                            </Button>
+                                        </Tooltip>
 
-                                            startIcon={<CloudDownloadRoundedIcon/>}
-                                            onClick={this.handleDownloadJSON}
-                                        >
-                                            DOWNLOAD JSON
-                                        </Button>
-                                        <Button
-                                            onClick={this.handleDownloadJPG}
-                                            startIcon={<CloudDownloadRoundedIcon/>}
-                                        >
-                                            DOWNLOAD JPG
-                                        </Button>
+                                        <Tooltip title="helper">
+                                            <Button
+                                                onClick={this.handleDownloadJPG}
+                                                startIcon={<CloudDownloadRoundedIcon/>}
+                                            >
+                                                DOWNLOAD JPG
+                                            </Button>
+                                        </Tooltip>
 
-                                        <Button
-                                            onClick={this.handleUploadColors}
-                                            startIcon={<BackupRoundedIcon/>}
-                                        >
-                                            UPLOAD COLORS
-                                        </Button>
+                                        <Tooltip title="helper">
+                                            <Button
+                                                onClick={this.handleUploadColors}
+                                                startIcon={<BackupRoundedIcon/>}
+                                            >
+                                                UPLOAD COLORS
+                                            </Button>
+                                        </Tooltip>
                                     </ButtonGroup>
                                 </Grid>
                             </Grid>

@@ -14,6 +14,7 @@ import {
     setUserCoordinatesStr,
     setUserValues
 } from "../../../../../../../redux/actions/file/readFile";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const mapStateToProps = state => ({
     userCoordinatesStr: state.file.userCoordinatesStr,
@@ -82,7 +83,7 @@ class ComplexityPlotButtonUserCoordinates extends React.Component {
                     {/*    <CardContent>*/}
                     <Grid container spacing={1} justify="center">
                         <Grid item xs={6}>
-
+                            <Tooltip title="helper" aria-label="add">
                             <Button
                                 variant="contained"
                                 color="primary"
@@ -94,9 +95,11 @@ class ComplexityPlotButtonUserCoordinates extends React.Component {
                             >
                                 Show coordinates
                             </Button>
+                            </Tooltip>
                         </Grid>
 
                         <Grid item xs={6}>
+                            <Tooltip title="helper" aria-label="add">
                             <Button
                                 variant="contained"
                                 color="primary"
@@ -108,6 +111,7 @@ class ComplexityPlotButtonUserCoordinates extends React.Component {
                             >
                                 Delete coordinates
                             </Button>
+                            </Tooltip>
                         </Grid>
                     </Grid>
                 </Container>

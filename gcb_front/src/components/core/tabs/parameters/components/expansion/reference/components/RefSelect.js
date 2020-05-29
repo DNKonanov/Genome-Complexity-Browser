@@ -9,21 +9,22 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import PropTypes from 'prop-types';
 import {setDisabled_select_reference} from "../../../../../../../../redux/actions/components/actions";
+import Tooltip from "@material-ui/core/Tooltip";
 
-const mapStateToProps = (state)=>({
+const mapStateToProps = (state) => ({
     disabled_select_reference: state.components.select.disabled_select_reference,
 });
 
 const actionsCreator = {
     setRequisite: setRequisite,
-    setDisabled_select_reference:setDisabled_select_reference,
+    setDisabled_select_reference: setDisabled_select_reference,
 };
 
 class RefSelect extends React.Component {
     handleChange = async (e) => {
         e.preventDefault();
-        if(e.target.name === 'org')
-            this.props.setDisabled_select_reference(false) ;
+        if (e.target.name === 'org')
+            this.props.setDisabled_select_reference(false);
 
         await this.props.setRequisite(e.target.name.toUpperCase(), e.target.value);
     };
@@ -39,21 +40,26 @@ class RefSelect extends React.Component {
                 >
                     <InputLabel id={this.props.selectNameId}>{this.props.inputLabel}</InputLabel>
 
-                    <Select id={this.props.selectNameId}
-                            name={this.props.selectNameId}
-                            value={this.props.selectValue}
-                            onChange={this.handleChange}
-                            autoWidth={false}
+                    <Tooltip
+                        title={this.props.tooltipText}
+                        aria-label="add"
                     >
-                        {
-                            this.props.selectOptions.map(opt => (
-                                <MenuItem key={opt}
-                                          value={opt}
-                                >{opt}</MenuItem>
-                            ))
-                        }
+                        <Select id={this.props.selectNameId}
+                                name={this.props.selectNameId}
+                                value={this.props.selectValue}
+                                onChange={this.handleChange}
+                                autoWidth={false}
+                        >
+                            {
+                                this.props.selectOptions.map(opt => (
+                                    <MenuItem key={opt}
+                                              value={opt}
+                                    >{opt}</MenuItem>
+                                ))
+                            }
 
-                    </Select>
+                        </Select>
+                    </Tooltip>
                 </FormControl>
             </div>
         );
@@ -63,7 +69,8 @@ class RefSelect extends React.Component {
 RefSelect.defaultProps = {
     selectOptions: [],
     disabledSelect: true,
-    focusedSelect: false
+    focusedSelect: false,
+    tooltipText:'helper'
 };
 
 RefSelect.propTypes = {
