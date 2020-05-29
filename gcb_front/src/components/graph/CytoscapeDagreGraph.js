@@ -346,7 +346,7 @@ class CytoscapeDagreGraph extends Component {
                          }}
                     />
                 </div>
-
+{/*НЕ УДАЛЯТЬ*/}
                 <Button
                     style={{
                         margin: 12,
@@ -359,7 +359,7 @@ class CytoscapeDagreGraph extends Component {
                     id={'Download_json_graph'}
                 >Download json graph
                 </Button>
-
+                {/*НЕ УДАЛЯТЬ*/}
                 <Button
                     style={{margin: 12,display:'none',}}
                     variant="contained"
@@ -369,7 +369,7 @@ class CytoscapeDagreGraph extends Component {
                     id={'Download_JPG'}
                 >Download JPG
                 </Button>
-
+                {/*НЕ УДАЛЯТЬ*/}
                 <Button
                     style={{margin: 6,display:'none',}}
                     variant="contained"

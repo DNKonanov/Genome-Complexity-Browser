@@ -4,9 +4,13 @@ import {connect} from 'react-redux';
 import withStyles from "@material-ui/core/styles/withStyles";
 import {setRequisite} from "../../../../../../../../redux/actions/selector/actions";
 
+const mapStateToProps = state =>({
+
+});
 const actionsCreator = {
     setRequisite: setRequisite,
 };
+
 
 class Class extends React.Component {
     render() {
@@ -19,5 +23,5 @@ class Class extends React.Component {
     }
 }
 
-const connectClass = connect(null, actionsCreator)(Class);
+const connectClass = connect(mapStateToProps, actionsCreator)(Class);
 export default withStyles(useStyles)(connectClass);

@@ -163,6 +163,7 @@ class GraphContainer extends Component {
                       spacing={1}
                 >
                     <Grid item xs={2}>
+                        {/*НЕ УДАЛЯТЬ!!!!*/}
                         <Button variant="contained"
                                 id="graphButtonDraw"
                                 size="large"
@@ -177,17 +178,20 @@ class GraphContainer extends Component {
                         </Button>
 
                         <RefTextFields
-                            labelTF={'Window'}
-                            nameTF={'window'}
-                            valueTF={this.props.window}
-                            typeTF={"number"}
-                        />
-                    </Grid>
-                    <Grid item xs={2}>
-                        <RefTextFields
                             labelTF={'Depth'}
                             nameTF={'depth'}
                             valueTF={this.props.depth}
+                            typeTF={"number"}
+                        />
+
+
+                    </Grid>
+
+                    <Grid item xs={2}>
+                        <RefTextFields
+                            labelTF={'Window'}
+                            nameTF={'window'}
+                            valueTF={this.props.window}
                             typeTF={"number"}
                         />
                     </Grid>

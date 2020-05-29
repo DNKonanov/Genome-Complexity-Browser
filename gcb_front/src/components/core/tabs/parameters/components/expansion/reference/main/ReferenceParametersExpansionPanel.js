@@ -303,17 +303,17 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                         <Divider className={classes.divider}/>
 
                                         <Grid container spacing={3} justify="flex-start">
-                                            <Grid item xs={6}>
-                                                <RefSelect
-                                                    inputLabel={'Method'}
-                                                    selectNameId={'method'}
-                                                    selectValue={this.props.method}
-                                                    selectOptions={this.props.methods}
-                                                    disabledSelect={this.props.disabled_select_reference}
-                                                />
-                                            </Grid>
+                                            {/*<Grid item xs={6}>*/}
+                                            {/*    <RefSelect*/}
+                                            {/*        inputLabel={'Method'}*/}
+                                            {/*        selectNameId={'method'}*/}
+                                            {/*        selectValue={this.props.method}*/}
+                                            {/*        selectOptions={this.props.methods}*/}
+                                            {/*        disabledSelect={this.props.disabled_select_reference}*/}
+                                            {/*    />*/}
+                                            {/*</Grid>*/}
 
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12}>
                                                 <RefSelect
                                                     inputLabel={'Window'}
                                                     selectNameId={'complexity_window'}
@@ -348,17 +348,6 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     label="Show hotspots"
                                                 />
                                             </Grid>
-
-                                            <Grid item xs={6}>
-                                                <RefSelect
-                                                    inputLabel={'Marker'}
-                                                    selectNameId={'draw_type'}
-                                                    selectValue={this.props.draw_type}
-                                                    selectOptions={this.props.draw_types}
-                                                    disabledSelect={this.props.disabled_select_reference}
-                                                />
-                                            </Grid>
-
                                         </Grid>
 
                                         {/*TEXT FIELDS*/}
