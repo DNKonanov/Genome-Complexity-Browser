@@ -74,8 +74,6 @@ class ComplexityPlotButtonFile extends React.Component {
         return (
             <div>
                 <Container fixed className={classes.boxButtons}>
-                    {/*<Card>*/}
-                    {/*    <CardContent>*/}
                     <Grid container spacing={1} justify="center">
                         <Grid item xs={6}>
                             <Button
@@ -111,8 +109,6 @@ class ComplexityPlotButtonFile extends React.Component {
                             </Button>
                         </Grid>
                     </Grid>
-                    {/*</CardContent>*/}
-                    {/*</Card>*/}
                 </Container>
             </div>
         );

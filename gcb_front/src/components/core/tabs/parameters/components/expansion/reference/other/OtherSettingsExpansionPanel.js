@@ -167,8 +167,6 @@ class OtherSettingsExpansionPanel extends React.Component {
                                                     typeTF={"number"}
                                                 />
                                             </Grid>
-
-
                                         </Grid>
 
                                         <Grid container spacing={3}>

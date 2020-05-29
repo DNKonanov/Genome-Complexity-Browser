@@ -182,6 +182,8 @@ class GraphContainer extends Component {
                             nameTF={'depth'}
                             valueTF={this.props.depth}
                             typeTF={"number"}
+                            errTF={this.props.depth < 2}
+                            helperTextTF={this.props.depth < 2 ? 'Greater than or equal to two':''}
                         />
 
 
@@ -193,6 +195,8 @@ class GraphContainer extends Component {
                             nameTF={'window'}
                             valueTF={this.props.window}
                             typeTF={"number"}
+                            errTF={this.props.window < 1}
+                            helperTextTF={this.props.window < 1 ? 'Greater than or equal to one':''}
                         />
                     </Grid>
 
@@ -202,6 +206,9 @@ class GraphContainer extends Component {
                             nameTF={'tails'}
                             valueTF={this.props.tails}
                             typeTF={"number"}
+                            errTF={this.props.tails < 0}
+                            helperTextTF={this.props.tails < 0 ? 'Greater than or equal to zero':''}
+
                         />
                     </Grid>
 
@@ -211,6 +218,8 @@ class GraphContainer extends Component {
                             nameTF={'freq_min'}
                             valueTF={this.props.freq_min}
                             typeTF={"number"}
+                            errTF={this.props.freq_min < 1}
+                            helperTextTF={this.props.freq_min < 1 ? 'Greater than or equal to one':''}
                         />
                     </Grid>
 

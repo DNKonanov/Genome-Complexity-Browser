@@ -24,6 +24,8 @@ class RefTextFields extends React.Component {
                            type={this.props.typeTF}
                            onChange={this.handleChange}
                            disabled={this.props.disTF}
+                           error={this.props.errTF}
+                           helperText={this.props.helperTextTF}
                 />
             </div>
         );
