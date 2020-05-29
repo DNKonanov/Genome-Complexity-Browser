@@ -7,6 +7,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import {Grid, Typography} from '@material-ui/core';
+import Paper from "@material-ui/core/Paper";
+import TableContainer from "@material-ui/core/TableContainer";
 
 
 class SelectedNodes extends Component {
@@ -17,30 +19,31 @@ class SelectedNodes extends Component {
         return (
             <Grid>
                 <Typography align="center" variant='h6'>Nodes description</Typography>
-
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>OG</TableCell>
-                            <TableCell>Gene description</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {this.props.selected_nodes.split('\n').map(
-                            node => {
-                                return (
-                                    <TableRow key={node}>
-                                        {node.split('\t').map(txt => {
-                                            return (
-                                                <TableCell key={txt}>{txt}</TableCell>
-                                            )
-                                        })}
-                                    </TableRow>
-                                )
-                            }
-                        )}
-                    </TableBody>
-                </Table>
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>OG</TableCell>
+                                <TableCell>Gene description</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {this.props.selected_nodes.split('\n').map(
+                                node => {
+                                    return (
+                                        <TableRow key={node}>
+                                            {node.split('\t').map(txt => {
+                                                return (
+                                                    <TableCell key={txt}>{txt}</TableCell>
+                                                )
+                                            })}
+                                        </TableRow>
+                                    )
+                                }
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </Grid>
 
         )

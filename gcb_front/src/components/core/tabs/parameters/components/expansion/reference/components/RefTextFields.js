@@ -35,6 +35,9 @@ class RefTextFields extends React.Component {
 RefTextFields.defaultProps = {
     typeTF: 'text',
     disTF: false,
+    errTF:false,
+    helperTextTF:'',
+
 };
 
 const connectClass = connect(null, actionsCreator)(RefTextFields);
