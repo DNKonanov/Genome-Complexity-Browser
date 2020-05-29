@@ -79,36 +79,7 @@ class OtherSettingsExpansionPanel extends React.Component {
                                 <ExpansionPanelDetails>
 
                                     <Box>
-                                        <Grid container spacing={3} justify="center">
-                                            <Grid item xs={6}>
-                                                <Typography variant="h5"
-                                                            component="h5"
-                                                            gutterBottom
-                                                >
-                                                    Plot settings
-                                                </Typography>
-                                            </Grid>
-                                        </Grid>
 
-                                        <Grid container spacing={3}>
-                                            <Grid item xs={6}>
-                                                <RefTextFields
-                                                    labelTF={'Start OG'}
-                                                    nameTF={'og_start_s'}
-                                                    valueTF={this.props.og_start_s}
-                                                />
-                                            </Grid>
-
-                                            <Grid item xs={6}>
-                                                <RefTextFields
-                                                    labelTF={'End OG'}
-                                                    nameTF={'og_end_s'}
-                                                    valueTF={this.props.og_end_s}
-                                                />
-                                            </Grid>
-                                        </Grid>
-
-                                        <Divider className={classes.divider}/>
 
                                         <Grid container spacing={3} justify="center">
                                             <Grid item xs={6}>
@@ -198,6 +169,24 @@ class OtherSettingsExpansionPanel extends React.Component {
                                             </Grid>
 
 
+                                        </Grid>
+
+                                        <Grid container spacing={3}>
+                                            <Grid item xs={6}>
+                                                <RefTextFields
+                                                    labelTF={'Start OG'}
+                                                    nameTF={'og_start_s'}
+                                                    valueTF={this.props.og_start_s}
+                                                />
+                                            </Grid>
+
+                                            <Grid item xs={6}>
+                                                <RefTextFields
+                                                    labelTF={'End OG'}
+                                                    nameTF={'og_end_s'}
+                                                    valueTF={this.props.og_end_s}
+                                                />
+                                            </Grid>
                                         </Grid>
                                     </Box>
                                 </ExpansionPanelDetails>
