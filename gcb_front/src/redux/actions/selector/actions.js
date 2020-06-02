@@ -57,6 +57,10 @@ export const loadGenName = (org, stamm, pars) => async (dispatch) => {
     }
 };
 
+export const setOG = (og_start_s, og_end_s, coord_start, coord_end) => async (dispatch)=>{
+    dispatch().then().then()
+};
+
 export const setCoordOnClick = (og_start_s, og_end_s, coord_start, coord_end) => ({
     type: SET_COORD_ON_CLICK,
     payload: {

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import {putSelectedRef} from '../../redux/actions/referenceActions';
 import {fetchGraph} from '../../redux/actions/graph/graphActions'
 import {connect} from 'react-redux';
@@ -11,6 +10,8 @@ import {LOADING} from "../../redux/constants/graph/container/constants";
 import Typography from "@material-ui/core/Typography";
 import CytoscapeDagreGraph from "./CytoscapeDagreGraph";
 import RefTextFields from "../core/tabs/parameters/components/expansion/reference/components/RefTextFields";
+import Tooltip from "@material-ui/core/Tooltip";
+import {setCoordStartCoordEnd, setOgStartOgEnd} from "../../redux/actions/selector/actions";
 
 const mapStateToProps = state => ({
     graph: state.graph.graph,
@@ -27,6 +28,15 @@ const mapStateToProps = state => ({
 
     step: state.container.step,
     hide_edges: state.container.hide_edges,
+
+
+    coord_start: state.requisite.coord_start,
+    coord_end: state.requisite.coord_end,
+
+    og_start_s: state.requisite.og_start_s,
+    og_end_s: state.requisite.og_start_s,
+
+
 });
 
 const actionsCreator = {
@@ -34,6 +44,8 @@ const actionsCreator = {
 
     fetchGraph: fetchGraph,
     putSelectedRef: putSelectedRef,
+    setOgStartOgEnd: setOgStartOgEnd,
+    setCoordStartCoordEnd: setCoordStartCoordEnd,
 };
 
 class GraphContainer extends Component {
@@ -112,8 +124,61 @@ class GraphContainer extends Component {
         return false
     };
 
+    checkOGs = (event) => {
+        console.log('OG checked!');
+        let close_st_gene = 0;
+        let close_end_gene = 0;
+        let close_st_len = Math.abs(this.props.complexity.coord_list[0] - this.props.coord_start);
+        let close_end_len = Math.abs(this.props.complexity.coord_list[0] - this.props.coord_start);
+
+        for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
+            let len = Math.abs(this.props.complexity.coord_list[i] - this.props.coord_start);
+            if (len < close_st_len) {
+                close_st_gene = i;
+                close_st_len = len
+            }
+            len = Math.abs(this.props.complexity.coord_list[i] - this.props.coord_end);
+            if (len < close_end_len) {
+                close_end_gene = i;
+                close_end_len = len
+            }
+        }
+
+        if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
+            this.props.setOgStartOgEnd(this.props.complexity.OGs[close_st_gene], this.props.complexity.OGs[close_end_gene])
+        }
+    };
+
+    checkCoord = (event) => {
+        let coord_start = -1;
+        let coord_end = -1;
+
+        for (let i = 0; i < this.props.complexity.OGs.length; i++) {
+            if (this.props.complexity.OGs[i] === this.props.og_start_s) {
+                coord_start = this.props.complexity.coord_list[i];
+            }
+            if (this.props.complexity.OGs[i] === this.props.og_end_s) {
+                coord_end = this.props.complexity.coord_list[i];
+            }
+        }
+
+        if (coord_start === -1) {
+            alert('Start OG is not in chosed genome!')
+        } else if (coord_end === -1) {
+            alert('Eng OG is not in chosed genome!')
+        }
+
+        if (coord_start !== -1 && coord_end !== -1) {
+            this.props.setCoordStartCoordEnd(coord_start, coord_end);
+        }
+    };
+
     // рисует. Плюс анимация загрузки
     handleGraphDraw = () => {
+        this.checkOGs();
+        this.checkCoord();
+
+
         this.props.setContainerGraph(LOADING, true);
 
         if (this.checkOG() === true)
@@ -130,7 +195,7 @@ class GraphContainer extends Component {
     componentDidUpdate(prevProps, prevState) {
         removeAllTips();
         if (this.props.graph.result === 'SUCCESS' && this.props.loading === true) {
-        // if (this.props.graph.result === 'SUCCESS') {
+            // if (this.props.graph.result === 'SUCCESS') {
             if (JSON.stringify(this.props.graph.params) === JSON.stringify(this.getGraphParams())) {
                 // this.props.setContainerGraph(LOADING, false);
             }
@@ -183,7 +248,7 @@ class GraphContainer extends Component {
                             valueTF={this.props.depth}
                             typeTF={"number"}
                             errTF={this.props.depth < 2}
-                            helperTextTF={this.props.depth < 2 ? 'Greater than or equal to two':''}
+                            helperTextTF={this.props.depth < 2 ? 'Greater than or equal to two' : ''}
                         />
 
 
@@ -196,7 +261,7 @@ class GraphContainer extends Component {
                             valueTF={this.props.window}
                             typeTF={"number"}
                             errTF={this.props.window < 1}
-                            helperTextTF={this.props.window < 1 ? 'Greater than or equal to one':''}
+                            helperTextTF={this.props.window < 1 ? 'Greater than or equal to one' : ''}
                         />
                     </Grid>
 
@@ -207,7 +272,7 @@ class GraphContainer extends Component {
                             valueTF={this.props.tails}
                             typeTF={"number"}
                             errTF={this.props.tails < 0}
-                            helperTextTF={this.props.tails < 0 ? 'Greater than or equal to zero':''}
+                            helperTextTF={this.props.tails < 0 ? 'Greater than or equal to zero' : ''}
 
                         />
                     </Grid>
@@ -219,13 +284,32 @@ class GraphContainer extends Component {
                             valueTF={this.props.freq_min}
                             typeTF={"number"}
                             errTF={this.props.freq_min < 1}
-                            helperTextTF={this.props.freq_min < 1 ? 'Greater than or equal to one':''}
+                            helperTextTF={this.props.freq_min < 1 ? 'Greater than or equal to one' : ''}
                         />
+                    </Grid>
+
+                    <Grid item xs={2}>
+                        <a href="#GraphShowOnClick"
+                           style={{
+                               color: 'white',
+                               textDecoration: 'none',
+                           }}
+                        > <Tooltip title={'helper'}>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={this.handleGraphDraw}
+                            >
+                                UPDATE
+                            </Button>
+                        </Tooltip>
+                        </a>
                     </Grid>
 
                     <Grid item xs={12}>
                         {this.props.graph.result === 'NOT LOADED' ? notLoaded() : cytoscapeDagreGraph()}
                     </Grid>
+
 
                 </Grid>
             </div>

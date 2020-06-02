@@ -12,6 +12,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import {setIs_open_drawer} from "../../../redux/actions/layout/actions";
 import Fab from "@material-ui/core/Fab";
 import Tooltip from "@material-ui/core/Tooltip";
+import Button from "@material-ui/core/Button";
 
 const mapStateToProps = state => ({
     is_open_drawer: state.layout.leftMenu.is_open_drawer,
@@ -48,6 +49,10 @@ class MainMenu extends React.Component {
 
     handleOpenCloseDrawer = (e) => {
         this.props.setIs_open_drawer(!this.props.is_open_drawer);
+    };
+
+    handleDraw = () => {
+        document.getElementById('graphButtonDraw').click();
     };
 
     render() {
@@ -90,7 +95,30 @@ class MainMenu extends React.Component {
                                             <Card>
                                                 <CardHeader title={'Complexity Plot'}/>
                                                 <CardContent>
-                                                    <ComplexityPlot/>
+                                                    <Grid container spacing={3}>
+                                                        <Grid item xs={2}>
+                                                            <a href="#GraphShowOnClick"
+                                                               style={{
+                                                                   color: 'white',
+                                                                   textDecoration: 'none',
+                                                               }}
+                                                            >
+                                                                <Tooltip title={'helper'}>
+                                                                    <Button
+                                                                        variant="contained"
+                                                                        color="secondary"
+                                                                        onClick={this.handleDraw}
+                                                                    >
+                                                                        PLOT GRAPH
+                                                                    </Button>
+                                                                </Tooltip>
+                                                            </a>
+                                                        </Grid>
+                                                        <Grid item xs={12}>
+                                                            <ComplexityPlot/>
+                                                        </Grid>
+
+                                                    </Grid>
                                                 </CardContent>
                                             </Card>
                                         </Grid>

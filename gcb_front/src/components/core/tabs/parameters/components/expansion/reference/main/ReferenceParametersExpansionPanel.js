@@ -43,7 +43,9 @@ const mapStateToProps = state => ({
     stamms: state.reference.stamms,
     contigs: state.reference.contigs,
     complexity_windows: state.reference.complexity_windows,
+
     complexity: state.reference.complexity,
+
     og_start: state.reference.selection.og_start,
     og_end: state.reference.selection.og_end,
     /// requisite
@@ -504,9 +506,9 @@ class ReferenceParametersExpansionPanel extends React.Component {
     };
 
     handleDraw = () => {
-        this.checkOGs();
-        this.checkCoord();
-
+        // this.checkOGs();
+        // this.checkCoord();
+        //
         document.getElementById('graphButtonDraw').click();
     };
 }
