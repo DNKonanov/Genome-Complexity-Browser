@@ -1,11 +1,5 @@
 import React from "react";
-import Box from "@material-ui/core/Box";
-import {Card} from "@material-ui/core";
-import CardContent from "@material-ui/core/CardContent";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-
+import {Box, Card, CardContent, Container, Grid, Typography} from '@material-ui/core';
 
 class About extends React.Component {
     render() {

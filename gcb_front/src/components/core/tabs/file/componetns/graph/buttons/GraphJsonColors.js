@@ -1,16 +1,10 @@
 import React from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
 import {useStyles} from "../../../../parameters/style/SelectParametersStyle";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 import BackupRoundedIcon from "@material-ui/icons/BackupRounded";
 import CloudDownloadRoundedIcon from "@material-ui/icons/CloudDownloadRounded";
-import Container from "@material-ui/core/Container";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Tooltip from "@material-ui/core/Tooltip";
-
+import {Button, Container, Grid, Tooltip, withStyles,
+    ButtonGroup,CardContent,Card
+} from '@material-ui/core';
 class GraphJsonColors extends React.Component {
 
     handleDownloadJSON = () => {

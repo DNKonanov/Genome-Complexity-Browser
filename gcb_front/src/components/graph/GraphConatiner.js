@@ -1,17 +1,15 @@
 import React, {Component} from 'react';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import {putSelectedRef} from '../../redux/actions/referenceActions';
 import {fetchGraph} from '../../redux/actions/graph/graphActions'
 import {connect} from 'react-redux';
 import {setContainerGraph} from "../../redux/actions/graph/container/actions";
 import removeAllTips from "../../sctipts/helper/functions/removeAllTips";
 import {LOADING} from "../../redux/constants/graph/container/constants";
-import Typography from "@material-ui/core/Typography";
 import CytoscapeDagreGraph from "./CytoscapeDagreGraph";
 import RefTextFields from "../core/tabs/parameters/components/expansion/reference/components/RefTextFields";
-import Tooltip from "@material-ui/core/Tooltip";
 import {setCoordStartCoordEnd, setOgStartOgEnd} from "../../redux/actions/selector/actions";
+import {Button, Grid, Tooltip, Typography} from '@material-ui/core';
+
 
 const mapStateToProps = state => ({
     graph: state.graph.graph,

@@ -1,25 +1,27 @@
 import React from "react";
 import {connect} from 'react-redux';
-import withStyles from "@material-ui/core/styles/withStyles";
 import {useStyles} from "../../../../style/SelectParametersStyle";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import {ExpansionPanel} from "@material-ui/core";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Typography from "@material-ui/core/Typography";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import Box from "@material-ui/core/Box";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import Switch from "@material-ui/core/Switch";
 import removeAllTips from "../../../../../../../../sctipts/helper/functions/removeAllTips";
 import RefTextFields from "../components/RefTextFields";
 import {setContainerGraph} from "../../../../../../../../redux/actions/graph/container/actions";
-import Tooltip from "@material-ui/core/Tooltip";
+import {
+    Box,
+    Container,
+    ExpansionPanel,
+    ExpansionPanelDetails,
+    ExpansionPanelSummary,
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Grid,
+    Radio,
+    RadioGroup,
+    Switch,
+    Tooltip,
+    Typography,
+    withStyles
+} from '@material-ui/core';
 
 const mapStateToProps = state => ({
     organisms: state.reference.organisms,

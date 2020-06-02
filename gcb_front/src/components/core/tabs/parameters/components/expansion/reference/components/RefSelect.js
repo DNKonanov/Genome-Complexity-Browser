@@ -1,15 +1,12 @@
 import React from "react";
 import {useStyles} from "../../../../style/SelectParametersStyle";
 import {connect} from 'react-redux';
-import withStyles from "@material-ui/core/styles/withStyles";
 import {setRequisite} from "../../../../../../../../redux/actions/selector/actions";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
 import PropTypes from 'prop-types';
 import {setDisabled_select_reference} from "../../../../../../../../redux/actions/components/actions";
-import Tooltip from "@material-ui/core/Tooltip";
+
+import {MenuItem, FormControl, Select,InputLabel, Tooltip, withStyles} from '@material-ui/core';
+
 
 const mapStateToProps = (state) => ({
     disabled_select_reference: state.components.select.disabled_select_reference,

@@ -1,27 +1,31 @@
 import React from "react";
-import Box from "@material-ui/core/Box";
-import {Card, ExpansionPanel} from "@material-ui/core";
-import CardContent from "@material-ui/core/CardContent";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
-import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 import {SERVER_PORT, SERVER_URL} from "../../../../redux/constants/urls";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import TableBody from "@material-ui/core/TableBody";
-import Table from "@material-ui/core/Table";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Typography from "@material-ui/core/Typography";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import TableContainer from "@material-ui/core/TableContainer";
-import {withStyles} from "@material-ui/core/es";
-import Divider from "@material-ui/core/Divider";
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import {
+    Box,
+    Card,
+    CardContent,
+    Container,
+    Divider,
+    ExpansionPanel,
+    ExpansionPanelDetails,
+    ExpansionPanelSummary,
+    Grid,
+    IconButton,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TextField,
+    Typography,
+    withStyles,
+} from '@material-ui/core';
 import {
     loadGenName,
     setCoordStartCoordEnd,
@@ -30,8 +34,6 @@ import {
 } from "../../../../redux/actions/selector/actions";
 import {connect} from 'react-redux';
 import {SEARCH_RESULTS} from "../../../../redux/constants/selector/constants";
-import Paper from "@material-ui/core/Paper";
-
 const mapStateToProps = state => ({
     org: state.requisite.org,
     stamm: state.requisite.stamm,

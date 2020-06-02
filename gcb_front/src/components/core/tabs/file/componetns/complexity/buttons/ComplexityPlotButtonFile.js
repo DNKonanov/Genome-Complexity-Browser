@@ -1,17 +1,13 @@
 import React from "react";
 import {connect} from "react-redux";
-import withStyles from "@material-ui/core/styles/withStyles";
 import {useStyles} from "../../../../parameters/style/SelectParametersStyle";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import Button from "@material-ui/core/Button";
 import CloudDownloadRoundedIcon from "@material-ui/icons/CloudDownloadRounded";
 import BackupRoundedIcon from "@material-ui/icons/BackupRounded";
 import {
     setEnabled_Show_Delete_User_Coordinates,
     setUserCoordinatesStr
 } from "../../../../../../../redux/actions/file/readFile";
-import Tooltip from "@material-ui/core/Tooltip";
+import {Button, Container, Grid, Tooltip, withStyles} from '@material-ui/core';
 
 
 const mapStateToProps = state => ({

@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import Typography from '@material-ui/core/Typography';
 import CytoscapeDagreGraph from './CytoscapeDagreGraph'
-
 import {connect} from 'react-redux';
-import Grid from "@material-ui/core/Grid";
+import {Grid, Typography} from '@material-ui/core';
+
 
 const mapStateToProps = state => ({
     graph: state.graph.graph

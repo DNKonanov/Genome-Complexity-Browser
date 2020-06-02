@@ -5,11 +5,7 @@ import popper from 'cytoscape-popper';
 import dagre from 'cytoscape-dagre';
 import EdgeDescription from '../other/EdgeDescription';
 import SelectedNodes from '../other/SelectedNodes';
-import '../../App.css';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import {Paper} from '@material-ui/core';
-import {withStyles} from '@material-ui/core/styles';
+import {Button, Grid, Paper, withStyles} from '@material-ui/core';
 
 cytoscape.use(dagre);
 cytoscape.use(popper);

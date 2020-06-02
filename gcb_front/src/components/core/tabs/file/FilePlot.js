@@ -1,15 +1,11 @@
 import React from "react";
 import ComplexityPlotButtonFile from "./componetns/complexity/buttons/ComplexityPlotButtonFile";
 import ComplexityPlotButtonUserCoordinates from "./componetns/complexity/buttons/ComplexityPlotButtonUserCoordinates";
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
 import a11yProps from "../../../../sctipts/helper/functions/a11yProps";
 import TabPanel from "../TabPanel";
 import GraphJsonColors from "./componetns/graph/buttons/GraphJsonColors";
 import Marker from "./componetns/complexity/selectors/Marker";
-import {Card, CardActions} from "@material-ui/core";
-import CardContent from "@material-ui/core/CardContent";
-
+import {Card, CardContent, Tab, Tabs} from '@material-ui/core';
 
 class FilePlot extends React.Component {
     constructor(props) {

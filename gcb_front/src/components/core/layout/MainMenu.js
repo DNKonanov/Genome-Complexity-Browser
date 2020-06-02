@@ -1,18 +1,11 @@
 import React from "react";
+import {Button, Card, CardContent, CardHeader, Container, Fab, Grid, Tooltip, withStyles} from '@material-ui/core';
+import SettingsIcon from "@material-ui/icons/Settings";
 import {connect} from 'react-redux';
-import withStyles from "@material-ui/core/styles/withStyles";
-import {layoutStyle} from "./styles/LayoutStyle";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import {Card, CardHeader} from "@material-ui/core";
-import CardContent from "@material-ui/core/CardContent";
 import ComplexityPlot from "../../plot/ComplexityPlot";
 import GraphContainer from "../../graph/GraphConatiner";
-import SettingsIcon from "@material-ui/icons/Settings";
+import {layoutStyle} from "./styles/LayoutStyle";
 import {setIs_open_drawer} from "../../../redux/actions/layout/actions";
-import Fab from "@material-ui/core/Fab";
-import Tooltip from "@material-ui/core/Tooltip";
-import Button from "@material-ui/core/Button";
 
 const mapStateToProps = state => ({
     is_open_drawer: state.layout.leftMenu.is_open_drawer,

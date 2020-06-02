@@ -1,15 +1,10 @@
 import React from "react";
 import {connect} from 'react-redux';
-import withStyles from "@material-ui/core/styles/withStyles";
 import {layoutStyle} from "./styles/LayoutStyle";
 import clsx from "clsx";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import SettingsIcon from "@material-ui/icons/Settings";
-import Typography from "@material-ui/core/Typography";
-import AppBar from "@material-ui/core/AppBar";
 import {setIs_open_drawer} from "../../../redux/actions/layout/actions";
-import Tooltip from "@material-ui/core/Tooltip";
+import {AppBar, IconButton, Toolbar, Tooltip, Typography, withStyles} from '@material-ui/core';
+import SettingsIcon from "@material-ui/icons/Settings";
 
 const mapStateToProps = state => ({
     is_open_drawer: state.layout.leftMenu.is_open_drawer,

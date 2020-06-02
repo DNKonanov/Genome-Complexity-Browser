@@ -1,10 +1,9 @@
 import React from "react";
 import {useStyles} from "../../../../parameters/style/SelectParametersStyle";
 import {connect} from 'react-redux';
-import withStyles from "@material-ui/core/styles/withStyles";
 import {setRequisite} from "../../../../../../../redux/actions/selector/actions";
 import RefSelect from "../../../../parameters/components/expansion/reference/components/RefSelect";
-import Grid from "@material-ui/core/Grid";
+import {Grid, withStyles} from '@material-ui/core';
 
 const mapStateToProps = state =>({
     draw_types: state.requisite.draw_types,

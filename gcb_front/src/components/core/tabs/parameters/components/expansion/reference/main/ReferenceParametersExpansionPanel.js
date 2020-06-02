@@ -1,15 +1,6 @@
 import React from "react";
 import {connect} from 'react-redux';
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import Box from "@material-ui/core/Box";
-import {ExpansionPanel} from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import withStyles from "@material-ui/core/styles/withStyles";
 import {useStyles} from "../../../../style/SelectParametersStyle";
 import {
     fetchComplexity,
@@ -27,16 +18,27 @@ import {
     setStammGenomeName
 } from "../../../../../../../../redux/actions/selector/actions";
 import {CONTIG, GENOME_NAME, STAMM} from "../../../../../../../../redux/constants/selector/constants";
-
 import RefSelect from "../components/RefSelect";
 import RefTextFields from "../components/RefTextFields";
-import Button from "@material-ui/core/Button";
 import removeAllTips from "../../../../../../../../sctipts/helper/functions/removeAllTips";
-import Switch from "@material-ui/core/Switch";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {setIs_open_drawer} from "../../../../../../../../redux/actions/layout/actions";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import Tooltip from "@material-ui/core/Tooltip";
+import {
+    Box,
+    Button,
+    Container,
+    Divider,
+    ExpansionPanel,
+    ExpansionPanelDetails,
+    ExpansionPanelSummary,
+    FormControlLabel,
+    Grid,
+    LinearProgress,
+    Switch,
+    Tooltip,
+    Typography,
+    withStyles
+} from '@material-ui/core';
+
 
 const mapStateToProps = state => ({
     organisms: state.reference.organisms,

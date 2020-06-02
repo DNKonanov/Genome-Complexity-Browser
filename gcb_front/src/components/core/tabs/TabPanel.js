@@ -1,7 +1,6 @@
-import Box from "@material-ui/core/Box";
 import React from "react";
 import PropTypes from 'prop-types';
-import withStyles from "@material-ui/core/styles/withStyles";
+import {Box, withStyles} from '@material-ui/core';
 
 class TabPanel extends React.Component {
     render() {

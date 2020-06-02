@@ -5,9 +5,6 @@ import './App.css';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Core from "./components/core/Core";
-import Button from "@material-ui/core/Button";
-import {Box} from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
 
 class App extends Component {
     render() {

@@ -1,6 +1,5 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
+import {Container, Grid} from '@material-ui/core';
 
 class EmptyElement extends React.Component {
     render() {

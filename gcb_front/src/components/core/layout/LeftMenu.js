@@ -1,10 +1,6 @@
 import React from 'react';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
+import {AppBar, Drawer, Tab, Tabs, withStyles} from '@material-ui/core';
 import {connect} from "react-redux";
-import {withStyles} from "@material-ui/core/es";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
 import TabPanel from "../tabs/TabPanel";
 
 import {layoutStyle} from "./styles/LayoutStyle";
@@ -14,6 +10,7 @@ import Search from "../tabs/search/Search";
 import FilePlot from "../tabs/file/FilePlot";
 import About from "../tabs/about/About";
 import a11yProps from "../../../sctipts/helper/functions/a11yProps";
+
 const mapStateToProps = state => ({
     is_open_drawer: state.layout.leftMenu.is_open_drawer,
     disabled_select_reference: state.components.select.disabled_select_reference

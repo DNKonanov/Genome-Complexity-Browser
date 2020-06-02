@@ -1,11 +1,7 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import Button from "@material-ui/core/Button";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import {connect} from "react-redux";
-import withStyles from "@material-ui/core/styles/withStyles";
 import {useStyles} from "../../../../parameters/style/SelectParametersStyle";
 import {
     setEnabled_Show_Delete_User_Coordinates,
@@ -14,7 +10,7 @@ import {
     setUserCoordinatesStr,
     setUserValues
 } from "../../../../../../../redux/actions/file/readFile";
-import Tooltip from "@material-ui/core/Tooltip";
+import {Button, Container, Grid, Tooltip, withStyles} from '@material-ui/core';
 
 const mapStateToProps = state => ({
     userCoordinatesStr: state.file.userCoordinatesStr,
