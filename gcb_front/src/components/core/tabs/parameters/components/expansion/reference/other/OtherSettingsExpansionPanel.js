@@ -183,6 +183,7 @@ class OtherSettingsExpansionPanel extends React.Component {
                                                     labelTF={'Start OG'}
                                                     nameTF={'og_start_s'}
                                                     valueTF={this.props.og_start_s}
+                                                    disTF={true}
                                                 />
                                             </Grid>
 
@@ -191,6 +192,7 @@ class OtherSettingsExpansionPanel extends React.Component {
                                                     labelTF={'End OG'}
                                                     nameTF={'og_end_s'}
                                                     valueTF={this.props.og_end_s}
+                                                    disTF={true}
                                                 />
                                             </Grid>
                                         </Grid>
