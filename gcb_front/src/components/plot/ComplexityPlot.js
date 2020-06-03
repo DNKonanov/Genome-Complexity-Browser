@@ -80,7 +80,7 @@ class ComplexityPlot extends React.Component {
                             layout={
                                 {
                                     autosize: true,
-                                    title: 'Genome complexity, ' + data.request.org + ', contig ' + data.request.contig + ', ' + data.request.method,
+                                    title: 'Genome complexity, ' + data.request.org + ', contig ' + data.request.contig,
 
                                     xaxis: {
                                         title: 'Chromosome position, bp',

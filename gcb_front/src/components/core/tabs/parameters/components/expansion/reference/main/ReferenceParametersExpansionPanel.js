@@ -11,11 +11,12 @@ import {
     putSelectedRef
 } from "../../../../../../../../redux/actions/referenceActions";
 
+import {setContainerGraph} from "../../../../../../../../redux/actions/graph/container/actions";
 import {
     setCoordStartCoordEnd,
     setOgStartOgEnd,
     setRequisite,
-    setStammGenomeName
+    setStammGenomeName,
 } from "../../../../../../../../redux/actions/selector/actions";
 import {CONTIG, GENOME_NAME, STAMM} from "../../../../../../../../redux/constants/selector/constants";
 import RefSelect from "../components/RefSelect";
@@ -36,6 +37,10 @@ import {
     Switch,
     Tooltip,
     Typography,
+    FormControl,
+    FormLabel,
+    Radio,
+    RadioGroup,
     withStyles
 } from '@material-ui/core';
 
@@ -85,6 +90,21 @@ const mapStateToProps = state => ({
     is_open_drawer: state.layout.leftMenu.is_open_drawer,
 
     loading: state.container.loading,
+    // container
+    layout: state.container.layout,
+    hide_edges: state.container.hide_edges,
+
+    window: state.container.window,
+    tails: state.container.tails,
+    depth: state.container.depth,
+    freq_min: state.container.freq_min,
+    loading: state.container.loading,
+    step: state.container.step,
+    cy: state.container.cy,
+    edge_description: state.container.edge_description,
+    json_format: state.container.json_format,
+    selected_nodes: state.container.selected_nodes,
+    user_colors: state.container.user_colors,
 
 });
 const actionCreators = {
@@ -102,6 +122,8 @@ const actionCreators = {
     setStammGenomeName: setStammGenomeName,
     // components
     setIs_open_drawer: setIs_open_drawer,
+    // graph
+    setContainerGraph: setContainerGraph,
 };
 
 class ReferenceParametersExpansionPanel extends React.Component {
@@ -123,6 +145,17 @@ class ReferenceParametersExpansionPanel extends React.Component {
     handleChange = (e) => {
         e.preventDefault();
         this.props.setRequisite(e.target.name.toUpperCase(), !this.props.show_hotspots);
+    };
+
+    handleChangeContainer = (e) => {
+        e.preventDefault();
+        this.props.setContainerGraph(e.target.name.toUpperCase(), !this.props.hide_edges);
+    };
+
+    handleLayout = event => {
+        event.preventDefault();
+        removeAllTips();
+        this.props.setContainerGraph(event.target.name.toUpperCase(), event.target.value);
     };
 
     componentDidUpdate(prevProps, prevState) {
@@ -255,16 +288,9 @@ class ReferenceParametersExpansionPanel extends React.Component {
                 <Grid container spacing={3} justify="center">
                     <Grid item xs={12}>
                         <Container fixed>
-                            <ExpansionPanel expanded={this.state.expanded}
-                                            onChange={this.handleChangeExpPanel}
-                            >
-                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                                    <Typography>Reference Parameters</Typography>
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
                                     <Box>
-                                        <Grid container justify="center">
-                                            <Typography variant='h5'>Reference parameters</Typography>
+                                        <Grid container>
+                                            <Typography variant='h6'>Select genome</Typography>
                                         </Grid>
                                         <Divider className={classes.divider}/>
 
@@ -316,63 +342,13 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                 />
                                             </Grid>
                                         </Grid>
-                                        {/*-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
-                                        <Divider className={classes.divider}/>
-
-                                        <Grid container spacing={3} justify="flex-start">
-                                            {/*<Grid item xs={6}>*/}
-                                            {/*    <RefSelect*/}
-                                            {/*        inputLabel={'Method'}*/}
-                                            {/*        selectNameId={'method'}*/}
-                                            {/*        selectValue={this.props.method}*/}
-                                            {/*        selectOptions={this.props.methods}*/}
-                                            {/*        disabledSelect={this.props.disabled_select_reference}*/}
-                                            {/*    />*/}
-                                            {/*</Grid>*/}
-
-                                            <Grid item xs={12}>
-                                                <RefSelect
-                                                    inputLabel={'Window'}
-                                                    selectNameId={'complexity_window'}
-                                                    selectValue={this.props.complexity_window}
-                                                    selectOptions={this.props.complexity_windows.list}
-                                                    disabledSelect={this.props.disabled_select_reference}
-                                                    tooltipText={<React.Fragment>
-                                                                    <Typography color="inherit">Window</Typography>
-                                                                    {"this parameter "} <u>{"lalala"}</u>
-                                                                </React.Fragment>}
-                                                />
-                                            </Grid>
-                                        </Grid>
 
                                         <Divider className={classes.divider}/>
-
-                                        <Grid container justify="flex-start" spacing={3}>
-                                            <Grid item xs={6}>
-                                                <RefTextFields
-                                                    labelTF={'Hotspots threshold coef'}
-                                                    nameTF={'coef'}
-                                                    valueTF={this.props.coef}
-                                                    disTF={this.props.disabled_select_reference}
-                                                />
-                                            </Grid>
-
-                                            <Grid item xs={6}>
-                                                <FormControlLabel
-                                                    disabled={this.props.disabled_select_reference}
-                                                    control={
-                                                        <Tooltip title={'helper'}>
-                                                            <Switch name='show_hotspots'
-                                                                    color="primary"
-                                                                    value={this.props.show_hotspots}
-                                                                    checked={this.props.show_hotspots}
-                                                                    onChange={this.handleChange}
-                                                            />
-                                                        </Tooltip>}
-                                                    label="Show hotspots"
-                                                />
-                                            </Grid>
+                                        
+                                        <Grid container>
+                                            <Typography variant='h6'>Select region to draw graph</Typography>
                                         </Grid>
+                                        <br></br>
 
                                         {/*TEXT FIELDS*/}
                                         <Grid container justify="flex-start" spacing={3}>
@@ -392,7 +368,6 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                 />
                                             </Grid>
                                         </Grid>
-
 
                                         <Divider className={classes.divider}/>
                                         {/*BUTTONS*/}
@@ -438,9 +413,10 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     </div>
                                                     <Tooltip title={'helper'}>
                                                         <Button size="large"
-                                                                variant="contained"
-                                                                color="secondary"
+                                                                variant="outlined"
+                                                                color="default"
                                                                 onClick={this.handleDraw}
+                                                                disableElevation
                                                                 fullWidth
                                                                 disabled={this.props.disabled_select_reference === true &&
                                                                 this.props.loading === false ? true : this.props.loading}
@@ -451,9 +427,190 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                 </a>
                                             </Grid>
                                         </Grid>
+
+                                        {/*-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
+                                        <br></br>
+                                        <ExpansionPanel>
+                                            <ExpansionPanelSummary>
+                                                <Typography>Other settings</Typography>
+                                            </ExpansionPanelSummary>
+                                                <ExpansionPanelDetails>
+                                                    <Box>
+                                                    <Grid container>
+                                                    <Typography variant='h6'>Complexity settings</Typography>
+                                                </Grid>
+
+                                                <Grid container spacing={3} justify="flex-start">
+                                                    {/*<Grid item xs={6}>*/}
+                                                    {/*    <RefSelect*/}
+                                                    {/*        inputLabel={'Method'}*/}
+                                                    {/*        selectNameId={'method'}*/}
+                                                    {/*        selectValue={this.props.method}*/}
+                                                    {/*        selectOptions={this.props.methods}*/}
+                                                    {/*        disabledSelect={this.props.disabled_select_reference}*/}
+                                                    {/*    />*/}
+                                                    {/*</Grid>*/}
+
+                                                    <Grid item xs={12}>
+                                                        <RefSelect
+                                                            inputLabel={'Window'}
+                                                            selectNameId={'complexity_window'}
+                                                            selectValue={this.props.complexity_window}
+                                                            selectOptions={this.props.complexity_windows.list}
+                                                            disabledSelect={this.props.disabled_select_reference}
+                                                            tooltipText={<React.Fragment>
+                                                                            <Typography color="inherit">Window</Typography>
+                                                                            {"this parameter "} <u>{"lalala"}</u>
+                                                                        </React.Fragment>}
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+
+                                                
+
+
+                                                <Grid container justify="flex-start" spacing={3}>
+                                                    <Grid item xs={6}>
+                                                        <RefTextFields
+                                                            labelTF={'Hotspots threshold coef'}
+                                                            nameTF={'coef'}
+                                                            valueTF={this.props.coef}
+                                                            disTF={this.props.disabled_select_reference}
+                                                        />
+                                                    </Grid>
+
+                                                    <Grid item xs={6}>
+                                                        <FormControlLabel
+                                                            disabled={this.props.disabled_select_reference}
+                                                            control={
+                                                                <Tooltip title={'helper'}>
+                                                                    <Switch name='show_hotspots'
+                                                                            color="primary"
+                                                                            value={this.props.show_hotspots}
+                                                                            checked={this.props.show_hotspots}
+                                                                            onChange={this.handleChange}
+                                                                    />
+                                                                </Tooltip>}
+                                                            label="Show hotspots"
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+
+                                                <Divider className={classes.divider}/>
+                                                <Grid container spacing={3}>
+                                                    <Grid item xs={6}>
+                                                        <Typography variant="h6"
+                                                                    component="h5"
+                                                                    gutterBottom
+                                                        >
+                                                            Graph settings
+                                                        </Typography>
+                                                    </Grid>
+                                                </Grid>
+
+                                                
+                                                {/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
+                                                <Grid container spacing={3}>
+                                                    <Grid item xs={6}>
+                                                        <RefTextFields
+                                                            labelTF={'Tails OG'}
+                                                            nameTF={'tails'}
+                                                            valueTF={this.props.tails}
+                                                            typeTF={"number"}
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={6}>
+                                                        <RefTextFields
+                                                            labelTF={'Depth'}
+                                                            nameTF={'depth'}
+                                                            valueTF={this.props.depth}
+                                                            typeTF={"number"}
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+                                                {/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
+                                                <Grid container spacing={3}>
+                                                    <Grid item xs={6}>
+                                                        <RefTextFields
+                                                            labelTF={'Minimal edge weight'}
+                                                            nameTF={'freq_min'}
+                                                            valueTF={this.props.freq_min}
+                                                            typeTF={"number"}
+                                                        />
+                                                    </Grid>
+
+                                                    <Grid item xs={6}>
+                                                        <RefTextFields
+                                                            labelTF={'Window'}
+                                                            nameTF={'window'}
+                                                            valueTF={this.props.window}
+                                                            typeTF={"number"}
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+
+
+                                                <br></br>
+
+                                                <Grid container spacing={6}>
+                                                    <Grid item xs={6}>
+                                                        <FormControl component="fieldset">
+                                                            <FormLabel component="legend">Layouter</FormLabel>
+                                                            <Tooltip title={'helper'}>
+                                                                <RadioGroup
+                                                                    name="layout"
+                                                                    value={this.props.layout}
+                                                                    onChange={this.handleLayout}
+
+                                                                    aria-label="layouter"
+                                                                    style={{display: 'inline'}}
+                                                                >
+                                                                    <FormControlLabel value="dagre"
+                                                                                    control={<Radio/>}
+                                                                                    label="Dagre"
+                                                                    />
+                                                                    <FormControlLabel value="graphviz"
+                                                                                    control={<Radio/>}
+                                                                                    label="Graphviz"
+                                                                    />
+                                                                </RadioGroup>
+                                                            </Tooltip>
+                                                        </FormControl>
+                                                    </Grid>
+
+
+                                                    <Grid item xs={6}>
+                                                        <FormControlLabel
+                                                            control={
+                                                                <Tooltip title={'helper'}>
+                                                                    <Switch name='hide_edges'
+                                                                        // value="checked"
+                                                                            checked={this.props.hide_edges}
+                                                                            color="primary"
+                                                                            onChange={this.handleChangeContainer}
+                                                                    />
+                                                                </Tooltip>
+                                                            }
+                                                            label="Hide reversed"
+                                                        />
+                                                    </Grid>
+
+                                                </Grid>
+
+                                                    </Box>
+                                                
+
+                                            </ExpansionPanelDetails>
+                                        </ExpansionPanel>
+
+
+                                        
+
+                                        
+
+
+                                        
                                     </Box>
-                                </ExpansionPanelDetails>
-                            </ExpansionPanel>
                         </Container>
                     </Grid>
                 </Grid>

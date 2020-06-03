@@ -25,7 +25,7 @@ class Marker extends React.Component {
                     <Grid item xs={12}>
 
                         <RefSelect
-                            inputLabel={'Marker'}
+                            inputLabel={'Plot type'}
                             selectNameId={'draw_type'}
                             selectValue={this.props.draw_type}
                             selectOptions={this.props.draw_types}

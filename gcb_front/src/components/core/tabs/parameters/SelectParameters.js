@@ -14,7 +14,7 @@ class SelectParameters extends React.Component {
         return (
             <div>
                 <ReferenceParametersExpansionPanel/>
-                <OtherSettingsExpansionPanel/>
+                {/*<OtherSettingsExpansionPanel/>*/}
             </div>
         );
     }

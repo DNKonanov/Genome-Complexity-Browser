@@ -241,7 +241,7 @@ class GraphContainer extends Component {
                       direction="row"
                       justify="flex-start"
                       alignItems="center"
-                      spacing={1}
+                      //spacing={1}
                 >
                     <Grid item xs={2}>
                         {/*НЕ УДАЛЯТЬ!!!!*/}
@@ -313,7 +313,8 @@ class GraphContainer extends Component {
                         > <Tooltip title={'helper'}>
                             <Button
                                 variant="contained"
-                                color="secondary"
+                                color="default"
+                                disableElevation
                                 onClick={this.handleGraphDraw}
                             >
                                 UPDATE

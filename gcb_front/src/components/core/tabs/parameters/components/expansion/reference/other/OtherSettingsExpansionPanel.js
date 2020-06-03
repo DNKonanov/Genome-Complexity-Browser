@@ -83,9 +83,9 @@ class OtherSettingsExpansionPanel extends React.Component {
                                     <Box>
 
 
-                                        <Grid container spacing={3} justify="center">
+                                        <Grid container spacing={3}>
                                             <Grid item xs={6}>
-                                                <Typography variant="h5"
+                                                <Typography variant="h6"
                                                             component="h5"
                                                             gutterBottom
                                                 >
@@ -128,7 +128,7 @@ class OtherSettingsExpansionPanel extends React.Component {
                                                                 // value="checked"
                                                                     checked={this.props.hide_edges}
                                                                     color="primary"
-                                                                    onChange={this.handleChange}
+                                                                    onChange={this.handleChangeContainer}
                                                             />
                                                         </Tooltip>
                                                     }

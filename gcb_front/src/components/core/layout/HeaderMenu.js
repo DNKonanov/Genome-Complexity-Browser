@@ -4,7 +4,7 @@ import {layoutStyle} from "./styles/LayoutStyle";
 import clsx from "clsx";
 import {setIs_open_drawer} from "../../../redux/actions/layout/actions";
 import {AppBar, IconButton, Toolbar, Tooltip, Typography, withStyles} from '@material-ui/core';
-import SettingsIcon from "@material-ui/icons/Settings";
+import MenuSharpIcon from '@material-ui/icons/MenuSharp';
 
 const mapStateToProps = state => ({
     is_open_drawer: state.layout.leftMenu.is_open_drawer,
@@ -36,7 +36,7 @@ class HeaderMenu extends React.Component {
                                 onClick={this.handleOpenCloseDrawer}
                                 className={clsx(classes.menuButton, this.props.is_open_drawer && classes.menuButtonHidden)}
                             >
-                                <SettingsIcon/>
+                                <MenuSharpIcon/>
                             </IconButton>
                         </Tooltip>
 

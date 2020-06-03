@@ -1,6 +1,6 @@
 import React from "react";
 import {Button, Card, CardContent, CardHeader, Container, Fab, Grid, Tooltip, withStyles} from '@material-ui/core';
-import SettingsIcon from "@material-ui/icons/Settings";
+import MenuSharpIcon from '@material-ui/icons/MenuSharp';
 import {connect} from 'react-redux';
 import ComplexityPlot from "../../plot/ComplexityPlot";
 import GraphContainer from "../../graph/GraphConatiner";
@@ -65,12 +65,12 @@ class MainMenu extends React.Component {
                             marginTop: document.documentElement.clientHeight / 2 - this.state.headerOffsetHeight + this.state.scrollValue,
                         }}>
                             <Tooltip title="helper" aria-label="add">
-                                <Fab color="primary"
+                                <Fab color="default"
                                      aria-label="add"
                                      size={'large'}
                                      onClick={this.handleOpenCloseDrawer}
                                 >
-                                    <SettingsIcon style={{fontSize: 30}}/>
+                                    <MenuSharpIcon style={{fontSize: 30}}/>
                                 </Fab>
                             </Tooltip>
                         </div>
@@ -99,7 +99,8 @@ class MainMenu extends React.Component {
                                                                 <Tooltip title={'helper'}>
                                                                     <Button
                                                                         variant="contained"
-                                                                        color="secondary"
+                                                                        color="default"
+                                                                        disableElevation
                                                                         onClick={this.handleDraw}
                                                                     >
                                                                         PLOT GRAPH

@@ -5,7 +5,7 @@ import a11yProps from "../../../../sctipts/helper/functions/a11yProps";
 import TabPanel from "../TabPanel";
 import GraphJsonColors from "./componetns/graph/buttons/GraphJsonColors";
 import Marker from "./componetns/complexity/selectors/Marker";
-import {Card, CardContent, Tab, Tabs} from '@material-ui/core';
+import {Card, CardContent, Tab, Tabs, Typography} from '@material-ui/core';
 
 class FilePlot extends React.Component {
     constructor(props) {
@@ -36,13 +36,14 @@ class FilePlot extends React.Component {
                 {/*COMPLEXITY*/}
                 <TabPanel value={this.state.value} index={0}>
                     <div>
-                        <Card>
-                            <CardContent>
-                                <Marker/>
-                                <ComplexityPlotButtonFile/>
-                                <ComplexityPlotButtonUserCoordinates/>
-                            </CardContent>
-                        </Card>
+                        <ComplexityPlotButtonFile/>
+                        <br></br>
+                        <Typography variant="h6">
+                            Upload user features
+                        </Typography>
+                        <ComplexityPlotButtonUserCoordinates/>
+
+                        <Marker/>
                     </div>
                 </TabPanel>
 

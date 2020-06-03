@@ -145,62 +145,56 @@ class Search extends React.Component {
                     <Grid item xs={12}>
                         <Container
                         >
-                            <Box>
-                                <Card className={this.props.cardInDrawer}>
-                                    <CardContent>
-                                        <form onSubmit={this.search}>
-                                            <Grid container spacing={1} justify="center">
-                                                <Grid item xs={10}>
-                                                    <Autocomplete
-                                                        id="combo-box-demo"
-                                                        options={this.props.search_query}
-                                                        getOptionLabel={(option) => option.toString()}
-                                                        loading={this.props.search_query.length === 0}
+                            <form onSubmit={this.search}>
+                                <Grid container spacing={1} justify="center">
+                                    <Grid item xs={10}>
+                                        <Autocomplete
+                                            id="combo-box-demo"
+                                            options={this.props.search_query}
+                                            getOptionLabel={(option) => option.toString()}
+                                            loading={this.props.search_query.length === 0}
 
-                                                        value={this.state.search_query_value}
-                                                        onChange={this.handleChange}
+                                            value={this.state.search_query_value}
+                                            onChange={this.handleChange}
 
-                                                        inputValue={this.state.search_query_value}
-                                                        // onInputChange={
-                                                        //     (event, newInputValue) => {
-                                                        //         this.handleChangeinputValue(newInputValue)
-                                                        //     }
-                                                        // }
-                                                        onInputChange= {
-                                                                this.handleChangeinputValue
-                                                        }
+                                            inputValue={this.state.search_query_value}
+                                            // onInputChange={
+                                            //     (event, newInputValue) => {
+                                            //         this.handleChangeinputValue(newInputValue)
+                                            //     }
+                                            // }
+                                            onInputChange= {
+                                                    this.handleChangeinputValue
+                                            }
 
-                                                        renderInput={(params) => (
-                                                            <TextField {...params}
-                                                                       label="Search"
-                                                                       variant="outlined"
-                                                                       fullWidth
-                                                            />)
-                                                        }
-                                                    />
-                                                </Grid>
+                                            renderInput={(params) => (
+                                                <TextField {...params}
+                                                            label="Search"
+                                                            variant="outlined"
+                                                            fullWidth
+                                                />)
+                                            }
+                                        />
+                                    </Grid>
 
-                                                <Grid item xs={1}>
-                                                    <IconButton
-                                                        type="submit"
-                                                        onClick={this.search}
-                                                    >
-                                                        <SearchIcon/>
-                                                    </IconButton>
-                                                </Grid>
+                                    <Grid item xs={1}>
+                                        <IconButton
+                                            type="submit"
+                                            onClick={this.search}
+                                        >
+                                            <SearchIcon/>
+                                        </IconButton>
+                                    </Grid>
 
-                                                <Grid item xs={1}>
-                                                    <IconButton
-                                                        onClick={this.clearSearchResults}
-                                                    >
-                                                        <ClearIcon/>
-                                                    </IconButton>
-                                                </Grid>
-                                            </Grid>
-                                        </form>
-                                    </CardContent>
-                                </Card>
-                            </Box>
+                                    <Grid item xs={1}>
+                                        <IconButton
+                                            onClick={this.clearSearchResults}
+                                        >
+                                            <ClearIcon/>
+                                        </IconButton>
+                                    </Grid>
+                                </Grid>
+                            </form>
                         </Container>
                     </Grid>
                 </Grid>

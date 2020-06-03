@@ -7,27 +7,23 @@ class About extends React.Component {
             <div>
                 <Container fixed>
                     <Box>
-                        <Card className={this.props.cardInDrawer}>
-                            <CardContent>
-                                <Grid container direction='column'>
-                                    <Typography>User manual(alpha):
-                                        <a href='https://github.com/DNKonanov/Genome-Complexity-Browser/blob/master/GCB_manual.pdf'>PDF</a> <br/>
-                                    </Typography>
+                        <Grid container direction='column'>
+                            <Typography>User manual(alpha):
+                                <a href='https://github.com/DNKonanov/Genome-Complexity-Browser/blob/master/GCB_manual.pdf'>PDF</a> <br/>
+                            </Typography>
 
-                                    <Typography>Link to github:<br/>
-                                        <a href='https://github.com/DNKonanov/Genome-Complexity-Browser'>GitHub</a>
-                                    </Typography>
+                            <Typography>Link to github:<br/>
+                                <a href='https://github.com/DNKonanov/Genome-Complexity-Browser'>GitHub</a>
+                            </Typography>
 
-                                    <Typography>Command-line tool:<br/>
-                                        <a href='https://github.com/DNKonanov/geneGraph'>geneGraph</a>
-                                    </Typography>
+                            <Typography>Command-line tool:<br/>
+                                <a href='https://github.com/DNKonanov/geneGraph'>geneGraph</a>
+                            </Typography>
 
-                                    <Typography>Stand-alone version of this service:<br/>
-                                        <a href='https://github.com/DNKonanov/GCB'>GCB_package</a>
-                                    </Typography>
-                                </Grid>
-                            </CardContent>
-                        </Card>
+                            <Typography>Stand-alone version of this service:<br/>
+                                <a href='https://github.com/DNKonanov/GCB'>GCB_package</a>
+                            </Typography>
+                        </Grid>
                     </Box>
                 </Container>
             </div>

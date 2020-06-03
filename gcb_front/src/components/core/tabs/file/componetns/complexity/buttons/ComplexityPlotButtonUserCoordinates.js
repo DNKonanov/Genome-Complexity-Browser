@@ -2,6 +2,7 @@ import React from "react";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import {connect} from "react-redux";
+import BackupRoundedIcon from "@material-ui/icons/BackupRounded";
 import {useStyles} from "../../../../parameters/style/SelectParametersStyle";
 import {
     setEnabled_Show_Delete_User_Coordinates,
@@ -26,9 +27,26 @@ const actionsCreator = {
     setUserCoordinatesStr: setUserCoordinatesStr,
 
     setEnabled_Show_Delete_User_Coordinates: setEnabled_Show_Delete_User_Coordinates
+    
 };
 
+
 class ComplexityPlotButtonUserCoordinates extends React.Component {
+
+    // открыте файла с клиента
+    inputFileChanged = (e) => {
+        if (window.FileReader) {
+            let file = e.target.files[0], reader = new FileReader();
+            reader.onload = function (r) {
+                this.props.setUserCoordinatesStr(r.target.result);
+                this.props.setEnabled_Show_Delete_User_Coordinates(true);
+            }.bind(this);
+            reader.readAsText(file);
+        } else {
+            alert('Sorry, your browser does\'nt support for preview');
+        }
+        e.preventDefault()
+    };
 
     // загружает пользовательские координаты
     drawUserCoordinates = (e) => {
@@ -77,19 +95,46 @@ class ComplexityPlotButtonUserCoordinates extends React.Component {
                 <Container fixed className={classes.boxButtons}>
                     {/*<Card>*/}
                     {/*    <CardContent>*/}
+
                     <Grid container spacing={1} justify="center">
+
+
+                        <Grid item xs={12}>
+                            <Tooltip title="helper" aria-label="add">
+                                <Button
+                                    variant="outlined"
+                                    color="default"
+                                    component="label"
+                                    fullWidth
+                                    disableElevation
+                                    startIcon={<BackupRoundedIcon/>}
+                                >
+                                    Upload user features file
+                                    <input
+                                        onChange={(e) => {
+                                            this.inputFileChanged(e)
+                                        }}
+                                        style={{display: 'none'}}
+                                        type="file"
+                                    />
+                                </Button>
+                            </Tooltip>
+                        </Grid>
+                        </Grid>
+                        <Grid container spacing={1} justify="center">
                         <Grid item xs={6}>
                             <Tooltip title="helper" aria-label="add">
                             <Button
-                                variant="contained"
-                                color="primary"
+                                variant="outlined"
+                                color="default"
                                 component="label"
                                 fullWidth
+                                disableElevation
                                 startIcon={<VisibilityIcon/>}
                                 onClick={this.drawUserCoordinates}
                                 // disabled={}
                             >
-                                Show coordinates
+                                Show features
                             </Button>
                             </Tooltip>
                         </Grid>
@@ -97,15 +142,16 @@ class ComplexityPlotButtonUserCoordinates extends React.Component {
                         <Grid item xs={6}>
                             <Tooltip title="helper" aria-label="add">
                             <Button
-                                variant="contained"
-                                color="primary"
+                                variant="outlined"
+                                color="default"
                                 component="label"
                                 fullWidth
+                                disableElevation
                                 startIcon={<DeleteForeverRoundedIcon/>}
                                 onClick={this.deleteUserCoordinates}
                                 // disabled={!this.props.enabled_Show_Delete_User_Coordinates}
                             >
-                                Delete coordinates
+                                Remove features
                             </Button>
                             </Tooltip>
                         </Grid>

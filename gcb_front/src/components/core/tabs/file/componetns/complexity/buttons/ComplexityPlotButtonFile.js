@@ -26,20 +26,7 @@ const actionCreator = {
 };
 
 class ComplexityPlotButtonFile extends React.Component {
-    // открыте файла с клиента
-    inputFileChanged = (e) => {
-        if (window.FileReader) {
-            let file = e.target.files[0], reader = new FileReader();
-            reader.onload = function (r) {
-                this.props.setUserCoordinatesStr(r.target.result);
-                this.props.setEnabled_Show_Delete_User_Coordinates(true);
-            }.bind(this);
-            reader.readAsText(file);
-        } else {
-            alert('Sorry, your browser does\'nt support for preview');
-        }
-        e.preventDefault()
-    };
+    
 
     // грузит файл с профилем сложности
     downloadData = (e) => {
@@ -72,40 +59,21 @@ class ComplexityPlotButtonFile extends React.Component {
             <div>
                 <Container fixed className={classes.boxButtons}>
                     <Grid container spacing={1} justify="center">
-                        <Grid item xs={6}>
-                            <Tooltip title="helper" aria-label="add">
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    component="label"
-                                    fullWidth
-                                    startIcon={<BackupRoundedIcon/>}
-                                >
-                                    Load file
-                                    <input
-                                        onChange={(e) => {
-                                            this.inputFileChanged(e)
-                                        }}
-                                        style={{display: 'none'}}
-                                        type="file"
-                                    />
-                                </Button>
-                            </Tooltip>
-                        </Grid>
 
-                        <Grid item xs={6}>
+                        <Grid item xs={12}>
                             <Tooltip title="helper" aria-label="add">
                                 <Button
-                                    variant="contained"
-                                    color="primary"
+                                    variant="outlined"
+                                    color="default"
                                     component="label"
                                     fullWidth
+                                    disableElevation
                                     startIcon={<CloudDownloadRoundedIcon/>}
                                     onClick={(e) => {
                                         this.downloadData(e)
                                     }}
                                 >
-                                    Download data
+                                    Download complexity values
                                 </Button>
                             </Tooltip>
                         </Grid>

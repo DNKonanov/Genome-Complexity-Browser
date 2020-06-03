@@ -28,20 +28,20 @@ class GraphJsonColors extends React.Component {
         return (
             <div>
                 <Container fixed className={classes.boxButtons}>
-                    <Card>
-                        <CardContent>
                             <Grid container
-                                  spacing={3}
+                                  spacing={1}
                                   justify="center"
+
                                 // alignItems="stretch"
                             >
-                                <Grid item xs={6}>
-                                    <ButtonGroup
-                                        aria-label="outlined button group"
-                                        orientation="vertical"
-                                    >
+                                <Grid item xs={12}>
                                         <Tooltip title="helper">
                                             <Button
+                                                variant="outlined"
+                                                color="default"
+                                                component="label"
+                                                fullWidth
+                                                disableElevation
                                                 startIcon={<CloudDownloadRoundedIcon/>}
                                                 onClick={this.handleDownloadJSON}
                                             >
@@ -51,6 +51,12 @@ class GraphJsonColors extends React.Component {
 
                                         <Tooltip title="helper">
                                             <Button
+                                                variant="outlined"
+                                                color="default"
+                                                component="label"
+                                                fullWidth
+                                                disableElevation
+
                                                 onClick={this.handleDownloadJPG}
                                                 startIcon={<CloudDownloadRoundedIcon/>}
                                             >
@@ -60,17 +66,19 @@ class GraphJsonColors extends React.Component {
 
                                         <Tooltip title="helper">
                                             <Button
+                                                variant="outlined"
+                                                color="default"
+                                                component="label"
+                                                fullWidth
+                                                disableElevation
                                                 onClick={this.handleUploadColors}
                                                 startIcon={<BackupRoundedIcon/>}
                                             >
                                                 UPLOAD COLORS
                                             </Button>
                                         </Tooltip>
-                                    </ButtonGroup>
                                 </Grid>
                             </Grid>
-                        </CardContent>
-                    </Card>
                 </Container>
             </div>
         );
