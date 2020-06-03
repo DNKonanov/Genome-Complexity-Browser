@@ -2,7 +2,7 @@ import {IS_OPEN_DRAWER} from "../../constants/layout/constants";
 
 const initiateState = {
    leftMenu:{
-       is_open_drawer:false
+       is_open_drawer:true
    }
 };
 

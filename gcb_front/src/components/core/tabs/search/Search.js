@@ -34,6 +34,7 @@ import {
 } from "../../../../redux/actions/selector/actions";
 import {connect} from 'react-redux';
 import {SEARCH_RESULTS} from "../../../../redux/constants/selector/constants";
+
 const mapStateToProps = state => ({
     org: state.requisite.org,
     stamm: state.requisite.stamm,
@@ -116,9 +117,18 @@ class Search extends React.Component {
         this.props.setRequisite(SEARCH_RESULTS, []);
     };
 
-    handleChange = (event, newValue) => {
-        console.log(newValue);
+    handleChangeinputValue = (event, newValue) => {
+        console.log('newValue',newValue);
+        console.log('event',event.target.value);
+
         this.setState({search_query_value: newValue})
+    };
+
+    handleChange = (event, newValue) => {
+        console.log('value',newValue);
+        console.log('event',event.target.value);
+
+        // this.setState({search_query_value: newValue})
     };
 
     render() {
@@ -140,31 +150,38 @@ class Search extends React.Component {
                                                         options={this.props.search_query}
                                                         getOptionLabel={(option) => option.toString()}
                                                         loading={this.props.search_query.length === 0}
+
                                                         value={this.state.search_query_value}
                                                         onChange={this.handleChange}
 
-                                            inputValue={this.state.search_query_value}
-                                            onInputChange={this.handleChange}
+                                                        inputValue={this.state.search_query_value}
+                                                        // onInputChange={
+                                                        //     (event, newInputValue) => {
+                                                        //         this.handleChangeinputValue(newInputValue)
+                                                        //     }
+                                                        // }
+                                                        onInputChange= {
+                                                                this.handleChangeinputValue
+                                                        }
 
-                                            renderInput={(params) => (
-                                                <TextField {...params}
-                                                           label="Search"
-                                                           variant="outlined"
-                                                           fullWidth
-                                                           name='search_query'
-                                                />)
-                                            }
-                                        />
-                                    </Grid>
+                                                        renderInput={(params) => (
+                                                            <TextField {...params}
+                                                                       label="Search"
+                                                                       variant="outlined"
+                                                                       fullWidth
+                                                            />)
+                                                        }
+                                                    />
+                                                </Grid>
 
-                                    <Grid item xs={1}>
-                                        <IconButton
-                                            type="submit"
-                                            onClick={this.search}
-                                        >
-                                            <SearchIcon/>
-                                        </IconButton>
-                                    </Grid>
+                                                <Grid item xs={1}>
+                                                    <IconButton
+                                                        type="submit"
+                                                        onClick={this.search}
+                                                    >
+                                                        <SearchIcon/>
+                                                    </IconButton>
+                                                </Grid>
 
                                                 <Grid item xs={1}>
                                                     <IconButton

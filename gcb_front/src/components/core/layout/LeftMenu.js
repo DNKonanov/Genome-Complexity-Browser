@@ -19,9 +19,6 @@ const mapStateToProps = state => ({
 const actionsCreator = {
     setIs_open_drawer: setIs_open_drawer,
 };
-
-
-
 class LeftMenu extends React.Component {
     constructor(props) {
         super(props);
