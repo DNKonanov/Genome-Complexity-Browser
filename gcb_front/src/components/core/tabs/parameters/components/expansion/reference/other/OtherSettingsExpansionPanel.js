@@ -177,7 +177,7 @@ class OtherSettingsExpansionPanel extends React.Component {
                                             </Grid>
                                         </Grid>
 
-                                        <Grid container spacing={3}>
+                                        {/* <Grid container spacing={3}>
                                             <Grid item xs={6}>
                                                 <RefTextFields
                                                     labelTF={'Start OG'}
@@ -195,7 +195,7 @@ class OtherSettingsExpansionPanel extends React.Component {
                                                     disTF={true}
                                                 />
                                             </Grid>
-                                        </Grid>
+                                        </Grid> */}
                                     </Box>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>

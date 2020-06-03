@@ -9,7 +9,7 @@ import CytoscapeDagreGraph from "./CytoscapeDagreGraph";
 import RefTextFields from "../core/tabs/parameters/components/expansion/reference/components/RefTextFields";
 import {setCoordStartCoordEnd, setOgStartOgEnd} from "../../redux/actions/selector/actions";
 import {Button, Grid, Tooltip, Typography} from '@material-ui/core';
-
+import Math from 'mathjs';
 
 const mapStateToProps = state => ({
     graph: state.graph.graph,
@@ -181,14 +181,21 @@ class GraphContainer extends Component {
 
     // рисует. Плюс анимация загрузки
     handleGraphDraw = () => {
+        
+        if (Math.abs(this.props.coord_start - this.props.coord_end) > 100000) {
+            alert("The selected region should not exceed 100,000 bp!");
+            return
+        }
+
+        if (this.checkOG() === true)
+            return;
+            
        let ogSE =  this.checkOGs();
         // this.checkCoord();
 
 
         this.props.setContainerGraph(LOADING, true);
 
-        if (this.checkOG() === true)
-            return;
         // Make redux request
         let params = this.getGraphParams();
 

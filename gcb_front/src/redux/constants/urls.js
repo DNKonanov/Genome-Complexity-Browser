@@ -1,2 +1,3 @@
-export const SERVER_URL = 'http://10.210.7.38';
-export const SERVER_PORT = ':80';
+export const SERVER_URL = 'http://195.178.203.12'
+export const SERVER_PORT = ':80'
+

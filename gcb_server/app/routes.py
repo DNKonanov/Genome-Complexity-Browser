@@ -133,8 +133,8 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
             descripton = '<strong>{gene_description}</strong><br>'.format(
                 gene_description=descripton_list[og_index].replace('_', ' ')
             )
-            descripton += 'Pfam: {pfam}<br>'.format(pfam='PF002301')
-            descripton += 'COG: {cog}'.format(cog='U')
+            #descripton += 'Pfam: {pfam}<br>'.format(pfam='PF002301')
+            #descripton += 'COG: {cog}'.format(cog='U')
 
             node['data']['description'] = descripton
         else:
@@ -151,8 +151,8 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
                     end=coordinates[1][coord_index][1],
                     strand='+'
                 )
-                descripton += 'Pfam: {pfam}<br>'.format(pfam='PF002301')
-                descripton += 'COG: {cog}'.format(cog='U')
+                #descripton += 'Pfam: {pfam}<br>'.format(pfam='PF002301')
+                #descripton += 'COG: {cog}'.format(cog='U')
 
 
                 node['data']['description'] = descripton

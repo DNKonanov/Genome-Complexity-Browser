@@ -281,7 +281,10 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     selectOptions={this.props.organisms} // array
                                                     disabledSelect={false}
                                                     focusedSelect={true}
-                                                    tooltipText={'YYWYRWY'}
+                                                    tooltipText={<React.Fragment>
+                                                                    <Typography color="inherit">Organism</Typography>
+                                                                    {"this parameter "} <u>{"lalala"}</u>
+                                                                </React.Fragment>}
                                                 />
                                             </Grid>
 
@@ -292,6 +295,10 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     selectValue={this.props.stamm}
                                                     selectOptions={this.props.stamms.list} // arr
                                                     disabledSelect={this.props.disabled_select_reference}
+                                                    tooltipText={<React.Fragment>
+                                                                    <Typography color="inherit">Reference</Typography>
+                                                                    {"this parameter "} <u>{"lalala"}</u>
+                                                                </React.Fragment>}
                                                 />
                                             </Grid>
 
@@ -302,6 +309,10 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     selectValue={this.props.contig}
                                                     selectOptions={this.props.contigs.list} //arr
                                                     disabledSelect={this.props.disabled_select_reference}
+                                                    tooltipText={<React.Fragment>
+                                                                    <Typography color="inherit">Contig</Typography>
+                                                                    {"this parameter "} <u>{"lalala"}</u>
+                                                                </React.Fragment>}
                                                 />
                                             </Grid>
                                         </Grid>
@@ -326,6 +337,10 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     selectValue={this.props.complexity_window}
                                                     selectOptions={this.props.complexity_windows.list}
                                                     disabledSelect={this.props.disabled_select_reference}
+                                                    tooltipText={<React.Fragment>
+                                                                    <Typography color="inherit">Window</Typography>
+                                                                    {"this parameter "} <u>{"lalala"}</u>
+                                                                </React.Fragment>}
                                                 />
                                             </Grid>
                                         </Grid>
