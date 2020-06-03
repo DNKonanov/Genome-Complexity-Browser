@@ -7,7 +7,6 @@ import {layoutStyle} from "./layout/styles/LayoutStyle";
 import {CssBaseline, withStyles} from "@material-ui/core";
 
 
-
 class Core extends React.Component {
     render() {
         const {classes} = this.props;
@@ -20,9 +19,7 @@ class Core extends React.Component {
 
                     <LeftMenu/>
 
-                    {/*<main className={classes.content}>*/}
-                        <MainMenu/>
-                    {/*</main>*/}
+                    <MainMenu/>
                 </div>
             </div>
         );

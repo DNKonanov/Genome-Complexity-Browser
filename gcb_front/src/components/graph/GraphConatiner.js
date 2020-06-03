@@ -91,8 +91,10 @@ class GraphContainer extends Component {
             org: sel.org,
             stamm: sel.stamm,
             contig: sel.contig,
-            og_start: sel.og_start,
-            og_end: sel.og_end,
+            // og_start: sel.og_start,
+            og_start: this.props.og_start_s,
+            og_end: this.props.og_end_s,
+            // og_end: sel.og_end,
             pars_int: sel.pars_int.toString(),
             operons_int: sel.operons_int.toString(),
             complexity_window: sel.complexity_window,
@@ -143,8 +145,14 @@ class GraphContainer extends Component {
         }
 
         if (this.props.complexity.OGs[close_st_gene] !== undefined && this.props.complexity.OGs[close_end_gene] !== undefined) {
-            this.props.setOgStartOgEnd(this.props.complexity.OGs[close_st_gene], this.props.complexity.OGs[close_end_gene])
+
+            this.props.setOgStartOgEnd(
+                this.props.complexity.OGs[close_st_gene],
+                this.props.complexity.OGs[close_end_gene]
+            )
         }
+        return [this.props.complexity.OGs[close_st_gene],this.props.complexity.OGs[close_end_gene]]
+
     };
 
     checkCoord = (event) => {
@@ -173,8 +181,8 @@ class GraphContainer extends Component {
 
     // рисует. Плюс анимация загрузки
     handleGraphDraw = () => {
-        this.checkOGs();
-        this.checkCoord();
+       let ogSE =  this.checkOGs();
+        // this.checkCoord();
 
 
         this.props.setContainerGraph(LOADING, true);
@@ -183,6 +191,9 @@ class GraphContainer extends Component {
             return;
         // Make redux request
         let params = this.getGraphParams();
+
+        params.og_start = ogSE[0];
+        params.og_end = ogSE[1];
 
         this.props.fetchGraph(params);
 

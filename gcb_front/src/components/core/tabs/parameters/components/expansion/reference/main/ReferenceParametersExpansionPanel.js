@@ -109,6 +109,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
         super(props);
         this.state = {
             expanded: true,
+            countClick: 0,
         };
     };
 
@@ -280,6 +281,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     selectOptions={this.props.organisms} // array
                                                     disabledSelect={false}
                                                     focusedSelect={true}
+                                                    tooltipText={'YYWYRWY'}
                                                 />
                                             </Grid>
 
@@ -508,9 +510,6 @@ class ReferenceParametersExpansionPanel extends React.Component {
     };
 
     handleDraw = () => {
-        // this.checkOGs();
-        // this.checkCoord();
-        //
         document.getElementById('graphButtonDraw').click();
     };
 }

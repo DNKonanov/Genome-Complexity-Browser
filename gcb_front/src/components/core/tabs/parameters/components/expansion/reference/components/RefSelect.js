@@ -67,7 +67,7 @@ RefSelect.defaultProps = {
     selectOptions: [],
     disabledSelect: true,
     focusedSelect: false,
-    tooltipText:'helper'
+    tooltipText:''
 };
 
 RefSelect.propTypes = {
