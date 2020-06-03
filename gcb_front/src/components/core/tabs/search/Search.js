@@ -63,6 +63,7 @@ class Search extends React.Component {
         this.state = {
             search_query_value: '',
             search_results: [],
+            openSearchResults: false,
         }
     }
 
@@ -107,8 +108,13 @@ class Search extends React.Component {
             .then(response => response.json())
             .then(data => {
                 this.props.setRequisite(SEARCH_RESULTS, data);
-            })
+            }).finally(()=>{
+                this.setState({
+                    openSearchResults:true
+                })
+        })
             .catch(error => console.log('error'));
+
 
         e.preventDefault()
     };
@@ -208,7 +214,7 @@ class Search extends React.Component {
                             // fixed
                             maxWidth="xl"
                         >
-                            <ExpansionPanel>
+                            <ExpansionPanel expanded={this.state.openSearchResults}>
                                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                                     <Typography>RESULT</Typography>
                                 </ExpansionPanelSummary>
