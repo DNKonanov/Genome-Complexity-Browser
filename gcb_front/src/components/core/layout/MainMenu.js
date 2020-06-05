@@ -98,12 +98,12 @@ class MainMenu extends React.Component {
                                                             >
                                                                 <Tooltip title={'helper'}>
                                                                     <Button
-                                                                        variant="contained"
+                                                                        variant="outlined"
                                                                         color="default"
                                                                         disableElevation
                                                                         onClick={this.handleDraw}
                                                                     >
-                                                                        PLOT GRAPH
+                                                                        DRAW GRAPH
                                                                     </Button>
                                                                 </Tooltip>
                                                             </a>

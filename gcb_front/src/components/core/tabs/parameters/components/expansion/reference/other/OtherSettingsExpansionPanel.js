@@ -5,6 +5,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import removeAllTips from "../../../../../../../../sctipts/helper/functions/removeAllTips";
 import RefTextFields from "../components/RefTextFields";
 import {setContainerGraph} from "../../../../../../../../redux/actions/graph/container/actions";
+import HelpIcon from '@material-ui/icons/Help';
 import {
     Box,
     Container,

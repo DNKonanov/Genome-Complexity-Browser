@@ -41,7 +41,8 @@ import {
     FormLabel,
     Radio,
     RadioGroup,
-    withStyles
+    withStyles,
+    ThemeProvider
 } from '@material-ui/core';
 
 
@@ -136,6 +137,8 @@ class ReferenceParametersExpansionPanel extends React.Component {
     };
 
     componentDidMount() {
+
+        console.log('checkOrgs')
         if (this.props.organisms.length === 0)
             this.props.fetchOrganisms();
         return;
@@ -150,6 +153,11 @@ class ReferenceParametersExpansionPanel extends React.Component {
     handleChangeContainer = (e) => {
         e.preventDefault();
         this.props.setContainerGraph(e.target.name.toUpperCase(), !this.props.hide_edges);
+    };
+
+    handleChangePars = (e) => {
+        e.preventDefault();
+        this.props.setRequisite(e.target.name.toUpperCase(), !this.props.pars);
     };
 
     handleLayout = event => {
@@ -282,7 +290,18 @@ class ReferenceParametersExpansionPanel extends React.Component {
     };
 
     render() {
+
+
         const {classes} = this.props;
+        let genomes_loading
+        if (this.props.organisms.length === 0) {
+            genomes_loading = <Typography>Request genomes...</Typography>
+        }
+
+        else {
+            genomes_loading = ''
+        }
+        
         return (
             <div>
                 <Grid container spacing={3} justify="center">
@@ -292,6 +311,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                         <Grid container>
                                             <Typography variant='h6'>Select genome</Typography>
                                         </Grid>
+                                        {genomes_loading}
                                         <Divider className={classes.divider}/>
 
                                         <Grid container
@@ -308,8 +328,9 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     disabledSelect={false}
                                                     focusedSelect={true}
                                                     tooltipText={<React.Fragment>
-                                                                    <Typography color="inherit">Organism</Typography>
-                                                                    {"this parameter "} <u>{"lalala"}</u>
+                                                                    <Typography variant='body2' color="inherit">
+                                                                    Choose a set of genomes on the basis of which the graph is built and complexity values are calculated
+                                                                    </Typography>
                                                                 </React.Fragment>}
                                                 />
                                             </Grid>
@@ -322,9 +343,10 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     selectOptions={this.props.stamms.list} // arr
                                                     disabledSelect={this.props.disabled_select_reference}
                                                     tooltipText={<React.Fragment>
-                                                                    <Typography color="inherit">Reference</Typography>
-                                                                    {"this parameter "} <u>{"lalala"}</u>
-                                                                </React.Fragment>}
+                                                        <Typography variant='body2' color="inherit">
+                                                        Select the genome, region for graph representation, and parameters
+                                                        </Typography>
+                                                    </React.Fragment>}
                                                 />
                                             </Grid>
 
@@ -336,8 +358,9 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     selectOptions={this.props.contigs.list} //arr
                                                     disabledSelect={this.props.disabled_select_reference}
                                                     tooltipText={<React.Fragment>
-                                                                    <Typography color="inherit">Contig</Typography>
-                                                                    {"this parameter "} <u>{"lalala"}</u>
+                                                                    <Typography variant='body2' color="inherit">
+                                                                    Select a contig (for draft genomes) or replicon from the reference genome
+                                                                    </Typography>
                                                                 </React.Fragment>}
                                                 />
                                             </Grid>
@@ -345,15 +368,30 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                                         <Divider className={classes.divider}/>
                                         
-                                        <Grid container>
-                                            <Typography variant='h6'>Select region to draw graph</Typography>
-                                        </Grid>
+
+                                        <Tooltip
+                                            title={<React.Fragment>
+                                                        <Typography variant='body2' color="inherit">
+                                                        The region of the reference genome between the start and end 
+                                                        coordinates will be shown in graph form. The number of genes 
+                                                        specified in the 'neighborhood' parameter will be added on 
+                                                        the left and right to the selected region.
+                                                        </Typography>
+                                                    </React.Fragment>}
+                                        >
+                                            <Grid container>
+                                                <Typography variant='h6'>Select region to draw graph</Typography>
+                                            </Grid>
+
+                                        </Tooltip>
+                                        
                                         <br></br>
 
                                         {/*TEXT FIELDS*/}
                                         <Grid container justify="flex-start" spacing={3}>
                                             <Grid item xs={6}>
                                                 <RefTextFields
+                                                    tooltipText=''
                                                     labelTF={'Start coordinate'}
                                                     nameTF={'coord_start'}
                                                     valueTF={this.props.coord_start}
@@ -362,6 +400,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                                             <Grid item xs={6}>
                                                 <RefTextFields
+                                                    tooltipText=''
                                                     labelTF={'End coordinate'}
                                                     nameTF={'coord_end'}
                                                     valueTF={this.props.coord_end}
@@ -411,7 +450,11 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     }}>
                                                         <LinearProgress/>
                                                     </div>
-                                                    <Tooltip title={'helper'}>
+                                                    <Tooltip 
+                                                        title={<Typography variant='body2'>
+                                                            Show the graph corresponding to the selected region in the Graph panel
+                                                            </Typography>}
+                                                        >
                                                         <Button size="large"
                                                                 variant="outlined"
                                                                 color="default"
@@ -430,9 +473,18 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                                         {/*-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/}
                                         <br></br>
+
+                                        
                                         <ExpansionPanel>
                                             <ExpansionPanelSummary>
-                                                <Typography>Other settings</Typography>
+                                                <Tooltip
+                                                    title={<Typography variant='body2'>
+                                                        Show advanced settings of the complexity profile and graph plots
+                                                    </Typography>}
+                                                >
+                                                    <Typography>Other settings</Typography>
+                                                </Tooltip>
+                                                
                                             </ExpansionPanelSummary>
                                                 <ExpansionPanelDetails>
                                                     <Box>
@@ -593,7 +645,22 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                             }
                                                             label="Hide reversed"
                                                         />
+                                                        <FormControlLabel
+                                                            control={
+                                                                <Tooltip title={'helper'}>
+                                                                    <Switch name='pars'
+                                                                        // value="checked"
+                                                                            checked={this.props.pars}
+                                                                            color="primary"
+                                                                            onChange={this.handleChangePars}
+                                                                    />
+                                                                </Tooltip>
+                                                            }
+                                                            label="Draw paralogues"
+                                                        />
                                                     </Grid>
+
+                                                    
 
                                                 </Grid>
 
@@ -602,13 +669,6 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                                             </ExpansionPanelDetails>
                                         </ExpansionPanel>
-
-
-                                        
-
-                                        
-
-
                                         
                                     </Box>
                         </Container>

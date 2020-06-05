@@ -61,7 +61,7 @@ class Search extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            search_query_value: '',
+            search_query_value: 'polymerase',
             search_results: [],
             openSearchResults: false,
         }
@@ -147,10 +147,26 @@ class Search extends React.Component {
                         >
                             <form onSubmit={this.search}>
                                 <Grid container spacing={1} justify="center">
+                                    
                                     <Grid item xs={10}>
+                                        <TextField
+                                            id="outlined-basic"
+                                            label={'Search'}
+                                            fullWidth
+                                            value={this.state.search_query_value}
+                                            onChange={(e) => this.setState({
+                                                search_query_value: e.target.value
+                                            })}
+                                            >
+                                            polymerase
+                                        </TextField>
+
+                                    </Grid>
+
+                                    {/* <Grid item xs={10}>
                                         <Autocomplete
                                             id="combo-box-demo"
-                                            options={this.props.search_query}
+                                            options={['polymerase']}
                                             getOptionLabel={(option) => option.toString()}
                                             loading={this.props.search_query.length === 0}
 
@@ -175,7 +191,7 @@ class Search extends React.Component {
                                                 />)
                                             }
                                         />
-                                    </Grid>
+                                    </Grid> */}
 
                                     <Grid item xs={1}>
                                         <IconButton

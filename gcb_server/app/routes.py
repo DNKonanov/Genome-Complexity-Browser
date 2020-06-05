@@ -285,7 +285,14 @@ def search(org, stamm, pars, input):
     table = []
     for contig in contigs:
         query = 'SELECT node_name, description, (start_coord+end_coord)/2 FROM nodes_table WHERE contig_id=' + str(contig[0])
-        table += [list(q) + [contig[1]] for q in c.execute(query) if input.lower() in q[1].lower()]
+        
+        table += [list(q) + [contig[1]] for q in c.execute(query)]
 
     connect.close()
+    
+    input_parts = input.split('_')
+    for p in input_parts:
+        table = [t for t in table if p in t[1]]
+    
+    
     return jsonify(table)

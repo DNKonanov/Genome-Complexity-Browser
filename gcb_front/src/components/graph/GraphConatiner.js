@@ -312,12 +312,12 @@ class GraphContainer extends Component {
                            }}
                         > <Tooltip title={'helper'}>
                             <Button
-                                variant="contained"
+                                variant="outlined"
                                 color="default"
                                 disableElevation
                                 onClick={this.handleGraphDraw}
                             >
-                                UPDATE
+                                UPDATE GRAPH
                             </Button>
                         </Tooltip>
                         </a>
