@@ -290,9 +290,11 @@ def search(org, stamm, pars, input):
 
     connect.close()
     
-    input_parts = input.split('_')
+    input = input.replace('_', ' ').replace('\t', ' ')
+    input_parts = input.split(' ')
+    
     for p in input_parts:
-        table = [t for t in table if p in t[1]]
+        table = [t for t in table if p.lower() in t[1].lower()]
     
     
     return jsonify(table)

@@ -61,7 +61,7 @@ class Search extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            search_query_value: 'polymerase',
+            search_query_value: '',
             search_results: [],
             openSearchResults: false,
         }
@@ -151,7 +151,7 @@ class Search extends React.Component {
                                     <Grid item xs={10}>
                                         <TextField
                                             id="outlined-basic"
-                                            label={'Search'}
+                                            label={'search by gene product (e.g. polymerase)'}
                                             fullWidth
                                             value={this.state.search_query_value}
                                             onChange={(e) => this.setState({
