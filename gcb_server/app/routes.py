@@ -30,11 +30,11 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
     else:
         paths = organism + '_pars.dump'
 
-    if window > 100:
+    if int(window) > 100:
         window = 100
-    if tails > 100:
+    if int(tails) > 100:
         tails = 100
-    if depth > 200:
+    if int(depth) > 200:
         depth = 200
 
     graph_file = data_path+organism+'/' + paths
