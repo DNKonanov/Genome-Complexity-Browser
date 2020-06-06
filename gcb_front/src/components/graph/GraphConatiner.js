@@ -227,7 +227,7 @@ class GraphContainer extends Component {
         let notLoaded = () => (
             <div style={{display: 'flex', height: 300, width: '100%'}}>
                 <Typography variant="h4" style={{margin: 'auto', textAlign: 'center'}}>
-                    Please, select parameters and click DRAW button
+                Please, select a genome region to draw a graph and click DRAW GRAPH button
                 </Typography>
             </div>
 
@@ -267,8 +267,8 @@ class GraphContainer extends Component {
                                     nameTF={'depth'}
                                     valueTF={this.props.depth}
                                     typeTF={"number"}
-                                    errTF={this.props.depth < 2}
-                                    helperTextTF={this.props.depth < 2 ? 'Greater than or equal to two' : ''}
+                                    errTF={(this.props.depth < 2 || this.props.depth > 200)}
+                                    helperTextTF={(this.props.depth < 2 || this.props.depth > 200) ? '2 < depth <= 200 is available' : ''}
                                     tooltipText={
                                         <React.Fragment>
                                             <Typography variant='body2'>
@@ -289,8 +289,8 @@ class GraphContainer extends Component {
                                 nameTF={'window'}
                                 valueTF={this.props.window}
                                 typeTF={"number"}
-                                errTF={this.props.window < 1}
-                                helperTextTF={this.props.window < 1 ? 'Greater than or equal to one' : ''}
+                                errTF={(this.props.window < 1 || this.props.window > 100)}
+                                helperTextTF={(this.props.window < 1 || this.props.window > 100) ? '1 < neighborhood <= 100 is available' : ''}
                                 tooltipText={<React.Fragment>
                                         <Typography variant='body2'>
                                         Add this number of genes left and right to the region shown
@@ -307,8 +307,8 @@ class GraphContainer extends Component {
                                 nameTF={'tails'}
                                 valueTF={this.props.tails}
                                 typeTF={"number"}
-                                errTF={this.props.tails < 0}
-                                helperTextTF={this.props.tails < 0 ? 'Greater than or equal to zero' : ''}
+                                errTF={(this.props.tails < 0 || this.props.tails > 100)}
+                                helperTextTF={(this.props.tails < 0 || this.props.tails > 100) ? '0 < tails <= 100 is available' : ''}
                                 tooltipText={<React.Fragment>
                                     <Typography variant='body2'>
                                     Long paths in the graph are cropped to fragments of a length below this value

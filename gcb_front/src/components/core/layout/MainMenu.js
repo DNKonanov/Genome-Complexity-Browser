@@ -67,7 +67,16 @@ class MainMenu extends React.Component {
                         <div style={{
                             marginTop: document.documentElement.clientHeight / 2 - this.state.headerOffsetHeight + this.state.scrollValue,
                         }}>
-                            <Tooltip title="helper" aria-label="add">
+                            <Tooltip title={<React.Fragment>
+                                <Typography variant='body2'>
+                                    Select genome<br></br>
+                                    Gene  search<br></br>
+                                    Download data<br></br>
+                                    Upload user features<br></br>
+                                    About
+
+                                </Typography>
+                            </React.Fragment>} aria-label="add">
                                 <Fab color="default"
                                      aria-label="add"
                                      size={'large'}

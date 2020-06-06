@@ -28,7 +28,17 @@ class HeaderMenu extends React.Component {
                         className={clsx(classes.appBar, this.props.is_open_drawer && classes.appBarShift)}
                 >
                     <Toolbar className={classes.toolbar}>
-                        <Tooltip title="helper" aria-label="add">
+                        <Tooltip title={<React.Fragment>
+                                <Typography variant='body2'>
+                                    Select genome<br></br>
+                                    Gene  search<br></br>
+                                    Download data<br></br>
+                                    Upload user features<br></br>
+                                    About
+
+                                </Typography>
+                            </React.Fragment>}
+                            aria-label="add">
                             <IconButton
                                 edge="start"
                                 color="inherit"

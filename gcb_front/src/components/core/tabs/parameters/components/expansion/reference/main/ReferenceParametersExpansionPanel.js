@@ -377,7 +377,14 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                         The region of the reference genome between the start and end 
                                                         coordinates will be shown in graph form. The number of genes 
                                                         specified in the 'neighborhood' parameter will be added on 
-                                                        the left and right to the selected region.
+                                                        the left and right to the selected region. 
+                                                        
+                                                        </Typography>
+                                                        <br></br>
+                                                        <Typography>
+
+                                                        Length of the region 
+                                                        should not exceed 100 k.b.p
                                                         </Typography>
                                                     </React.Fragment>}
                                         >
@@ -590,7 +597,10 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                             labelTF={'Tails'}
                                                             nameTF={'tails'}
                                                             valueTF={this.props.tails}
-                                                            typeTF={"number"}
+                                                            typeTF={"number"}errTF={(this.props.tails < 0 || this.props.tails > 100)}
+                                                            errTF={(this.props.tails < 0 || this.props.tails > 100)}
+                                                            helperTextTF={(this.props.tails < 0 || this.props.tails > 100) ? '0 < tails <= 100 is available' : ''}
+                                                            
                                                             tooltipText={<React.Fragment>
                                                                 <Typography variant='body2'>
                                                                 Paths in the graph which are longer than Depth are 
@@ -605,6 +615,8 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                             nameTF={'depth'}
                                                             valueTF={this.props.depth}
                                                             typeTF={"number"}
+                                                            errTF={(this.props.depth < 2 || this.props.depth > 200)}
+                                                            helperTextTF={(this.props.depth < 2 || this.props.depth > 200) ? '2 < depth <= 200 is available' : ''}
                                                             tooltipText={
                                                                 <React.Fragment>
                                                                     <Typography variant='body2'>
@@ -636,6 +648,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                             labelTF={'Neighborhood'}
                                                             nameTF={'window'}
                                                             valueTF={this.props.window}
+                                                            helperTextTF={(this.props.window < 1 || this.props.window > 100) ? '1 < neighborhood <= 100 is available' : ''}
                                                             typeTF={"number"}
                                                             tooltipText={<React.Fragment>
                                                                 <Typography variant='body2'>

@@ -30,6 +30,13 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
     else:
         paths = organism + '_pars.dump'
 
+    if window > 100:
+        window = 100
+    if tails > 100:
+        tails = 100
+    if depth > 200:
+        depth = 200
+
     graph_file = data_path+organism+'/' + paths
     
     subgr = get_subgraph(graph_file, organism, ref_strain, window=int(window), start=og_start, end=og_end, tails=int(tails), depth=int(depth))
@@ -133,9 +140,10 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
             descripton = '<strong>{gene_description}</strong><br>'.format(
                 gene_description=descripton_list[og_index].replace('_', ' ')
             )
+
+            descripton += 'Length: {length}<br>'.format(length=abs(length_list[og_index]))
             #descripton += 'Pfam: {pfam}<br>'.format(pfam='PF002301')
             #descripton += 'COG: {cog}'.format(cog='U')
-
             node['data']['description'] = descripton
         else:
             node['data']['description'] = 'null'
@@ -146,10 +154,13 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
                 descripton = '<strong>{gene_description}</strong><br>'.format(
                     gene_description=coordinates[2][coord_index].replace('_', ' ')
                 )
-                descripton += 'Located: {start}-{end} ({strand} strand)<br>'.format(
+                descripton += 'Located: {start}-{end}<br>'.format(
                     start=coordinates[1][coord_index][0],
-                    end=coordinates[1][coord_index][1],
-                    strand='+'
+                    end=coordinates[1][coord_index][1]
+                )
+
+                descripton += 'Length: {length}<br>'.format(
+                    length=abs(coordinates[1][coord_index][0] - coordinates[1][coord_index][1])
                 )
                 #descripton += 'Pfam: {pfam}<br>'.format(pfam='PF002301')
                 #descripton += 'COG: {cog}'.format(cog='U')
