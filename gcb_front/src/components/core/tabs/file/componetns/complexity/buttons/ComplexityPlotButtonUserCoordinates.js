@@ -11,7 +11,8 @@ import {
     setUserCoordinatesStr,
     setUserValues
 } from "../../../../../../../redux/actions/file/readFile";
-import {Button, Container, Grid, Tooltip, withStyles} from '@material-ui/core';
+
+import {Button, Container, Grid, Tooltip, withStyles, Typography} from '@material-ui/core';
 
 const mapStateToProps = state => ({
     userCoordinatesStr: state.file.userCoordinatesStr,
@@ -100,7 +101,19 @@ class ComplexityPlotButtonUserCoordinates extends React.Component {
 
 
                         <Grid item xs={12}>
-                            <Tooltip title="helper" aria-label="add">
+                            <Tooltip 
+                                title={<React.Fragment>
+                                    <Typography variant='body2'>
+                                    Select a file containing the genome coordinates to highlight. 
+                                    Format: 
+
+                                    <br></br>
+                                    <br></br>&lt;genome position 1&gt; &lt;numeric value 1&gt;.
+                                    <br></br>&lt;genome position 2&gt; &lt;numeric value 2&gt;.
+                                    <br></br>...
+                                    </Typography>
+                                </React.Fragment>}
+                                aria-label="add">
                                 <Button
                                     variant="outlined"
                                     color="default"
@@ -123,7 +136,12 @@ class ComplexityPlotButtonUserCoordinates extends React.Component {
                         </Grid>
                         <Grid container spacing={1} justify="center">
                         <Grid item xs={6}>
-                            <Tooltip title="helper" aria-label="add">
+                        <Tooltip 
+                                title={<React.Fragment>
+                                    <Typography variant='body2'>
+                                    Show uploaded features on the complexity plot, you can select type of plot below.                                    </Typography>
+                                </React.Fragment>} 
+                                aria-label="add">
                             <Button
                                 variant="outlined"
                                 color="default"
@@ -140,7 +158,13 @@ class ComplexityPlotButtonUserCoordinates extends React.Component {
                         </Grid>
 
                         <Grid item xs={6}>
-                            <Tooltip title="helper" aria-label="add">
+                            <Tooltip 
+                                title={<React.Fragment>
+                                    <Typography variant='body2'>
+                                    Remove uploaded features from plot and memory.
+                                    </Typography>
+                                </React.Fragment>} 
+                                aria-label="add">
                             <Button
                                 variant="outlined"
                                 color="default"

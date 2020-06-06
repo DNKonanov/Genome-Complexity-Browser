@@ -22,7 +22,7 @@ import {CONTIG, GENOME_NAME, STAMM} from "../../../../../../../../redux/constant
 import RefSelect from "../components/RefSelect";
 import RefTextFields from "../components/RefTextFields";
 import removeAllTips from "../../../../../../../../sctipts/helper/functions/removeAllTips";
-import {setIs_open_drawer} from "../../../../../../../../redux/actions/layout/actions";
+import {setIs_open_drawer, setCurrentTab} from "../../../../../../../../redux/actions/layout/actions";
 import {
     Box,
     Button,
@@ -89,6 +89,7 @@ const mapStateToProps = state => ({
     disabled_select_reference: state.components.select.disabled_select_reference,
 
     is_open_drawer: state.layout.leftMenu.is_open_drawer,
+    current_tab: state.layout.leftMenu.current_tab,
 
     loading: state.container.loading,
     // container
@@ -117,12 +118,14 @@ const actionCreators = {
     putSelectedRef: putSelectedRef,
     //requisite
     setRequisite: setRequisite, // main
+    setCurrentTab: setCurrentTab,
 
     setOgStartOgEnd: setOgStartOgEnd,
     setCoordStartCoordEnd: setCoordStartCoordEnd,
     setStammGenomeName: setStammGenomeName,
     // components
     setIs_open_drawer: setIs_open_drawer,
+    setCurrentTab: setCurrentTab,
     // graph
     setContainerGraph: setContainerGraph,
 };
@@ -138,7 +141,6 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
     componentDidMount() {
 
-        console.log('checkOrgs')
         if (this.props.organisms.length === 0)
             this.props.fetchOrganisms();
         return;
@@ -511,8 +513,11 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                             selectOptions={this.props.complexity_windows.list}
                                                             disabledSelect={this.props.disabled_select_reference}
                                                             tooltipText={<React.Fragment>
-                                                                            <Typography color="inherit">Window</Typography>
-                                                                            {"this parameter "} <u>{"lalala"}</u>
+                                                                            <Typography variant='body2'>
+                                                                            This parameter sets the region on the basis of which 
+                                                                            the complexity value is calculated. The larger
+                                                                             it is, the smoother the complexity profile.
+                                                                            </Typography>
                                                                         </React.Fragment>}
                                                         />
                                                     </Grid>
@@ -524,10 +529,20 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                 <Grid container justify="flex-start" spacing={3}>
                                                     <Grid item xs={6}>
                                                         <RefTextFields
-                                                            labelTF={'Hotspots threshold coef'}
+                                                            labelTF={'Hotspots threshold'}
                                                             nameTF={'coef'}
                                                             valueTF={this.props.coef}
                                                             disTF={this.props.disabled_select_reference}
+                                                            tooltipText={
+                                                                <React.Fragment>
+                                                                    <Typography variant='body2'>
+                                                                    he coefficient by which the interquartile distance 
+                                                                    is multiplied in the Tukey outlier criterion.
+                                                                     The greater the value, the more stringent 
+                                                                     hotspots are determined.
+                                                                    </Typography>
+                                                                </React.Fragment>
+                                                            }
                                                         />
                                                     </Grid>
 
@@ -535,7 +550,14 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                         <FormControlLabel
                                                             disabled={this.props.disabled_select_reference}
                                                             control={
-                                                                <Tooltip title={'helper'}>
+                                                                <Tooltip title={ <React.Fragment>
+                                                                    <Typography variant='body2'>
+                                                                    Highlight genes in complexity plot, with complexity values higher 
+                                                                    than the threshold, according to the Tukey criterion.
+                                                                    </Typography>
+                                                                </React.Fragment>
+
+                                                                }>
                                                                     <Switch name='show_hotspots'
                                                                             color="primary"
                                                                             value={this.props.show_hotspots}
@@ -565,10 +587,16 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                 <Grid container spacing={3}>
                                                     <Grid item xs={6}>
                                                         <RefTextFields
-                                                            labelTF={'Tails OG'}
+                                                            labelTF={'Tails'}
                                                             nameTF={'tails'}
                                                             valueTF={this.props.tails}
                                                             typeTF={"number"}
+                                                            tooltipText={<React.Fragment>
+                                                                <Typography variant='body2'>
+                                                                Paths in the graph which are longer than Depth are 
+                                                                cropped to fragments of this value length
+                                                                </Typography>
+                                                            </React.Fragment>}
                                                         />
                                                     </Grid>
                                                     <Grid item xs={6}>
@@ -577,6 +605,13 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                             nameTF={'depth'}
                                                             valueTF={this.props.depth}
                                                             typeTF={"number"}
+                                                            tooltipText={
+                                                                <React.Fragment>
+                                                                    <Typography variant='body2'>
+                                                                    Do not show paths beginning and ending in the selected region longer than this value
+                                                                    </Typography>
+                                                                </React.Fragment>
+                                                            }
                                                         />
                                                     </Grid>
                                                 </Grid>
@@ -588,15 +623,26 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                             nameTF={'freq_min'}
                                                             valueTF={this.props.freq_min}
                                                             typeTF={"number"}
+                                                            tooltipText={<React.Fragment>
+                                                                <Typography variant='body2'>
+                                                                Hide edges in the graph with a weight (number of genomes) below this value
+                                                                </Typography>
+                                                            </React.Fragment>}
                                                         />
                                                     </Grid>
 
                                                     <Grid item xs={6}>
                                                         <RefTextFields
-                                                            labelTF={'Window'}
+                                                            labelTF={'Neighborhood'}
                                                             nameTF={'window'}
                                                             valueTF={this.props.window}
                                                             typeTF={"number"}
+                                                            tooltipText={<React.Fragment>
+                                                                <Typography variant='body2'>
+                                                                Add this number of genes left and right to the region shown
+                                                                </Typography>
+                                                            </React.Fragment>
+                                                        }
                                                         />
                                                     </Grid>
                                                 </Grid>
@@ -608,7 +654,11 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     <Grid item xs={6}>
                                                         <FormControl component="fieldset">
                                                             <FormLabel component="legend">Layouter</FormLabel>
-                                                            <Tooltip title={'helper'}>
+                                                            <Tooltip title={<React.Fragment>
+                                                                <Typography variant='body2'>
+                                                                Use Dagre/Graphviz layout method to arrange nodes in the graph
+                                                                </Typography>
+                                                            </React.Fragment>}>
                                                                 <RadioGroup
                                                                     name="layout"
                                                                     value={this.props.layout}
@@ -634,7 +684,11 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     <Grid item xs={6}>
                                                         <FormControlLabel
                                                             control={
-                                                                <Tooltip title={'helper'}>
+                                                                <Tooltip title={<React.Fragment>
+                                                                    <Typography variant='body2'>
+                                                                    Do not show edges pointing in the opposite direction from the major direction of the edges
+                                                                    </Typography>
+                                                                </React.Fragment>}>
                                                                     <Switch name='hide_edges'
                                                                         // value="checked"
                                                                             checked={this.props.hide_edges}
@@ -647,7 +701,11 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                         />
                                                         <FormControlLabel
                                                             control={
-                                                                <Tooltip title={'helper'}>
+                                                                <Tooltip title={<React.Fragment>
+                                                                    <Typography variant='body2'>
+                                                                        Orthologize and show paralogues genes
+                                                                    </Typography>
+                                                                </React.Fragment>}>
                                                                     <Switch name='pars'
                                                                         // value="checked"
                                                                             checked={this.props.pars}

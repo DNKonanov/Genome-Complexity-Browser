@@ -9,6 +9,7 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    Tooltip,
     Typography
 } from '@material-ui/core';
 
@@ -20,12 +21,20 @@ class SelectedNodes extends Component {
     render() {
         return (
             <Grid>
-                <Typography align="center" variant='h6'>Nodes description</Typography>
+                <Tooltip
+                    title={<React.Fragment>
+                        <Typography variant='body2'>
+                        Information about selected genes
+                        </Typography>
+                    </React.Fragment>}
+                >
+                    <Typography align="center" variant='h6'>Nodes description</Typography>
+                </Tooltip>
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>OG</TableCell>
+                                <TableCell>OrthologyGroup ID</TableCell>
                                 <TableCell>Gene description</TableCell>
                             </TableRow>
                         </TableHead>

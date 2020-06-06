@@ -8,8 +8,9 @@ import {LOADING} from "../../redux/constants/graph/container/constants";
 import CytoscapeDagreGraph from "./CytoscapeDagreGraph";
 import RefTextFields from "../core/tabs/parameters/components/expansion/reference/components/RefTextFields";
 import {setCoordStartCoordEnd, setOgStartOgEnd} from "../../redux/actions/selector/actions";
-import {Button, Grid, Tooltip, Typography} from '@material-ui/core';
+import {Button, Grid, Tooltip, Typography, CircularProgress, LinearProgress} from '@material-ui/core';
 import Math from 'mathjs';
+import {setIs_open_drawer, setCurrentTab} from "../../redux/actions/layout/actions";
 
 const mapStateToProps = state => ({
     graph: state.graph.graph,
@@ -44,6 +45,8 @@ const actionsCreator = {
     putSelectedRef: putSelectedRef,
     setOgStartOgEnd: setOgStartOgEnd,
     setCoordStartCoordEnd: setCoordStartCoordEnd,
+    setIs_open_drawer: setIs_open_drawer,
+    setCurrentTab: setCurrentTab,
 };
 
 class GraphContainer extends Component {
@@ -77,6 +80,7 @@ class GraphContainer extends Component {
             console.log(this.state.hide_edges);
             return
         }
+
         // this.setState({[event.target.name]: event.target.value});
         this.props.setContainerGraph(event.target.name.toUpperCase(), event.target.value);
     };
@@ -241,7 +245,7 @@ class GraphContainer extends Component {
                       direction="row"
                       justify="flex-start"
                       alignItems="center"
-                      //spacing={1}
+                      spacing={2}
                 >
                     <Grid item xs={2}>
                         {/*НЕ УДАЛЯТЬ!!!!*/}
@@ -257,51 +261,83 @@ class GraphContainer extends Component {
                         >
                             Draw
                         </Button>
+                        
+                                <RefTextFields
+                                    labelTF={'Depth'}
+                                    nameTF={'depth'}
+                                    valueTF={this.props.depth}
+                                    typeTF={"number"}
+                                    errTF={this.props.depth < 2}
+                                    helperTextTF={this.props.depth < 2 ? 'Greater than or equal to two' : ''}
+                                    tooltipText={
+                                        <React.Fragment>
+                                            <Typography variant='body2'>
+                                            Do not show paths beginning and ending in the selected region longer than this value
+                                            </Typography>
+                                        </React.Fragment>
+                                    }
+                                />
 
-                        <RefTextFields
-                            labelTF={'Depth'}
-                            nameTF={'depth'}
-                            valueTF={this.props.depth}
-                            typeTF={"number"}
-                            errTF={this.props.depth < 2}
-                            helperTextTF={this.props.depth < 2 ? 'Greater than or equal to two' : ''}
-                        />
+                        
 
 
                     </Grid>
 
                     <Grid item xs={2}>
-                        <RefTextFields
-                            labelTF={'Window'}
-                            nameTF={'window'}
-                            valueTF={this.props.window}
-                            typeTF={"number"}
-                            errTF={this.props.window < 1}
-                            helperTextTF={this.props.window < 1 ? 'Greater than or equal to one' : ''}
-                        />
+                            <RefTextFields
+                                labelTF={'Neighborhood'}
+                                nameTF={'window'}
+                                valueTF={this.props.window}
+                                typeTF={"number"}
+                                errTF={this.props.window < 1}
+                                helperTextTF={this.props.window < 1 ? 'Greater than or equal to one' : ''}
+                                tooltipText={<React.Fragment>
+                                        <Typography variant='body2'>
+                                        Add this number of genes left and right to the region shown
+                                        </Typography>
+                                    </React.Fragment>
+                                }
+                            />
+                       
                     </Grid>
 
                     <Grid item xs={2}>
-                        <RefTextFields
-                            labelTF={'Tails OG'}
-                            nameTF={'tails'}
-                            valueTF={this.props.tails}
-                            typeTF={"number"}
-                            errTF={this.props.tails < 0}
-                            helperTextTF={this.props.tails < 0 ? 'Greater than or equal to zero' : ''}
+                            <RefTextFields
+                                labelTF={'Tails'}
+                                nameTF={'tails'}
+                                valueTF={this.props.tails}
+                                typeTF={"number"}
+                                errTF={this.props.tails < 0}
+                                helperTextTF={this.props.tails < 0 ? 'Greater than or equal to zero' : ''}
+                                tooltipText={<React.Fragment>
+                                    <Typography variant='body2'>
+                                    Long paths in the graph are cropped to fragments of a length below this value
+                                    </Typography>
+                                </React.Fragment>
+    
+                                }
+                            />
 
-                        />
+                        
                     </Grid>
 
                     <Grid item xs={2}>
-                        <RefTextFields
-                            labelTF={'Minimal edge weight'}
-                            nameTF={'freq_min'}
-                            valueTF={this.props.freq_min}
-                            typeTF={"number"}
-                            errTF={this.props.freq_min < 1}
-                            helperTextTF={this.props.freq_min < 1 ? 'Greater than or equal to one' : ''}
-                        />
+
+                            <RefTextFields
+                                labelTF={'Minimal edge weight'}
+                                nameTF={'freq_min'}
+                                valueTF={this.props.freq_min}
+                                typeTF={"number"}
+                                errTF={this.props.freq_min < 1}
+                                helperTextTF={this.props.freq_min < 1 ? 'Greater than or equal to one' : ''}
+                                tooltipText={<React.Fragment>
+                                    <Typography variant='body2'>
+                                    Hide edges in the graph with a weight (number of genomes) below this value
+                                    </Typography>
+                                </React.Fragment>}
+                            />
+
+                        
                     </Grid>
 
                     <Grid item xs={2}>
@@ -310,11 +346,24 @@ class GraphContainer extends Component {
                                color: 'white',
                                textDecoration: 'none',
                            }}
-                        > <Tooltip title={'helper'}>
+                        >
+                            <div style={{
+                                display: this.props.loading ? '' : 'none'
+                            }}>
+                                <LinearProgress/>
+                            </div>
+                        <Tooltip title={
+                            <React.Fragment>
+                                <Typography variant='body2'>
+                                Update the graph with the specified settings
+                                </Typography>
+                            </React.Fragment>
+                        }>
                             <Button
                                 variant="outlined"
                                 color="default"
                                 disableElevation
+                                fullWidth
                                 onClick={this.handleGraphDraw}
                             >
                                 UPDATE GRAPH
@@ -322,6 +371,7 @@ class GraphContainer extends Component {
                         </Tooltip>
                         </a>
                     </Grid>
+                    
 
                     <Grid item xs={12}>
                         {this.props.graph.result === 'NOT LOADED' ? notLoaded() : cytoscapeDagreGraph()}

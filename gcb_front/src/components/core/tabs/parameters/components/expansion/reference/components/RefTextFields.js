@@ -26,6 +26,7 @@ class RefTextFields extends React.Component {
                            onChange={this.handleChange}
                            disabled={this.props.disTF}
                            error={this.props.errTF}
+                           fullWidth
                            helperText={this.props.helperTextTF}
                 />
                 </Tooltip>

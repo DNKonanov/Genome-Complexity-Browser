@@ -6,25 +6,25 @@ class About extends React.Component {
         return (
             <div>
                 <Container fixed>
-                    <Box>
-                        <Grid container direction='column'>
-                            <Typography>User manual(alpha):
-                                <a href='https://github.com/DNKonanov/Genome-Complexity-Browser/blob/master/GCB_manual.pdf'>PDF</a> <br/>
-                            </Typography>
+                    <Grid item xs={12} direction='column'>
+                        <Typography>
+                            GCB implements visualization of gene neighbourhoods <br></br>
+                            in grap-based format and quantifies local variability <br></br>
+                            of the genome. The web server contains data for pre-<br></br>
+                            calculated species with a subset of the available <br></br>
+                            genomes from RefSeq. You may use the standalone version <br></br>
+                            to analyze your custom genome set.<br></br>
+                            <br></br>
+                            Find more at <a href='https://gcb.readthedocs.io'>https://gcb.readthedocs.io/.</a> 
 
-                            <Typography>Link to github:<br/>
-                                <a href='https://github.com/DNKonanov/Genome-Complexity-Browser'>GitHub</a>
-                            </Typography>
-
-                            <Typography>Command-line tool:<br/>
-                                <a href='https://github.com/DNKonanov/geneGraph'>geneGraph</a>
-                            </Typography>
-
-                            <Typography>Stand-alone version of this service:<br/>
-                                <a href='https://github.com/DNKonanov/GCB'>GCB_package</a>
-                            </Typography>
-                        </Grid>
-                    </Box>
+                            <p>Please contact us via  <a href='https://groups.google.com/forum/#!forum/genome-complexiity-browser'>GCB Google Group</a>.</p>
+                            
+                            Or directly, via e-mail:
+                            <p>Aleksander Manolov, paraslonic@gmail.com<br></br>
+                            Dmitriy Konanov, konanovdmitriy@gmail.com</p>
+                        </Typography>
+                        
+                    </Grid>
                 </Container>
             </div>
         );

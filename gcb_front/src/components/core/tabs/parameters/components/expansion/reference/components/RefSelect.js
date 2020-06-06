@@ -40,6 +40,7 @@ class RefSelect extends React.Component {
                     <Tooltip
                         title={this.props.tooltipText}
                         aria-label="add"
+                        placement="right-end"
                     >
                         <Select id={this.props.selectNameId}
                                 name={this.props.selectNameId}

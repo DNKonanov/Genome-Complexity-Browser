@@ -1,18 +1,21 @@
 import React from "react";
-import {Button, Card, CardContent, CardHeader, Container, Fab, Grid, Tooltip, withStyles} from '@material-ui/core';
+import {Button, Card, CardContent, CardHeader, Container, Fab, Grid, Tooltip, withStyles, Typography, LinearProgress} from '@material-ui/core';
 import MenuSharpIcon from '@material-ui/icons/MenuSharp';
 import {connect} from 'react-redux';
 import ComplexityPlot from "../../plot/ComplexityPlot";
 import GraphContainer from "../../graph/GraphConatiner";
 import {layoutStyle} from "./styles/LayoutStyle";
-import {setIs_open_drawer} from "../../../redux/actions/layout/actions";
+import {setIs_open_drawer, setCurrentTab} from "../../../redux/actions/layout/actions";
 
 const mapStateToProps = state => ({
+    loading: state.container.loading,
     is_open_drawer: state.layout.leftMenu.is_open_drawer,
+    current_tab: state.layout.leftMenu.current_tab,
 });
 
 const actionsCreator = {
     setIs_open_drawer: setIs_open_drawer,
+    setCurrentTab: setCurrentTab,
 };
 
 class MainMenu extends React.Component {
@@ -96,8 +99,21 @@ class MainMenu extends React.Component {
                                                                    textDecoration: 'none',
                                                                }}
                                                             >
-                                                                <Tooltip title={'helper'}>
+                                                                <div style={{
+                                                                    display: this.props.loading ? '' : 'none'
+                                                                }}>
+                                                                    <LinearProgress/>
+                                                                </div>
+                                                                <Tooltip title={
+                                                                    <React.Fragment>
+                                                                        <Typography variant='body2'>
+                                                                        Сlick complexity plot to select the genome locus, then click 
+                                                                        this button to plot graph representing neighborhood of this locus
+                                                                        </Typography>
+                                                                    </React.Fragment>
+                                                                }>
                                                                     <Button
+                                                                        fullWidth
                                                                         variant="outlined"
                                                                         color="default"
                                                                         disableElevation

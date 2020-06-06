@@ -24,6 +24,7 @@ import {
     TableRow,
     TextField,
     Typography,
+    Tooltip,
     withStyles,
 } from '@material-ui/core';
 import {
@@ -194,20 +195,38 @@ class Search extends React.Component {
                                     </Grid> */}
 
                                     <Grid item xs={1}>
-                                        <IconButton
-                                            type="submit"
-                                            onClick={this.search}
+                                        <Tooltip title={<React.Fragment>
+                                            <Typography variant='body2'>
+                                                Perform search
+                                            </Typography>
+                                        </React.Fragment>}
                                         >
-                                            <SearchIcon/>
-                                        </IconButton>
+                                            <IconButton
+                                                type="submit"
+                                                onClick={this.search}
+                                            >
+                                                <SearchIcon/>
+                                            </IconButton>
+                                        </Tooltip>
+                                        
                                     </Grid>
 
                                     <Grid item xs={1}>
-                                        <IconButton
-                                            onClick={this.clearSearchResults}
+
+                                        <Tooltip 
+                                            title={<React.Fragment>
+                                                <Typography variant='body2'>
+                                                    Clear search results
+                                                </Typography>
+                                            </React.Fragment>}
                                         >
-                                            <ClearIcon/>
-                                        </IconButton>
+                                            <IconButton
+                                                onClick={this.clearSearchResults}
+                                            >
+                                                <ClearIcon/>
+                                            </IconButton>
+                                        </Tooltip>
+                                        
                                     </Grid>
                                 </Grid>
                             </form>
@@ -254,17 +273,28 @@ class Search extends React.Component {
                                                                 <TableCell>{result[2]}</TableCell>
                                                                 <TableCell>
 
-                                                                    <button
-                                                                        value={result[2]}
-                                                                        onClick={(e) => {
-                                                                            this.props.setCoordStartCoordEnd(
-                                                                                e.target.value,
-                                                                                e.target.value
-                                                                            );
-                                                                        }}
+                                                                    <Tooltip title={<React.Fragment>
+                                                                        <Typography variant='body2'>
+                                                                        Move cursor on complexity plot to this position. 
+                                                                        Click the DRAW GRAPH button to generate a graph of this genome region.
+                                                                        </Typography>
+                                                                    </React.Fragment>}
                                                                     >
-                                                                        {result[2]}
-                                                                    </button>
+                                                                        <button
+                                                                            value={result[2]}
+                                                                            onClick={(e) => {
+                                                                                this.props.setCoordStartCoordEnd(
+                                                                                    e.target.value,
+                                                                                    e.target.value
+                                                                                );
+                                                                            }}
+                                                                        >
+                                                                            {result[2]}
+                                                                        </button>
+
+                                                                    </Tooltip>
+
+                                                                    
                                                                 </TableCell>
                                                                 <TableCell>{result[3]}</TableCell>
                                                             </TableRow>

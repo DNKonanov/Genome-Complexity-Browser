@@ -9,7 +9,8 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Typography
+    Typography,
+    Tooltip
 } from '@material-ui/core';
 
 class EdgeDescription extends Component {
@@ -18,7 +19,16 @@ class EdgeDescription extends Component {
     render() {
         return (
             <Grid>
-                <Typography align="center" variant='h6'>List of genomes</Typography>
+                <Tooltip
+                    title={<React.Fragment>
+                        <Typography variant='body2'>
+                        Genomes from the selected edge of the graph
+                        </Typography>
+                    </React.Fragment>}
+                    >
+                        <Typography align="center" variant='h6'>List of genomes</Typography>
+                    </Tooltip>
+                
                 <TableContainer component={Paper}>
                     <Table>
 

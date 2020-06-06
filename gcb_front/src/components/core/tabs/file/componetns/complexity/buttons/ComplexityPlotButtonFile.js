@@ -7,7 +7,7 @@ import {
     setEnabled_Show_Delete_User_Coordinates,
     setUserCoordinatesStr
 } from "../../../../../../../redux/actions/file/readFile";
-import {Button, Container, Grid, Tooltip, withStyles} from '@material-ui/core';
+import {Button, Container, Grid, Tooltip, withStyles, Typography} from '@material-ui/core';
 
 
 const mapStateToProps = state => ({
@@ -33,8 +33,7 @@ class ComplexityPlotButtonFile extends React.Component {
         let data =
             'organism=' + this.props.org +
             '\tgenome=' + this.props.stamm +
-            '\tcontig=' + this.props.contig +
-            '\tmethod=' + this.props.method + '\n';
+            '\tcontig=' + this.props.contig + '\n';
 
         data = data + 'position\tOrthoGroupID\tcomplexity\thotspot\n';
 
@@ -61,7 +60,14 @@ class ComplexityPlotButtonFile extends React.Component {
                     <Grid container spacing={1} justify="center">
 
                         <Grid item xs={12}>
-                            <Tooltip title="helper" aria-label="add">
+                            <Tooltip 
+                                title={<React.Fragment>
+                                    <Typography variant='body2'>
+                                    Download tab-delimited file with gene coordinates, complexity values, 
+                                    and hotspot inforamation (marked with +)
+                                    </Typography>
+                                </React.Fragment>}
+                                aria-label="add">
                                 <Button
                                     variant="outlined"
                                     color="default"
