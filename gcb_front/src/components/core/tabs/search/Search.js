@@ -244,7 +244,7 @@ class Search extends React.Component {
                             maxWidth="xl"
                         >
                             <ExpansionPanel expanded={this.state.openSearchResults}>
-                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                                <ExpansionPanelSummary>
                                     <Typography>RESULT</Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>
@@ -269,7 +269,11 @@ class Search extends React.Component {
                                                         return (
                                                             <TableRow key={result[0]}>
                                                                 <TableCell>{result[0]}</TableCell>
-                                                                <TableCell>{result[1]}</TableCell>
+                                                                <TableCell>
+
+                                                                    {result[1].length < 35 ? result[1] : result[1].substring(0,32) + '...'}
+
+                                                                </TableCell>
                                                                 <TableCell>{result[2]}</TableCell>
                                                                 <TableCell>
 

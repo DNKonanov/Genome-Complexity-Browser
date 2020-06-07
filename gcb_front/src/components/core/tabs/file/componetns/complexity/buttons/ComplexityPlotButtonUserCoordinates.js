@@ -97,7 +97,7 @@ class ComplexityPlotButtonUserCoordinates extends React.Component {
                     {/*<Card>*/}
                     {/*    <CardContent>*/}
 
-                    <Grid container spacing={1} justify="center">
+                    <Grid container spacing={2} justify="center">
 
 
                         <Grid item xs={12}>
@@ -134,7 +134,7 @@ class ComplexityPlotButtonUserCoordinates extends React.Component {
                             </Tooltip>
                         </Grid>
                         </Grid>
-                        <Grid container spacing={1} justify="center">
+                        <Grid container spacing={2} justify="center">
                         <Grid item xs={6}>
                         <Tooltip 
                                 title={<React.Fragment>

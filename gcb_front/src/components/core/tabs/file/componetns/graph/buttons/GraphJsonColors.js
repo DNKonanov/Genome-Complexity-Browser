@@ -68,7 +68,8 @@ class GraphJsonColors extends React.Component {
                                                 DOWNLOAD JSON
                                             </Button>
                                         </Tooltip>
-
+                                    </Grid>
+                                    <Grid item xs={12}>
                                         <Tooltip title={<React.Fragment>
                                             <Typography variant='body2'>
                                             Download the contents of the Graph panel to the jpeg file
@@ -87,6 +88,10 @@ class GraphJsonColors extends React.Component {
                                                 DOWNLOAD JPG
                                             </Button>
                                         </Tooltip>
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        
 
                                         <Tooltip title={<React.Fragment>
                                             <Typography variant='body2'>

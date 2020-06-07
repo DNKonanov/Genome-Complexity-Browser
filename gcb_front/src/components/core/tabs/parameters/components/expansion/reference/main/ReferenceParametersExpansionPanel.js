@@ -20,6 +20,7 @@ import {
 } from "../../../../../../../../redux/actions/selector/actions";
 import {CONTIG, GENOME_NAME, STAMM} from "../../../../../../../../redux/constants/selector/constants";
 import RefSelect from "../components/RefSelect";
+import GenomeSelector from "../components/GenomeSelector";
 import RefTextFields from "../components/RefTextFields";
 import removeAllTips from "../../../../../../../../sctipts/helper/functions/removeAllTips";
 import {setIs_open_drawer, setCurrentTab} from "../../../../../../../../redux/actions/layout/actions";
@@ -295,7 +296,9 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
 
         const {classes} = this.props;
+
         let genomes_loading
+
         if (this.props.organisms.length === 0) {
             genomes_loading = <Typography>Request genomes...</Typography>
         }
@@ -338,13 +341,15 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                             </Grid>
 
                                             <Grid item xs={12}>
-                                                <RefSelect
+                                                <GenomeSelector
                                                     inputLabel={'Reference'}
                                                     selectNameId={'stamm'}
                                                     selectValue={this.props.stamm}
                                                     selectOptions={this.props.stamms.list} // arr
                                                     disabledSelect={this.props.disabled_select_reference}
+                                                    names={this.props.stamms.names}
                                                     tooltipText={<React.Fragment>
+                                                        
                                                         <Typography variant='body2' color="inherit">
                                                         Select the genome, region for graph representation, and parameters
                                                         </Typography>
@@ -485,7 +490,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                                         
                                         <ExpansionPanel>
-                                            <ExpansionPanelSummary>
+                                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                                                 <Tooltip
                                                     title={<Typography variant='body2'>
                                                         Show advanced settings of the complexity profile and graph plots

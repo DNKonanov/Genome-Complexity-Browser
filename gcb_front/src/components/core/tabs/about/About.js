@@ -6,7 +6,7 @@ class About extends React.Component {
         return (
             <div>
                 <Container fixed>
-                    <Grid item xs={12} direction='column'>
+                    <Grid item xs={12}>
                         <Typography>
                             GCB implements visualization of gene neighbourhoods <br></br>
                             in grap-based format and quantifies local variability <br></br>

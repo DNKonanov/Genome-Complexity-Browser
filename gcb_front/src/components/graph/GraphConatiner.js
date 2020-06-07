@@ -115,13 +115,13 @@ class GraphContainer extends Component {
     }
 
     // проверает наличие нодов из стейта в загруженном списке нодов
-    checkOG = () => {
-        if (this.props.complexity.OGs.indexOf(this.props.selection.og_start) === -1) {
+    checkOG = (og1, og2) => {
+        if (this.props.complexity.OGs.indexOf(og1) === -1) {
             alert('Start OG is not in chosen genome');
             return true
         }
 
-        if (this.props.complexity.OGs.indexOf(this.props.selection.og_end) === -1) {
+        if (this.props.complexity.OGs.indexOf(og2) === -1) {
             alert('End OG is not in chosen genome');
             return true
         }
@@ -191,11 +191,13 @@ class GraphContainer extends Component {
             return
         }
 
-        if (this.checkOG() === true)
-            return;
             
        let ogSE =  this.checkOGs();
         // this.checkCoord();
+
+
+        if (this.checkOG(ogSE[0], ogSE[1]) === true)
+            return;
 
 
         this.props.setContainerGraph(LOADING, true);
