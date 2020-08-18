@@ -2,13 +2,13 @@ import React from "react";
 import {connect} from "react-redux";
 import {useStyles} from "../../../../parameters/style/SelectParametersStyle";
 import CloudDownloadRoundedIcon from "@material-ui/icons/CloudDownloadRounded";
-import BackupRoundedIcon from "@material-ui/icons/BackupRounded";
 import {
     setEnabled_Show_Delete_User_Coordinates,
     setUserCoordinatesStr
 } from "../../../../../../../redux/actions/file/readFile";
 import {Button, Container, Grid, Tooltip, withStyles, Typography} from '@material-ui/core';
-
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const mapStateToProps = state => ({
     userCoordinatesStr: state.file.userCoordinatesStr,
@@ -27,9 +27,59 @@ const actionCreator = {
 
 class ComplexityPlotButtonFile extends React.Component {
     
+    state = {
+        BED: false,
+    }
+
+    handleChange = (e) => {
+        console.log(e.target.checked)
+        this.setState({
+            BED: e.target.checked
+        })
+    }
+
+
+    downloadData = (e) => {
+
+        if (this.state.BED) {
+            this.downloadBEDData(e)
+        }
+        else {
+            this.downloadTXTData(e)
+        }
+    }
+
+    downloadBEDData = (e) => {
+        let data = ''
+        console.log(this.props.complexity)
+        for (let i = 0; i < this.props.complexity.coord_list.length; i++) {
+            
+            if (this.props.complexity.hotspots_sym[i] === '+') {
+                
+                let length = this.props.complexity.length_list[i] 
+                let start = this.props.complexity.coord_list[i] - Math.floor(length/2)
+                let end = start + length
+                
+                data = data +
+                this.props.contig + '\t' +
+                start + '\t' +
+                end + '\t' +'val=' +
+                this.props.complexity.complexity[i] + '\n'
+
+            }
+
+            
+        }
+
+        let element = document.createElement("a");
+        let file = new Blob([data], {type: 'text/plain'});
+        element.href = URL.createObjectURL(file);
+        element.download = this.props.contig + ".bed";
+        element.click();
+    }
 
     // грузит файл с профилем сложности
-    downloadData = (e) => {
+    downloadTXTData = (e) => {
         let data =
             'organism=' + this.props.org +
             '\tgenome=' + this.props.stamm +
@@ -82,6 +132,27 @@ class ComplexityPlotButtonFile extends React.Component {
                                     Download complexity values
                                 </Button>
                             </Tooltip>
+
+
+                            <Tooltip 
+                                title={<React.Fragment>
+                                    <Typography variant='body2'>
+                                    Use BED format
+                                    </Typography>
+                                </React.Fragment>}
+                                aria-label="add">
+                                <FormControlLabel
+                                    control={<Checkbox 
+                                        name="BEDcheckbox"
+                                        
+                                        />}
+                                    label="Use BED format"
+                                    onChange={e => this.handleChange(e)}
+                                />
+                            </Tooltip>
+                            
+
+
                         </Grid>
                     </Grid>
                 </Container>

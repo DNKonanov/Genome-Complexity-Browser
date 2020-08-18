@@ -2,9 +2,7 @@ import React from "react";
 import {useStyles} from "../../../../parameters/style/SelectParametersStyle";
 import BackupRoundedIcon from "@material-ui/icons/BackupRounded";
 import CloudDownloadRoundedIcon from "@material-ui/icons/CloudDownloadRounded";
-import {Button, Container, Grid, Tooltip, withStyles,
-    ButtonGroup,CardContent,Card, Typography
-} from '@material-ui/core';
+import {Button, Container, Grid, Tooltip, withStyles,Typography} from '@material-ui/core';
 class GraphJsonColors extends React.Component {
 
     handleDownloadJSON = () => {

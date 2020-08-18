@@ -15,7 +15,8 @@ const initialState = {
     stamms: {
         list: [],
         names: [],
-        org: 'None'
+        org: 'None',
+        computed: [],
     },
     contigs: {
         list: [],
@@ -59,6 +60,7 @@ export default function (state = initialState, action) {
                 stamms: {
                     list: action.payload[0],
                     names: action.payload[1],
+                    computed: action.payload[2],
                     org: action.org
                 }
             };

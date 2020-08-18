@@ -16,9 +16,9 @@ import axios from 'axios';
 
 const axiosFetch = axios.create({baseURL: SERVER_URL + SERVER_PORT});
 
-export function fetchOrganisms() {
+export function fetchOrganisms(pars) {
     return function (dispatch) {
-        fetch(SERVER_URL + SERVER_PORT + '/org/')
+        fetch(SERVER_URL + SERVER_PORT + '/org/pars/' + pars)
             .then(response => response.json())
             .then(organisms => dispatch({
                 type: FETCH_ORGANISMS,
@@ -27,9 +27,9 @@ export function fetchOrganisms() {
     }
 }
 
-export function fetchStammsForOrg(org) {
+export function fetchStammsForOrg(org, pars) {
     return function (dispatch) {
-        fetch(SERVER_URL + SERVER_PORT + '/org/' + org + '/stamms/')
+        fetch(SERVER_URL + SERVER_PORT + '/org/' + org + '/stamms/pars/' + pars)
             .then(response => response.json())
             .then(stamms => dispatch({
                 type: FETCH_STAMMS,
@@ -55,9 +55,9 @@ export function fetchWindows(org, stamm, pars) {
     }
 }
 
-export function fetchContigs(org, stamm) {
+export function fetchContigs(org, stamm, pars) {
     return function (dispatch) {
-        fetch(SERVER_URL + SERVER_PORT + '/org/' + org + '/stamms/' + stamm + '/contigs/')
+        fetch(SERVER_URL + SERVER_PORT + '/org/' + org + '/stamms/' + stamm + '/contigs/pars/' + pars)
             .then(response => response.json())
             .then(contigs => dispatch({
                 type: FETCH_CONTIGS,

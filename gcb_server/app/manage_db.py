@@ -25,6 +25,9 @@ def get_complexity_from_db(data_path, organism, reference, contig, pars, method,
 
     connect.close()
 
+    if len(complexity_list) != len(full_data):
+        complexity_list = [0 for _ in range(len(full_data))]
+
     return [complexity_list, [i[0] for i in full_data], [i[1] for i in full_data], [i[2] for i in full_data]]
 
 

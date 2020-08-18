@@ -62,7 +62,7 @@ class ComplexityPlot extends React.Component {
                                     x: [this.props.coord_end, this.props.coord_end],
                                     y: [-data.max_complexity / 2, data.max_complexity],
                                     mode: 'lines',
-                                    name: 'rigth edge'
+                                    name: 'right edge'
                                 },
 
                                 {

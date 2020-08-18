@@ -43,7 +43,6 @@ import {
     Radio,
     RadioGroup,
     withStyles,
-    ThemeProvider
 } from '@material-ui/core';
 
 
@@ -101,7 +100,6 @@ const mapStateToProps = state => ({
     tails: state.container.tails,
     depth: state.container.depth,
     freq_min: state.container.freq_min,
-    loading: state.container.loading,
     step: state.container.step,
     cy: state.container.cy,
     edge_description: state.container.edge_description,
@@ -126,7 +124,6 @@ const actionCreators = {
     setStammGenomeName: setStammGenomeName,
     // components
     setIs_open_drawer: setIs_open_drawer,
-    setCurrentTab: setCurrentTab,
     // graph
     setContainerGraph: setContainerGraph,
 };
@@ -143,7 +140,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
     componentDidMount() {
 
         if (this.props.organisms.length === 0)
-            this.props.fetchOrganisms();
+            this.props.fetchOrganisms(this.props.pars);
         return;
     };
 
@@ -174,7 +171,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
         removeAllTips();
         if (this.props.organisms.length > 0) {// This means we succesfully loaded list of organisms
             if (this.props.stamms.org !== this.props.org) { //Stamms for selected organims are not loaded
-                this.props.fetchStammsForOrg(this.props.org);
+                this.props.fetchStammsForOrg(this.props.org, this.props.pars);
                 return;
 
             } else { // stamms loaded
@@ -185,7 +182,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
 
                 } else { //selected stamm is from current list
                     if (this.props.contigs.stamm !== this.props.stamm) { //contigs for stamm not loaded
-                        this.props.fetchContigs(this.props.org, this.props.stamm);
+                        this.props.fetchContigs(this.props.org, this.props.stamm, this.props.pars);
                         return;
 
                     } else { //selected stamm is from current list
@@ -346,8 +343,10 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                     selectNameId={'stamm'}
                                                     selectValue={this.props.stamm}
                                                     selectOptions={this.props.stamms.list} // arr
+
                                                     disabledSelect={this.props.disabled_select_reference}
                                                     names={this.props.stamms.names}
+                                                    computed={this.props.stamms.computed}
                                                     tooltipText={<React.Fragment>
                                                         
                                                         <Typography variant='body2' color="inherit">
@@ -602,7 +601,7 @@ class ReferenceParametersExpansionPanel extends React.Component {
                                                             labelTF={'Tails'}
                                                             nameTF={'tails'}
                                                             valueTF={this.props.tails}
-                                                            typeTF={"number"}errTF={(this.props.tails < 0 || this.props.tails > 100)}
+                                                            typeTF={"number"}
                                                             errTF={(this.props.tails < 0 || this.props.tails > 100)}
                                                             helperTextTF={(this.props.tails < 0 || this.props.tails > 100) ? '0 < tails <= 100 is available' : ''}
                                                             

@@ -2,12 +2,7 @@ import React from "react";
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 import {SERVER_PORT, SERVER_URL} from "../../../../redux/constants/urls";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
-    Box,
-    Card,
-    CardContent,
     Container,
     Divider,
     ExpansionPanel,

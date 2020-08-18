@@ -8,7 +8,7 @@ import {LOADING} from "../../redux/constants/graph/container/constants";
 import CytoscapeDagreGraph from "./CytoscapeDagreGraph";
 import RefTextFields from "../core/tabs/parameters/components/expansion/reference/components/RefTextFields";
 import {setCoordStartCoordEnd, setOgStartOgEnd} from "../../redux/actions/selector/actions";
-import {Button, Grid, Tooltip, Typography, CircularProgress, LinearProgress} from '@material-ui/core';
+import {Button, Grid, Tooltip, Typography, LinearProgress} from '@material-ui/core';
 import Math from 'mathjs';
 import {setIs_open_drawer, setCurrentTab} from "../../redux/actions/layout/actions";
 
@@ -225,7 +225,6 @@ class GraphContainer extends Component {
     }
 
     render() {
-        let what_to_show = null;
         let notLoaded = () => (
             <div style={{display: 'flex', height: 300, width: '100%'}}>
                 <Typography variant="h4" style={{margin: 'auto', textAlign: 'center'}}>

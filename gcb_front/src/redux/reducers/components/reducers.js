@@ -1,5 +1,4 @@
 import {DISABLED_SELECT_REFERENCE} from "../../constants/components/constants";
-import {select} from "material-components-web/index";
 
 const initiateState = {
     select: {

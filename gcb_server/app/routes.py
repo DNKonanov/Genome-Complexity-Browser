@@ -194,33 +194,54 @@ def subgraph(organism, ref_strain, contig, window, og_start, og_end, tails, pars
 def index():
     return render_template('index.html')
 
-@app.route('/org/')
-def get_org_list():
+@app.route('/org/pars/<pars>')
+def get_org_list(pars):
     # опрашивает имеющиеся организмы
     organisms = next(os.walk(data_path))[1]
     org = organisms[0]
     return jsonify(organisms)
 
 
-@app.route('/org/<org>/stamms/')
-def get_stamm_list(org):
+@app.route('/org/<org>/stamms/pars/<pars>')
+def get_stamm_list(org, pars):
 
     # опрашивает из БД штаммы для выбранного организма
-    connect = sqlite3.connect(data_path + org + '/' + org + '.db')
+    if pars == 'false':
+        connect = sqlite3.connect(data_path + org + '/' + org + '.db')
+
+    elif pars == 'true':
+        connect = sqlite3.connect(data_path + org + '/' + org + '_pars.db')
+
     c = connect.cursor()
     
     stamms = [row for row in c.execute('SELECT genome_code, genome_name FROM genomes_table')]
     stamms.sort()
     answer = [[s[0] for s in stamms], [s[1] for s in stamms]]
     print(org)
-    connect.close()
-    return jsonify(answer)
 
-@app.route('/org/<org>/stamms/<stamm>/contigs/')
-def get_contig_list(org, stamm):
+    computed_genomes = set(get_computed_genomes(org, pars))
+
+    computed = []
+    for i in answer[0]:
+        if i in computed_genomes:
+            computed.append('true')
+        else:
+            computed.append('false')
+
+
+    connect.close()
+    return jsonify(answer + [computed])
+
+@app.route('/org/<org>/stamms/<stamm>/contigs/pars/<pars>')
+def get_contig_list(org, stamm, pars):
 
     #опрашивает из БД контиги для выбранного штамма
-    connect = sqlite3.connect(data_path + org + '/' + org + '.db')
+    if pars == 'false':
+        connect = sqlite3.connect(data_path + org + '/' + org + '.db')
+
+    elif pars == 'true':
+        connect = sqlite3.connect(data_path + org + '/' + org + '_pars.db')
+
     c = connect.cursor()
     stamm_key = [row for row in c.execute('SELECT genome_id FROM genomes_table WHERE genome_code = "' + stamm + '"')][0][0]
     contigs = [row for row in c.execute('SELECT contig_code FROM contigs_table WHERE genome_id = ' + str(stamm_key))]
@@ -228,13 +249,47 @@ def get_contig_list(org, stamm):
     connect.close()
     return jsonify(contigs)
 
+
+
+
+def get_computed_genomes(org, pars):
+
+    if pars == 'false':
+        connect = sqlite3.connect(data_path + org + '/' + org + '.db')
+
+    elif pars == 'true':
+        connect = sqlite3.connect(data_path + org + '/' + org + '_pars.db')
+
+    c = connect.cursor()
+
+    request = '''
+
+    SELECT genome_code from genomes_table
+    WHERE genome_id in (
+    SELECT 
+        DISTINCT genome_id FROM contigs_table 
+        WHERE 
+            contig_id IN (
+                SELECT 
+                    DISTINCT contig_id FROM complexity_table
+        )
+    )
+    '''
+
+    genomes = [row for row in c.execute(request)][0]
+
+    return genomes
+
+    
+
+
 @app.route('/org/<org>/stamms/<stamm>/contigs/<contig>/methods/<method>/pars/<pars>/complexity/window/<window>/coef/<coef>')
 def get_complexity(org, stamm, contig, pars, method, window, coef):
 
     # возвращает выбранный профиль сложности из БД
     
     complexity = get_complexity_from_db(data_path, org, stamm, contig, int(pars), methods[method], window)
-    
+
     hotspotpositions = extract_hotspot_coordinates(complexity[0], complexity[2], coef=float(coef))
 
 

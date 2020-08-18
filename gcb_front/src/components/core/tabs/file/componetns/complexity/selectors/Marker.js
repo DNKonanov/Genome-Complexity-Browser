@@ -18,7 +18,6 @@ const actionsCreator = {
 
 class Marker extends React.Component {
     render() {
-        const {classes} = this.props;
         return (
             <div>
                 <Grid container spacing={1} justify="center">

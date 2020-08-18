@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Card, CardContent, Container, Grid, Typography} from '@material-ui/core';
+import {Container, Grid, Typography} from '@material-ui/core';
 
 class About extends React.Component {
     render() {
