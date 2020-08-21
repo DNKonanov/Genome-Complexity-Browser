@@ -29,37 +29,7 @@ class GenomeSelector extends React.Component {
     render() {
         const {classes} = this.props;
 
-        let computed_array = []
-        let uncomputed_array = []
-
-
-        for (let i = 0; i < this.props.names.length; i++) {
-            
-            if (this.props.computed[i] === 'true') {
-                computed_array.push(
-                    [this.props.computed[i], this.props.selectOptions[i], this.props.selectOptions[i]]
-                )
-            }
-            else {
-                uncomputed_array.push(
-                    [this.props.computed[i], this.props.selectOptions[i], this.props.selectOptions[i]]
-                )
-            }
-        }
-
-
-
-        let common_array = computed_array.concat(uncomputed_array)
         
-        let computed = []
-        let names = []
-        let selectOptions = []
-
-        common_array.forEach( e => {
-            computed.push(e[0])
-            names.push(e[1])
-            selectOptions.push(e[2])
-        })
 
 
         return (
@@ -83,13 +53,13 @@ class GenomeSelector extends React.Component {
                                 autoWidth={false}
                         >
                             {
-                                selectOptions.map(stamm => (
+                                this.props.selectOptions.map(stamm => (
                                     <MenuItem 
                                         key={stamm} 
                                         value={stamm}> 
 
                                         {
-                                            computed[selectOptions.indexOf(stamm)] === 'true' ? <b>{stamm  + ' (' + names[selectOptions.indexOf(stamm)] + ')'} </b> : stamm  + ' (' + names[selectOptions.indexOf(stamm)] + ')'
+                                            stamm  + ' (' + this.props.names[this.props.selectOptions.indexOf(stamm)] + ')'
                                         }
 
                                         

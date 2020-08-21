@@ -126,31 +126,38 @@ class ComplexityPlotButtonFile extends React.Component {
                                     disableElevation
                                     startIcon={<CloudDownloadRoundedIcon/>}
                                     onClick={(e) => {
-                                        this.downloadData(e)
+                                        this.downloadTXTData(e)
                                     }}
                                 >
                                     Download complexity values
                                 </Button>
                             </Tooltip>
-
-
+                        </Grid>
+                        
+                        <Grid item xs={12}>
                             <Tooltip 
                                 title={<React.Fragment>
                                     <Typography variant='body2'>
-                                    Use BED format
+                                    Download hotspots positions in BED format
                                     </Typography>
                                 </React.Fragment>}
                                 aria-label="add">
-                                <FormControlLabel
-                                    control={<Checkbox 
-                                        name="BEDcheckbox"
-                                        
-                                        />}
-                                    label="Use BED format"
-                                    onChange={e => this.handleChange(e)}
-                                />
+                                <Button
+                                    variant="outlined"
+                                    color="default"
+                                    component="label"
+                                    fullWidth
+                                    disableElevation
+                                    startIcon={<CloudDownloadRoundedIcon/>}
+                                    onClick={(e) => {
+                                        this.downloadBEDData(e)
+                                    }}
+                                >
+                                    Download hotspots in BED format
+                                </Button>
                             </Tooltip>
-                            
+
+                
 
 
                         </Grid>
