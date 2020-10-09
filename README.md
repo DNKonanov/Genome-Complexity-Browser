@@ -1,9 +1,9 @@
 # Genome-Complexity-Browser
 Interactive web based tool to view genome complexity in a graph form
 
-Link: [Genome Complexity Browser](http://gcb.rcpcm.org)
+Link: [Genome Complexity Browser](https://gcb.rcpcm.org)
 
-Can be used as stand-alone app [GCB package](https://sourceforge.net/projects/gcb-package/) ([link to github](https://github.com/DNKonanov/GCB_package)).
+Can be used as ([stand-alone](https://github.com/DNKonanov/GCB_package)) app.
 
 ## Other links
 
